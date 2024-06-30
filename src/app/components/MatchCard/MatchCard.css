@@ -1,0 +1,66 @@
+.match-card {
+    padding: 0;
+    max-width: 600px;
+}
+
+.match-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5em 1em 0 1em;
+}
+
+.match-card-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.match-card-body {
+    padding: 0 1em;
+}
+
+.match-player-info {
+    padding: 1em 0;
+}
+
+.match-player-scores {
+    display: flex;
+    align-items: center;
+    height: 64px;
+}
+
+.match-player-scores:nth-child(even) {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.match-player-scores:nth-child(odd) {
+    border-bottom: 1px solid black;
+}
+
+.match-game-score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1;
+    height: 100%;
+}
+
+.match-game-score:nth-child(odd) {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.match-game-score:last-child {
+    border-right: 1px solid black;
+}
+
+.match-game-counter {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.game-won {
+    font-weight: 700;
+}
