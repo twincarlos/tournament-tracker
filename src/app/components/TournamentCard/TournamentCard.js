@@ -1,13 +1,13 @@
 import "./TournamentCard.css";
 
-export default function TournamentCard() {
+export default function TournamentCard({ TournamentName, TournamentDate }) {
     return (
         <div className="card tournament-card">
             <div className="card-title">
-                <p>Florida Open 2024</p>
+                <p>{TournamentName}</p>
             </div>
             <div>
-                <p>07/18/2024</p>
+                <p>{new Date(TournamentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
             </div>
         </div>
     );

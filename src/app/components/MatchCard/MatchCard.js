@@ -3,14 +3,14 @@ import "./MatchCard.css";
 export default function MatchCard() {
     return (
         <div className="card match-card">
-            <div className="match-card-header">
-                <div className="match-card-info">
+            <div className="card-header">
+                <div className="card-header-info">
                     <button className="icon-button">
                         <i className="fa-regular fa-eye" />
                     </button>
                     <p>U2500 RR • Groups • 1</p>
                 </div>
-                <div className="match-card-tables">
+                <div className="card-header-tables">
                     <p>Tables 1,2</p>
                 </div>
             </div>
@@ -23,25 +23,25 @@ export default function MatchCard() {
                         <p>4</p>
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                 </div>
                 <div className="match-player-scores">
@@ -49,25 +49,25 @@ export default function MatchCard() {
                         <p>3</p>
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                     <div className="match-game-score game-won">
-                        <p>11</p>
+                        <input type="number" value="11" disabled={true} />
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                     <div className="match-game-score">
-                        <p>9</p>
+                        <input type="number" value="9" disabled={true} />
                     </div>
                 </div>
                 <div className="match-player-info">

@@ -1,0 +1,22 @@
+.group-card {
+    padding: 0;
+    max-width: 500px;
+}
+
+.group-card-player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+}
+
+.group-card-player-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.group-card-player:nth-child(even) {
+    background: #00000017;
+}

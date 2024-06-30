@@ -1,13 +1,28 @@
+"use client";
+import { useEffect, useState } from "react";
 import TournamentCard from "./components/TournamentCard/TournamentCard";
-import EventCard from "./components/EventCard/EventCard";
-import MatchCard from "./components/MatchCard/MatchCard";
+import Link from "next/link";
 
 export default function Home() {
+  const [tournaments, setTournaments] = useState([]);
+  useEffect(() => {
+    (async function () {
+      const response = await fetch("/api/get-all-tournaments");
+      const data = await response.json();
+      setTournaments(data);
+    })();
+  }, []);
   return (
     <main>
-      <TournamentCard />
-      <EventCard />
-      <MatchCard />
+      {tournaments.map(tournament => (
+          <Link href="/" key={tournament.tournamentid}>
+            <TournamentCard
+              TournamentName={tournament.tournamentname}
+              TournamentDate={tournament.tournamentdate}
+            />
+          </Link>
+        )
+      )}
     </main>
   );
 };

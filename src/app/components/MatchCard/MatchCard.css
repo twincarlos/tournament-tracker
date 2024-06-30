@@ -1,33 +1,26 @@
 .match-card {
     padding: 0;
-    max-width: 600px;
-}
-
-.match-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .5em 1em 0 1em;
-}
-
-.match-card-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.match-card-body {
-    padding: 0 1em;
+    max-width: 500px;
 }
 
 .match-player-info {
-    padding: 1em 0;
+    padding: 1em;
 }
 
 .match-player-scores {
     display: flex;
     align-items: center;
     height: 64px;
+}
+
+.match-game-score input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    text-align: center;
+    font-size: 1em;
+    color: black;
 }
 
 .match-player-scores:nth-child(even) {
@@ -45,15 +38,11 @@
     align-items: center;
     flex: 1 1;
     height: 100%;
-}
-
-.match-game-score:nth-child(odd) {
-    border-left: 1px solid black;
     border-right: 1px solid black;
 }
 
 .match-game-score:last-child {
-    border-right: 1px solid black;
+    border-right: none;
 }
 
 .match-game-counter {
@@ -61,6 +50,10 @@
     font-weight: 600;
 }
 
-.game-won {
+.game-won input {
     font-weight: 700;
+}
+
+.card-header-info .icon-button i {
+    color: white;
 }
