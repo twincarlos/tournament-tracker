@@ -1,21 +1,9 @@
-import "./MatchCard.css";
-import { useModal } from "@/app/context/ModalContext";
-import { useMatch } from "@/app/context/MatchContext";
-
-export default function MatchCard({ match }) {
-    const { setShowModal } = useModal();
-    const { setMatch } = useMatch();
-
+import './Match.css';
+export default function Match({ match }) {
     return (
         <div className="card match-card">
             <div className="card-header">
                 <div className="card-header-info">
-                    <button onClick={() => {
-                        setShowModal(true);
-                        setMatch(match);
-                    }} className="icon-button">
-                        <i className="fa-regular fa-eye" />
-                    </button>
                     <p>{match.eventname} • Group {match.groupnumber}</p>
                 </div>
                 <div className="card-header-tables">

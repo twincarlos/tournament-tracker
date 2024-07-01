@@ -7,7 +7,13 @@ export default function Home() {
   const [tournaments, setTournaments] = useState([]);
   useEffect(() => {
     (async function () {
-      const response = await fetch("/api/get-all-tournaments");
+      const response = await fetch("/api/get-all-tournaments", {
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    });
       const data = await response.json();
       setTournaments(data);
     })();
@@ -15,7 +21,7 @@ export default function Home() {
   return (
     <main>
       {tournaments.map(tournament => (
-          <Link href="/" key={tournament.tournamentid}>
+          <Link href={`/tournament/${tournament.tournamentid}`} key={tournament.tournamentid}>
             <TournamentCard
               TournamentName={tournament.tournamentname}
               TournamentDate={tournament.tournamentdate}
