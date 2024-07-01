@@ -1,6 +1,7 @@
 .group-card {
     padding: 0;
-    max-width: 500px;
+    max-width: 400px;
+    width: 400px;
 }
 
 .group-card-player {

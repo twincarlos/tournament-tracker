@@ -2,6 +2,7 @@
 import "./Event.css";
 import { useEffect, useState } from "react";
 import GroupCard from "@/app/components/GroupCard/GroupCard";
+import Header from "@/app/components/Header/Header";
 
 export default function Event({ params }) {
     const [groups, setGroups] = useState([]);
@@ -20,7 +21,10 @@ export default function Event({ params }) {
     }, []);
     return (
         <main>
-            { groups.map(group =>  <GroupCard key={group.groupid} group={group} />) }
+            <Header backLink={`/tournament/${params.TournamentId}`} headerTitle={groups[0]?.eventname} />
+            <section className="gallery">
+                { groups.map(group =>  <GroupCard key={group.groupid} group={group} TournamentId={params.TournamentId} EventId={params.EventId} />) }
+            </section>
         </main>
     );
 };

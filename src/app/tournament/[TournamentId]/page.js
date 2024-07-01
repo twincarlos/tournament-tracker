@@ -3,6 +3,7 @@ import "./Tournament.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import EventCard from "@/app/components/EventCard/EventCard";
+import Header from "@/app/components/Header/Header";
 
 export default function Tournament({ params }) {
     const [events, setEvents] = useState([]);
@@ -21,13 +22,16 @@ export default function Tournament({ params }) {
     }, []);
     return (
         <main>
-            {
-                events.map(event => (
-                    <Link href={`/event/${event.eventid}`} key={event.eventid}>
-                        <EventCard event={event} />
-                    </Link>
-                ))
-            }
+            <Header backLink="/" headerTitle={events[0]?.tournamentname} />
+            <section className="gallery">
+                {
+                    events.map(event => (
+                        <Link className="card event-card event-link" href={`/tournament/${params.TournamentId}/event/${event.eventid}`} key={event.eventid}>
+                            <EventCard event={event} />
+                        </Link>
+                    ))
+                }
+            </section>
         </main>
     );
 };

@@ -5,6 +5,7 @@ import { useMatch } from "@/app/context/MatchContext";
 import MatchCard from "@/app/components/MatchCard/MatchCard";
 import Modal from "@/app/components/Modal/Modal";
 import Match from "@/app/components/Match/Match";
+import Header from "@/app/components/Header/Header";
 
 export default function Group({ params }) {
     const [matches, setMatches] = useState([]);
@@ -23,19 +24,23 @@ export default function Group({ params }) {
             setMatches(data);
         })();
     }, []);
+    console.log(matches)
     return (
         <main>
+            <Header backLink={`/tournament/${params.TournamentId}/event/${params.EventId}`} headerTitle={`${matches[0]?.eventname} • Group ${matches[0]?.groupnumber}`} />
             <Modal>
                 <Match match={match} />
             </Modal>
-            {
-                matches.map(match => (
-                    <MatchCard
-                        key={match.matchid}
-                        match={match}
-                    />
-                ))
-            }
+            <section className="column">
+                {
+                    matches.map(match => (
+                        <MatchCard
+                            key={match.matchid}
+                            match={match}
+                        />
+                    ))
+                }
+            </section>
         </main>
     );
 };

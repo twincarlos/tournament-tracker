@@ -64,3 +64,25 @@ main {
     align-items: center;
     gap: 10px;
 }
+
+section {
+  padding: 10px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.event-card {
+  width: 250px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}

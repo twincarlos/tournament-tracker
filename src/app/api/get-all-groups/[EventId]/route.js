@@ -5,9 +5,11 @@ export async function GET(req, { params }) {
     const { rows } = await sql`
     SELECT 
     g.*,
+    e.*,
     p.*,
     ep.*
     FROM Groups g
+    JOIN Events e ON g.eventid = e.eventid
     JOIN EventPlayers ep ON g.groupid = ep.groupid
     JOIN Players p ON ep.playerid = p.playerid
     WHERE g.eventid = ${params.EventId}
@@ -37,6 +39,9 @@ export async function GET(req, { params }) {
                 groupnumber: group.groupnumber,
                 grouptables: group.grouptables,
                 groupstatus: group.groupstatus,
+                eventid: group.eventid,
+                eventname: group.eventname,
+                eventdate: group.eventdate,
                 GroupPlayers: [{
                     playerid: group.playerid,
                     eventplayerid: group.eventplayerid,

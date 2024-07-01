@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import TournamentCard from "./components/TournamentCard/TournamentCard";
 import Link from "next/link";
+import Header from "./components/Header/Header";
 
 export default function Home() {
   const [tournaments, setTournaments] = useState([]);
@@ -20,15 +21,15 @@ export default function Home() {
   }, []);
   return (
     <main>
-      {tournaments.map(tournament => (
-          <Link href={`/tournament/${tournament.tournamentid}`} key={tournament.tournamentid}>
-            <TournamentCard
-              TournamentName={tournament.tournamentname}
-              TournamentDate={tournament.tournamentdate}
-            />
-          </Link>
-        )
-      )}
+      <Header headerTitle={"Tournaments"} />
+      <section>
+        {tournaments.map(tournament => (
+            <Link href={`/tournament/${tournament.tournamentid}`} key={tournament.tournamentid}>
+              <TournamentCard tournament={tournament} />
+            </Link>
+          )
+        )}
+      </section>
     </main>
   );
 };

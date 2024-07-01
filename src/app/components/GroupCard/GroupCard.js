@@ -1,12 +1,12 @@
 import "./GroupCard.css";
 import Link from "next/link";
 
-export default function GroupCard({ group }) {
+export default function GroupCard({ TournamentId, EventId, group }) {
     return (
         <div className="card group-card">
             <div className="card-header">
                 <div className="card-header-info">
-                    <Link href={`/group/${group.groupid}`} className="icon-button">
+                    <Link href={`/tournament/${TournamentId}/event/${EventId}/group/${group.groupid}`} className="icon-button">
                         <i className="fa-regular fa-eye" />
                     </Link>
                     <p>Group {group.groupnumber}</p>
