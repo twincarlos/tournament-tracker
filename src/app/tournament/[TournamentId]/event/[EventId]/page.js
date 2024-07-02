@@ -8,7 +8,7 @@ export default function Event({ params }) {
     const [groups, setGroups] = useState([]);
     useEffect(() => {
         (async function () {
-            const response = await fetch(`/api/get-all-groups/${params.EventId}`, {
+            const response = await fetch(`/api/get-all-groups/${params.eventId}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
@@ -21,9 +21,9 @@ export default function Event({ params }) {
     }, []);
     return (
         <main>
-            <Header backLink={`/tournament/${params.TournamentId}`} headerTitle={groups[0]?.eventname} />
+            <Header backLink={`/tournament/${params.tournamentId}`} headerTitle={groups[0]?.eventName} />
             <section className="gallery">
-                { groups.map(group =>  <GroupCard key={group.groupid} group={group} TournamentId={params.TournamentId} EventId={params.EventId} />) }
+                { groups.map(group =>  <GroupCard key={group.groupId} group={group} />) }
             </section>
         </main>
     );

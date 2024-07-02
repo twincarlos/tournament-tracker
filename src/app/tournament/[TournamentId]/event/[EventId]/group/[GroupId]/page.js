@@ -13,7 +13,7 @@ export default function Group({ params }) {
     
     useEffect(() => {
         (async function () {
-            const response = await fetch(`/api/get-all-group-matches/${params.GroupId}`, {
+            const response = await fetch(`/api/get-all-group-matches/${params.groupId}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
@@ -24,10 +24,9 @@ export default function Group({ params }) {
             setMatches(data);
         })();
     }, []);
-    console.log(matches)
     return (
         <main>
-            <Header backLink={`/tournament/${params.TournamentId}/event/${params.EventId}`} headerTitle={`${matches[0]?.eventname} • Group ${matches[0]?.groupnumber}`} />
+            <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={`${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}`} />
             <Modal>
                 <Match match={match} />
             </Modal>
@@ -35,7 +34,7 @@ export default function Group({ params }) {
                 {
                     matches.map(match => (
                         <MatchCard
-                            key={match.matchid}
+                            key={match.matchId}
                             match={match}
                         />
                     ))

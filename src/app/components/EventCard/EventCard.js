@@ -4,12 +4,12 @@ export default function EventCard({ event }) {
     return (
         <div>
             <div className="card-title">
-                <p>{event.eventname}</p>
+                <p>{event.eventName}</p>
             </div>
             <div>
                 <p>
                     {
-                        new Date(event.eventdate).toLocaleDateString('en-US', {
+                        new Date(event.eventDate).toLocaleDateString('en-US', {
                             weekday: 'long',
                             month: 'long',
                             day: 'numeric',

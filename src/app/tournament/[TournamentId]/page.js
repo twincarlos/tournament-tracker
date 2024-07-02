@@ -9,7 +9,7 @@ export default function Tournament({ params }) {
     const [events, setEvents] = useState([]);
     useEffect(() => {
         (async function () {
-            const response = await fetch(`/api/get-all-events/${params.TournamentId}`, {
+            const response = await fetch(`/api/get-all-events/${params.tournamentId}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
@@ -22,11 +22,11 @@ export default function Tournament({ params }) {
     }, []);
     return (
         <main>
-            <Header backLink="/" headerTitle={events[0]?.tournamentname} />
+            <Header backLink="/" headerTitle={events[0]?.tournamentName} />
             <section className="gallery">
                 {
                     events.map(event => (
-                        <Link className="card event-card event-link" href={`/tournament/${params.TournamentId}/event/${event.eventid}`} key={event.eventid}>
+                        <Link className="card event-card event-link" href={`/tournament/${params.tournamentId}/event/${event.eventId}`} key={event.eventId}>
                             <EventCard event={event} />
                         </Link>
                     ))

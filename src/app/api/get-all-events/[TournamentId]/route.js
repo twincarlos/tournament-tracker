@@ -4,10 +4,18 @@ import { sql } from "@vercel/postgres";
 export async function GET(req, { params }) {
     const { rows } = await sql `
     SELECT
-    e.*,
-    t.*
+    e.id AS "eventId",
+    e.name AS "eventName",
+    e.date AS "eventDate",
+    e.time AS "eventTime",
+    e.type AS "eventType",
+    e.status AS "eventStatus",
+    e.stage AS "eventStage",
+    t.id AS "tournamentId",
+    t.name AS "tournamentName",
+    t.date AS "tournamentDate"
     FROM Events e
-    JOIN Tournaments t ON e.TournamentId = t.TournamentId
-    WHERE t.TournamentId = ${params.TournamentId};`;
+    JOIN Tournaments t ON e.tournament_id = t.id
+    WHERE t.id = ${params.tournamentId};`;
     return new Response(JSON.stringify(rows));
 };

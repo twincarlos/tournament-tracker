@@ -75,10 +75,6 @@ section {
   gap: 10px;
 }
 
-.event-card {
-  width: 250px;
-}
-
 .column {
   display: flex;
   flex-direction: column;

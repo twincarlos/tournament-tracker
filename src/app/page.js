@@ -24,7 +24,7 @@ export default function Home() {
       <Header headerTitle={"Tournaments"} />
       <section>
         {tournaments.map(tournament => (
-            <Link href={`/tournament/${tournament.tournamentid}`} key={tournament.tournamentid}>
+            <Link href={`/tournament/${tournament.id}`} key={tournament.id}>
               <TournamentCard tournament={tournament} />
             </Link>
           )

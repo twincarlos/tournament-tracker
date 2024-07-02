@@ -4,19 +4,19 @@ export default function Match({ match }) {
         <div className="card match-card">
             <div className="card-header">
                 <div className="card-header-info">
-                    <p>{match.eventname} • Group {match.groupnumber}</p>
+                    <p>{match.eventName} • Group {match.groupNumber}</p>
                 </div>
                 <div className="card-header-tables">
-                    <p>Tables {match.matchtables ? match.matchtables : "TBD"}</p>
+                    <p>TBD</p>
                 </div>
             </div>
             <div className="match-card-body">
                 <div className="match-player-info">
-                    <p>{match.player1rating} • {match.player1name}</p>
+                    <p>{match.player1Rating} • {match.player1Name}</p>
                 </div>
                 <div className="match-player-scores">
                     <div className="match-game-counter match-game-score">
-                        <p>{match.player1gameswon}</p>
+                        <p>{match.player1GamesWon}</p>
                     </div>
                     <div className="match-game-score">
                         <input type="number" value={match.g1p1 || ""} disabled={true} />
@@ -48,7 +48,7 @@ export default function Match({ match }) {
                 </div>
                 <div className="match-player-scores">
                     <div className="match-game-counter match-game-score">
-                        <p>{match.player2gameswon}</p>
+                        <p>{match.player2GamesWon}</p>
                     </div>
                     <div className="match-game-score game-won">
                         <input type="number" value={match.g1p2 || ""} disabled={true} />
@@ -66,7 +66,7 @@ export default function Match({ match }) {
                         <input type="number" value={match.g5p2 || ""} disabled={true} />
                     </div>
                     {
-                        match.bestof === 7 ? (
+                        match.bestOf === 7 ? (
                             <>
                                 <div className="match-game-score">
                                     <input type="number" value={match.g6p2 || ""} disabled={true} />
@@ -79,7 +79,7 @@ export default function Match({ match }) {
                     }
                 </div>
                 <div className="match-player-info">
-                    <p>{match.player2rating} • {match.player2name}</p>
+                    <p>{match.player2Rating} • {match.player2Name}</p>
                 </div>
             </div>
         </div>
