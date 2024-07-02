@@ -26,7 +26,7 @@ export default function Group({ params }) {
     }, []);
     return (
         <main>
-            <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={`${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}`} />
+            <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             <Modal>
                 <Match match={match} />
             </Modal>

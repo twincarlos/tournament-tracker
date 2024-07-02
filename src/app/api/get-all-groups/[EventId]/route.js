@@ -4,36 +4,28 @@ import { sql } from "@vercel/postgres";
 export async function GET(req, { params }) {
     const { rows } = await sql`
     SELECT 
-    g.id AS "groupId",
-    g.number AS "groupNumber",
-    g.date AS "groupDate",
-    g.time AS "groupTime",
-    g.status AS "groupStatus",
-    e.tournament_id AS "tournamentId",
-    e.id AS "eventId",
-    e.name AS "eventName",
-    e.date AS "eventDate",
-    e.time AS "eventTime",
-    e.type AS "eventType",
-    e.status AS "eventStatus",
-    e.stage AS "eventStage",
-    p.id AS "playerId",
-    p.name AS "playerName",
-    p.rating AS "playerRating",
-    p.is_estimated AS "playerIsEstimated",
-    p.dob AS "playerDOB",
-    p.location AS "playerLocation",
-    p.club AS "playerClub",
-    ep.id AS "eventPlayerId",
-    ep.group_wins AS "groupWins",
-    ep.group_losses AS "groupLosses",
-    ep.group_position AS "groupPosition"
+    g."groupId",
+    g."groupNumber",
+    e."tournamentId",
+    e."eventId",
+    e."eventName",
+    e."eventDate",
+    e."eventTime",
+    p."playerId",
+    p."playerName",
+    p."playerRating",
+    p."playerLocation",
+    p."playerClub",
+    ep."eventPlayerId",
+    ep."groupWins",
+    ep."groupLosses",
+    ep."groupPosition"
     FROM Groups g
-    JOIN Events e ON g.event_id = e.id
-    JOIN EventPlayers ep ON g.id = ep.group_id
-    JOIN Players p ON ep.player_id = p.id
-    WHERE g.event_id = ${params.eventId}
-    ORDER BY g.number ASC, p.rating DESC;`;
+    JOIN Events e ON g."eventId" = e."eventId"
+    JOIN EventPlayers ep ON g."groupId" = ep."groupId"
+    JOIN Players p ON ep."playerId" = p."playerId"
+    WHERE g."eventId" = ${params.eventId}
+    ORDER BY g."groupNumber" ASC, p."playerRating" DESC;`;
 
     const groups = [];
     let currentGroupNumber;
@@ -57,6 +49,9 @@ export async function GET(req, { params }) {
             groups.push({
                 tournamentId: group.tournamentId,
                 eventId: group.eventId,
+                eventName: group.eventName,
+                eventDate: group.eventDate,
+                eventTime: group.eventTime,
                 groupId: group.groupId,
                 groupNumber: group.groupNumber,
                 groupDate: group.groupDate,

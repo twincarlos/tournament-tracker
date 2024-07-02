@@ -46,7 +46,7 @@ export default function MatchCard({ match }) {
                         <input type="number" value={match.g5p1 || ""} disabled={true} />
                     </div>
                     {
-                        match.bestOf === 7 ? (
+                        match.matchBestOf === 7 ? (
                             <>
                                 <div className="match-game-score game-won">
                                     <input type="number" value={match.g6p1 || ""} disabled={true} />
@@ -78,7 +78,7 @@ export default function MatchCard({ match }) {
                         <input type="number" value={match.g5p2 || ""} disabled={true} />
                     </div>
                     {
-                        match.bestOf === 7 ? (
+                        match.matchBestOf === 7 ? (
                             <>
                                 <div className="match-game-score">
                                     <input type="number" value={match.g6p2 || ""} disabled={true} />
