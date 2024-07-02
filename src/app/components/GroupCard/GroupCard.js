@@ -1,5 +1,6 @@
 import "./GroupCard.css";
 import Link from "next/link";
+import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
 export default function GroupCard({ group }) {
     return (
@@ -19,9 +20,7 @@ export default function GroupCard({ group }) {
                 {
                     group.groupPlayers.map(groupPlayer => (
                         <div className="group-card-player" key={groupPlayer.playerId}>
-                            <div className="group-card-player-name">
-                                <p>{groupPlayer.playerRating} • {groupPlayer.playerName}</p>
-                            </div>
+                            <PlayerInfo player={groupPlayer} />
                             <div className="group-card-player-stats">
                                 <p>{groupPlayer.groupPosition}</p>
                                 <p>{groupPlayer.groupWins} - {groupPlayer.groupLosses}</p>

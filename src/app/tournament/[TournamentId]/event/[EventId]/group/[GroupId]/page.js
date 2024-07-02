@@ -1,8 +1,10 @@
 "use client";
 import "./Group.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useFetch } from "@/app/hooks/useFetch";
 import { useMatch } from "@/app/context/MatchContext";
 import MatchCard from "@/app/components/MatchCard/MatchCard";
+import EditableMatch from "@/app/components/EditableMatch/EditableMatch";
 import Modal from "@/app/components/Modal/Modal";
 import Match from "@/app/components/Match/Match";
 import Header from "@/app/components/Header/Header";
@@ -10,25 +12,12 @@ import Header from "@/app/components/Header/Header";
 export default function Group({ params }) {
     const [matches, setMatches] = useState([]);
     const { match } = useMatch();
-    
-    useEffect(() => {
-        (async function () {
-            const response = await fetch(`/api/get-all-group-matches/${params.groupId}`, {
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
-                }
-            });
-            const data = await response.json();
-            setMatches(data);
-        })();
-    }, []);
+    useFetch(`/api/get-all-group-matches/${params.groupId}`, setMatches);
     return (
         <main>
             <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             <Modal>
-                <Match match={match} />
+                <EditableMatch match={match} />
             </Modal>
             <section className="column">
                 {

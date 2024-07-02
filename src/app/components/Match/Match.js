@@ -1,4 +1,6 @@
 import './Match.css';
+import PlayerInfo from '../PlayerInfo/PlayerInfo';
+
 export default function Match({ match }) {
     return (
         <div className="card match-card">
@@ -11,9 +13,12 @@ export default function Match({ match }) {
                 </div>
             </div>
             <div className="match-card-body">
-                <div className="match-player-info">
-                    <p>{match.player1Rating} • {match.player1Name}</p>
-                </div>
+                <PlayerInfo player={{
+                    playerName: match.player1Name,
+                    playerRating: match.player1Rating,
+                    playerClub: match.player1Club,
+                    playerLocation: match.player1Location
+                }} />
                 <div className="match-player-scores">
                     <div className="match-game-counter match-game-score">
                         <p>{match.player1GamesWon}</p>
@@ -78,9 +83,12 @@ export default function Match({ match }) {
                         ) : null
                     }
                 </div>
-                <div className="match-player-info">
-                    <p>{match.player2Rating} • {match.player2Name}</p>
-                </div>
+                <PlayerInfo player={{
+                    playerName: match.player2Name,
+                    playerRating: match.player2Rating,
+                    playerClub: match.player2Club,
+                    playerLocation: match.player2Location
+                }} />
             </div>
         </div>
     );

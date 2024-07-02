@@ -1,25 +1,14 @@
 "use client";
 import "./Tournament.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import EventCard from "@/app/components/EventCard/EventCard";
 import Header from "@/app/components/Header/Header";
+import { useFetch } from "@/app/hooks/useFetch";
 
 export default function Tournament({ params }) {
     const [events, setEvents] = useState([]);
-    useEffect(() => {
-        (async function () {
-            const response = await fetch(`/api/get-all-events/${params.tournamentId}`, {
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
-                }
-            });
-            const data = await response.json();
-            setEvents(data);
-        })();
-    }, []);
+    useFetch(`/api/get-all-events/${params.tournamentId}`, setEvents);
     return (
         <main>
             <Header backLink="/" headerTitle={events[0]?.tournamentName} />

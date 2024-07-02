@@ -2,7 +2,7 @@ import "./TournamentCard.css";
 
 export default function TournamentCard({ tournament }) {
     return (
-        <div className="card tournament-card">
+        <div>
             <div className="card-title">
                 <p>{tournament.tournamentName}</p>
             </div>

@@ -38,6 +38,8 @@ main {
   padding: 1em;
   border-radius: 5px;
   max-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-title {
@@ -73,6 +75,8 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .column {
