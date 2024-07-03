@@ -1,12 +1,9 @@
 "use client";
-import Pusher from "pusher-js";
 import { useEffect } from "react";
+import { usePusher } from "../context/PusherContext";
 
 export function useSubscribe(channelName, eventName, eventFunction) {
-    var pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, {
-        cluster: process.env.NEXT_PUBLIC_CLUSTER,
-    });
-
+    const { pusher } = usePusher();
     useEffect(() => {
         var channel = pusher.subscribe(channelName);
         channel.bind(eventName, eventFunction);

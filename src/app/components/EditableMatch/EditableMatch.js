@@ -1,8 +1,7 @@
 "use client";
 import './EditableMatch.css';
 import PlayerInfo from '../PlayerInfo/PlayerInfo';
-import { debounce } from 'lodash';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useMatch } from '@/app/context/MatchContext';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 
@@ -37,38 +36,99 @@ export default function EditableMatch({ match }) {
         winnerId: match.winerId,
         loserId: match.loserId
     });
-
-    function checkIfGameScoresAreValid(gameNumber) {
-        if (match.matchBestOf === 5) {
-            if ((gameNumber >= 4) && (matchScore.player1GamesWon === 3 || matchScore.player2GamesWon === 3)) return false;
-        };
-        if (match.matchBestOf === 7) {
-            if ((gameNumber >= 4) && (matchScore.player1GamesWon === 4 || matchScore.player2GamesWon === 4)) return false;
-        };
-        for (let i = 1; i < gameNumber; i++) {
-            const player1GameScore = gameScores[`g${i}p1`];
-            const player2GameScore = gameScores[`g${i}p2`];
-            if (!checkIfGameScoreIsValid(player1GameScore, player2GameScore)) {
-                return false;
-            };
-        };
-        return true;
-    };
+    const [validScores, setValidScores] = useState(false);
 
     function checkIfGameScoreIsValid(score1, score2) {
-        if (!score1 || !score2) return false;
-        if (score1 < 11 && score2 < 11) return false;
-        if ((score1 > 11 || score2 > 11) && (Math.abs(score1 - score2) !== 2)) return false;
-        if ((score1 === 11 || score2 === 11) && (Math.abs(score1 - score2) === 1)) return false;
-        return true;
+        if (score1 === null || score2 === null) return false;
+        if (score1 === 11 && (score2 >= 0 && score2 <= 9)) return true;
+        if (score2 === 11 && (score1 >= 0 && score1 <= 9)) return true;
+        if ((score1 > 11 || score2 > 11) && (Math.abs(score1 - score2) === 2)) return true;
+        return false;
     };
-
     function updateGameScore(gameNumber, playerNumber, score) {
-        setGameScores({ ...gameScores, [`g${gameNumber}p${playerNumber}`]: score });
+        const updatedGameScores = { ...gameScores, [`g${gameNumber}p${playerNumber}`]: score === "" ? null : Number(score) };
+        let player1GamesWon = 0;
+        let player2GamesWon = 0;
+        let matchIsFinished = true;
+
+        // GAME 1
+        if (checkIfGameScoreIsValid(updatedGameScores.g1p1, updatedGameScores.g1p2)) {
+            if (updatedGameScores.g1p1 > updatedGameScores.g1p2) player1GamesWon++;
+            if (updatedGameScores.g1p1 < updatedGameScores.g1p2) player2GamesWon++;
+        } else {
+            matchIsFinished = false;
+        };
+        // GAME 2
+        if (checkIfGameScoreIsValid(updatedGameScores.g2p1, updatedGameScores.g2p2)) {
+            if (updatedGameScores.g2p1 > updatedGameScores.g2p2) player1GamesWon++;
+            if (updatedGameScores.g2p1 < updatedGameScores.g2p2) player2GamesWon++;
+        } else {
+            matchIsFinished = false;
+        };
+        // GAME 3
+        if (checkIfGameScoreIsValid(updatedGameScores.g3p1, updatedGameScores.g3p2)) {
+            if (updatedGameScores.g3p1 > updatedGameScores.g3p2) player1GamesWon++;
+            if (updatedGameScores.g3p1 < updatedGameScores.g3p2) player2GamesWon++;
+        } else {
+            matchIsFinished = false;
+        };
+        // GAME 4
+        if (checkIfGameScoreIsValid(updatedGameScores.g4p1, updatedGameScores.g4p2)) {
+            if ((match.matchBestOf === 5) && (player1GamesWon === 3 || player2GamesWon === 3)) matchIsFinished = false;
+            if (updatedGameScores.g4p1 > updatedGameScores.g4p2) player1GamesWon++;
+            if (updatedGameScores.g4p1 < updatedGameScores.g4p2) player2GamesWon++;
+        } else if (updatedGameScores.g4p1 === null && updatedGameScores.g4p2 === null) {
+            if ((match.matchBestOf === 5) && (player1GamesWon === 2 || player2GamesWon === 2)) matchIsFinished = false;
+        } else {
+            matchIsFinished = false;
+        };
+        // GAME 5
+        if (checkIfGameScoreIsValid(updatedGameScores.g5p1, updatedGameScores.g5p2)) {
+            if ((match.matchBestOf === 5) && (player1GamesWon === 3 || player2GamesWon === 3)) matchIsFinished = false;
+            if ((match.matchBestOf === 7) && (player1GamesWon === 4 || player2GamesWon === 4)) matchIsFinished = false;
+            if (updatedGameScores.g5p1 > updatedGameScores.g5p2) player1GamesWon++;
+            if (updatedGameScores.g5p1 < updatedGameScores.g5p2) player2GamesWon++;
+        } else if (updatedGameScores.g5p1 === null && updatedGameScores.g5p2 === null) {
+            if ((match.matchBestOf === 5) && (player1GamesWon === 2 || player2GamesWon === 2)) matchIsFinished = false;
+            if ((match.matchBestOf === 7) && (player1GamesWon > 0 && player1GamesWon > 0)) matchIsFinished = false;
+        } else {
+            matchIsFinished = false;
+        };
+        // GAME 6
+        if (checkIfGameScoreIsValid(updatedGameScores.g6p1, updatedGameScores.g6p2)) {
+            if (match.matchBestOf === 5) return false;
+            if ((match.matchBestOf === 7) && (player1GamesWon === 1 || player2GamesWon === 1)) matchIsFinished = false;
+            if (updatedGameScores.g6p1 > updatedGameScores.g6p2) player1GamesWon++;
+            if (updatedGameScores.g6p1 < updatedGameScores.g6p2) player2GamesWon++;
+        } else if (updatedGameScores.g6p1 === null && updatedGameScores.g6p2 === null) {
+            if ((match.matchBestOf === 7) && (player1GamesWon === 2 || player2GamesWon === 2)) matchIsFinished = false;
+        } else {
+            matchIsFinished = false;
+        };
+        // GAME 7
+        if (checkIfGameScoreIsValid(updatedGameScores.g7p1, updatedGameScores.g7p2)) {
+            if (match.matchBestOf === 5) return false;
+            if ((match.matchBestOf === 7) && (player1GamesWon === 2 || player2GamesWon === 2)) matchIsFinished = false;
+            if (updatedGameScores.g7p1 > updatedGameScores.g7p2) player1GamesWon++;
+            if (updatedGameScores.g7p1 < updatedGameScores.g7p2) player2GamesWon++;
+        } else if (updatedGameScores.g7p1 === null && updatedGameScores.g7p2 === null) {
+            if ((match.matchBestOf === 7) && (player1GamesWon === 3 || player2GamesWon === 3)) matchIsFinished = false;
+        } else {
+            matchIsFinished = false;
+        };
+        if (player1GamesWon !== matchScore.player1GamesWon) {
+            setMatchScore({ ...matchScore, player1GamesWon });
+        };
+        if (player2GamesWon !== matchScore.player2GamesWon) {
+            setMatchScore({ ...matchScore, player2GamesWon });
+        };
+        setGameScores(updatedGameScores);
+        setValidScores(matchIsFinished);
     };
 
     return (
         <div className="card match-card">
+            <h1>{validScores ? "TRUE" : "FALSE"}</h1>
             <div className="card-header">
                 <div className="card-header-info">
                     <p>{match.eventName} • Group {match.groupNumber}</p>
@@ -90,45 +150,41 @@ export default function EditableMatch({ match }) {
                     </div>
                     <div className="match-game-score">
                         <input
-                            type="number" min={0}
-                            value={gameScores.g1p1 || ""}
+                            type="number"
                             disabled={false}
+                            value={gameScores.g1p1 === null ? "" : gameScores.g1p1}
                             onChange={e => updateGameScore(1, 1, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g2p1 || ""}
-                            disabled={!checkIfGameScoresAreValid(2)}
+                            disabled={false}
+                            value={gameScores.g2p1 === null ? "" : gameScores.g2p1}
                             onChange={e => updateGameScore(2, 1, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g3p1 || ""}
-                            disabled={!checkIfGameScoresAreValid(3)}
+                            disabled={false}
+                            value={gameScores.g3p1 === null ? "" : gameScores.g3p1}
                             onChange={e => updateGameScore(3, 1, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g4p1 || ""}
-                            disabled={!checkIfGameScoresAreValid(4)}
+                            disabled={false}
+                            value={gameScores.g4p1 === null ? "" : gameScores.g4p1}
                             onChange={e => updateGameScore(4, 1, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g5p1 || ""}
-                            disabled={!checkIfGameScoresAreValid(5)}
+                            disabled={false}
+                            value={gameScores.g5p1 === null ? "" : gameScores.g5p1}
                             onChange={e => updateGameScore(5, 1, e.target.value)}
                         />
                     </div>
@@ -138,18 +194,16 @@ export default function EditableMatch({ match }) {
                                 <div className="match-game-score">
                                     <input
                                         type="number"
-                                        min={0}
-                                        value={gameScores.g6p1 || ""}
-                                        disabled={!checkIfGameScoresAreValid(6)}
+                                        disabled={false}
+                                        value={gameScores.g6p1 === null ? "" : gameScores.g6p1}
                                         onChange={e => updateGameScore(6, 1, e.target.value)}
                                     />
                                 </div>
                                 <div className="match-game-score">
                                     <input
                                         type="number"
-                                        min={0}
-                                        value={gameScores.g7p1 || ""}
-                                        disabled={!checkIfGameScoresAreValid(7)}
+                                        disabled={false}
+                                        value={gameScores.g7p1 === null ? "" : gameScores.g7p1}
                                         onChange={e => updateGameScore(7, 1, e.target.value)}
                                     />
                                 </div>
@@ -164,45 +218,40 @@ export default function EditableMatch({ match }) {
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g1p2 || ""}
                             disabled={false}
+                            value={gameScores.g1p2 === null ? "" : gameScores.g1p2}
                             onChange={e => updateGameScore(1, 2, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g2p2 || ""}
-                            disabled={!checkIfGameScoresAreValid(2)}
+                            disabled={false}
+                            value={gameScores.g2p2 === null ? "" : gameScores.g2p2}
                             onChange={e => updateGameScore(2, 2, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g3p2 || ""}
-                            disabled={!checkIfGameScoresAreValid(3)}
+                            disabled={false}
+                            value={gameScores.g3p2 === null ? "" : gameScores.g3p2}
                             onChange={e => updateGameScore(3, 2, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g4p2 || ""}
-                            disabled={!checkIfGameScoresAreValid(4)}
+                            disabled={false}
+                            value={gameScores.g4p2 === null ? "" : gameScores.g4p2}
                             onChange={e => updateGameScore(4, 2, e.target.value)}
                         />
                     </div>
                     <div className="match-game-score">
                         <input
                             type="number"
-                            min={0}
-                            value={gameScores.g5p2 || ""}
-                            disabled={!checkIfGameScoresAreValid(5)}
+                            disabled={false}
+                            value={gameScores.g5p2 === null ? "" : gameScores.g5p2}
                             onChange={e => updateGameScore(5, 2, e.target.value)}
                         />
                     </div>
@@ -212,18 +261,16 @@ export default function EditableMatch({ match }) {
                                 <div className="match-game-score">
                                     <input
                                         type="number"
-                                        min={0}
-                                        value={gameScores.g6p2 || ""}
-                                        disabled={!checkIfGameScoresAreValid(6)}
+                                        disabled={false}
+                                        value={gameScores.g6p2 === null ? "" : gameScores.g6p2}
                                         onChange={e => updateGameScore(6, 2, e.target.value)}
                                     />
                                 </div>
                                 <div className="match-game-score">
                                     <input
                                         type="number"
-                                        min={0}
-                                        value={gameScores.g7p2 || ""}
-                                        disabled={!checkIfGameScoresAreValid(7)}
+                                        disabled={false}
+                                        value={gameScores.g7p2 === null ? "" : gameScores.g7p2}
                                         onChange={e => updateGameScore(7, 2, e.target.value)}
                                     />
                                 </div>
