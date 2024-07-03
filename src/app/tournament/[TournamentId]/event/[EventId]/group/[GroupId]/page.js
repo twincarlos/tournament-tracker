@@ -8,11 +8,17 @@ import EditableMatch from "@/app/components/EditableMatch/EditableMatch";
 import Modal from "@/app/components/Modal/Modal";
 import Match from "@/app/components/Match/Match";
 import Header from "@/app/components/Header/Header";
+import { useSubscribe } from "@/app/hooks/useSubscribe";
 
 export default function Group({ params }) {
     const [matches, setMatches] = useState([]);
     const { match } = useMatch();
     useFetch(`/api/get-all-group-matches/${params.groupId}`, setMatches);
+    useSubscribe(
+        `group_${params.groupId}_matches`,
+        "update_matches",
+        data => setMatches(data)
+    );
     return (
         <main>
             <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />

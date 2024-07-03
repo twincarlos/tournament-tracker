@@ -1,7 +1,16 @@
+"use client";
 import './Match.css';
 import PlayerInfo from '../PlayerInfo/PlayerInfo';
+import { useMatch } from '@/app/context/MatchContext';
+import { useSubscribe } from '@/app/hooks/useSubscribe';
 
 export default function Match({ match }) {
+    const { setMatch } = useMatch();
+    useSubscribe(
+        `match_${match.matchId}`,
+        "update_match",
+        data => setMatch(data)
+    );
     return (
         <div className="card match-card">
             <div className="card-header">
