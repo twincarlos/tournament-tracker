@@ -24,7 +24,7 @@ export async function GET(req, { params }) {
     JOIN Events e ON g."eventId" = e."eventId"
     JOIN EventPlayers ep ON g."groupId" = ep."groupId"
     JOIN Players p ON ep."playerId" = p."playerId"
-    WHERE g."eventId" = ${params.eventId}
+    WHERE g."eventId" = ${params.eventId || params.EventId}
     ORDER BY g."groupNumber" ASC, p."playerRating" DESC;`;
 
     const groups = [];

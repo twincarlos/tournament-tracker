@@ -64,7 +64,7 @@ export async function GET(req, { params }) {
     JOIN
         Events e ON ep1."eventId" = e."eventId"
     WHERE 
-        m."groupId" = ${params.groupId}
+        m."groupId" = ${params.groupId || params.GroupId}
     ORDER BY 
         m."matchSequence";`;
     return new Response(JSON.stringify(rows));
