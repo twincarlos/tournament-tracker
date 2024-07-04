@@ -37,6 +37,10 @@ export default function EditableMatch({ match }) {
         loserId: match.loserId
     });
     const [validScores, setValidScores] = useState(false);
+    const [playersYY, setPlayersYY] = useState({
+        player1YY: "",
+        player2YY: ""
+    });
 
     function checkIfGameScoreIsValid(score1, score2) {
         if (score1 === null || score2 === null) return false;
@@ -140,6 +144,8 @@ export default function EditableMatch({ match }) {
                 <div className="player-section">
                     <div className="player-buttons">
                         <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
+                        <input className="check-in-input" type="number" placeholder="YY" value={playersYY.player1YY}
+                        onChange={e => e.target.value.length < 3 && setPlayersYY({ ...playersYY, player1YY: e.target.value }) } />
                     </div>
                     <PlayerInfo player={{
                         playerName: match.player1Name,
@@ -285,6 +291,8 @@ export default function EditableMatch({ match }) {
                 <div className="player-section">
                     <div className="player-buttons">
                         <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
+                        <input className="check-in-input" type="number" placeholder="YY" value={playersYY.player2YY}
+                        onChange={e => e.target.value.length < 3 && setPlayersYY({ ...playersYY, player2YY: e.target.value })} />
                     </div>
                     <PlayerInfo player={{
                         playerName: match.player2Name,

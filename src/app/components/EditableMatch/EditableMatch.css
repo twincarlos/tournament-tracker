@@ -14,3 +14,8 @@
     background: transparent;
     border: 1px solid black;
 }
+
+.check-in-input {
+    padding: 1em;
+    width: 50px;
+}
