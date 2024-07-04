@@ -8,8 +8,7 @@ import { useFetch } from "@/app/hooks/useFetch";
 
 export default function Tournament({ params }) {
     const [events, setEvents] = useState([]);
-    console.log(params)
-    useFetch(`/api/get-all-events/1`, setEvents);
+    useFetch(`/api/get-all-events/${params.tournamentId || params.TournamentId}`, setEvents);
     return (
         <main>
             <Header backLink="/" headerTitle={events[0]?.tournamentName} />
