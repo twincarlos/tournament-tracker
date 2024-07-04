@@ -5,5 +5,12 @@
 }
 
 .player-buttons {
+    padding: 0 1em;
+}
+
+.check-in-button {
     padding: 1em;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid black;
 }

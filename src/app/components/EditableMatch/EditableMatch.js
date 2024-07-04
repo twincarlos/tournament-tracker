@@ -139,7 +139,7 @@ export default function EditableMatch({ match }) {
             <div className="match-card-body">
                 <div className="player-section">
                     <div className="player-buttons">
-                        <button>Check-in</button>
+                        <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
                     </div>
                     <PlayerInfo player={{
                         playerName: match.player1Name,
@@ -284,7 +284,7 @@ export default function EditableMatch({ match }) {
                 </div>
                 <div className="player-section">
                     <div className="player-buttons">
-                        <button>Check-in</button>
+                        <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
                     </div>
                     <PlayerInfo player={{
                         playerName: match.player2Name,
