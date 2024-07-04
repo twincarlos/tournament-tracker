@@ -12,6 +12,7 @@ export default function Tournament({ params }) {
     return (
         <main>
             <Header backLink="/" headerTitle={events[0]?.tournamentName} />
+            <h1>{params.tournamentId}</h1>
             <section className="gallery">
                 {
                     events.map(event => (
