@@ -1,0 +1,9 @@
+.player-section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.player-buttons {
+    padding: 1em;
+}

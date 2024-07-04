@@ -128,7 +128,6 @@ export default function EditableMatch({ match }) {
 
     return (
         <div className="card match-card">
-            <h1>{validScores ? "TRUE" : "FALSE"}</h1>
             <div className="card-header">
                 <div className="card-header-info">
                     <p>{match.eventName} • Group {match.groupNumber}</p>
@@ -138,12 +137,17 @@ export default function EditableMatch({ match }) {
                 </div>
             </div>
             <div className="match-card-body">
-                <PlayerInfo player={{
-                    playerName: match.player1Name,
-                    playerRating: match.player1Rating,
-                    playerClub: match.player1Club,
-                    playerLocation: match.player1Location
-                }} />
+                <div className="player-section">
+                    <div className="player-buttons">
+                        <button>Check-in</button>
+                    </div>
+                    <PlayerInfo player={{
+                        playerName: match.player1Name,
+                        playerRating: match.player1Rating,
+                        playerClub: match.player1Club,
+                        playerLocation: match.player1Location
+                    }} />
+                </div>
                 <div className="match-player-scores">
                     <div className="match-game-counter match-game-score">
                         <p>{matchScore.player1GamesWon}</p>
@@ -278,12 +282,17 @@ export default function EditableMatch({ match }) {
                         ) : null
                     }
                 </div>
-                <PlayerInfo player={{
-                    playerName: match.player2Name,
-                    playerRating: match.player2Rating,
-                    playerClub: match.player2Club,
-                    playerLocation: match.player2Location
-                }} />
+                <div className="player-section">
+                    <div className="player-buttons">
+                        <button>Check-in</button>
+                    </div>
+                    <PlayerInfo player={{
+                        playerName: match.player2Name,
+                        playerRating: match.player2Rating,
+                        playerClub: match.player2Club,
+                        playerLocation: match.player2Location
+                    }} />
+                </div>
             </div>
         </div>
     );

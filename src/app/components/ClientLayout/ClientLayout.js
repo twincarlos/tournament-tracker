@@ -7,7 +7,7 @@ import { PusherProvider } from "@/app/context/PusherContext";
 
 const ClientLayout = ({ children }) => {
   return (
-    <PusherProvider>
+    // <PusherProvider>
       <ModalProvider>
         <MatchProvider>
           <div>
@@ -16,7 +16,7 @@ const ClientLayout = ({ children }) => {
           </div>
         </MatchProvider>
       </ModalProvider>
-    </PusherProvider>
+    // </PusherProvider>
   );
 };
 
