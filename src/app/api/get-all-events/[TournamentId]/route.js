@@ -13,7 +13,7 @@ export async function GET(req, { params }) {
     t."tournamentDate"
     FROM Events e
     JOIN Tournaments t ON e."tournamentId" = t."tournamentId"
-    WHERE t."tournamentId" = ${params.tournamentId}
+    WHERE t."tournamentId" = ${params.tournamentId || params.TournamentId}
     ORDER BY e."eventId";`;
     return new Response(JSON.stringify(rows));
 };
