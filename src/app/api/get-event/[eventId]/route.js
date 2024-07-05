@@ -28,7 +28,7 @@ export async function GET(req, { params }) {
     WHERE g."eventId" = ${params.eventId || params.EventId}
     ORDER BY g."groupNumber" ASC, p."playerRating" DESC;`;
 
-    const tablesQuery = await sql`
+    const groupTablesQuery = await sql`
     SELECT DISTINCT ON (tm."tableId")
     tm."groupId",
     t."tableId",
@@ -36,6 +36,53 @@ export async function GET(req, { params }) {
     FROM TableMatches tm
     JOIN Tables t ON t."tableId" = tm."tableId"
     WHERE tm."eventId" = ${params.eventId || params.EventId} AND tm."groupId" IS NOT NULL;`;
+
+    const drawQuery = await sql`
+    SELECT
+    m.*,
+    p1."playerId" AS "player1Id",
+    p1."playerName" AS "player1Name",
+    p1."playerRating" AS "player1Rating",
+    p1."playerLocation" AS "player1Location",
+    p1."playerClub" AS "player1Club",
+    p1."playerDOB" AS "player1DOB",
+    p1."playerIsEstimated" AS "player1IsEstimated",
+    ep1."eventPlayerId" AS "eventPlayer1Id",
+    ep1."groupWins" AS "player1GroupWins",
+    ep1."groupLosses" AS "player1GroupLosses",
+    ep1."groupPosition" AS "player1GroupPosition",
+    p2."playerId" AS "player2Id",
+    p2."playerName" AS "player2Name",
+    p2."playerRating" AS "player2Rating",
+    p2."playerLocation" AS "player2Location",
+    p2."playerClub" AS "player2Club",
+    p2."playerDOB" AS "player2DOB",
+    p2."playerIsEstimated" AS "player2IsEstimated",
+    ep2."eventPlayerId" AS "eventPlayer2Id",
+    ep2."groupWins" AS "player2GroupWins",
+    ep2."groupLosses" AS "player2GroupLosses",
+    ep2."groupPosition" AS "player2GroupPosition",
+    e."tournamentId",
+    e."eventId",
+    e."eventName"
+    FROM 
+        Matches m
+    JOIN 
+        EventPlayers ep1 ON m."eventPlayer1Id" = ep1."eventPlayerId"
+    JOIN 
+        EventPlayers ep2 ON m."eventPlayer2Id" = ep2."eventPlayerId"
+    JOIN 
+        Players p1 ON ep1."playerId" = p1."playerId"
+    JOIN 
+        Players p2 ON ep2."playerId" = p2."playerId"
+    JOIN
+        Events e ON ep1."eventId" = e."eventId"
+    WHERE 
+        e."eventId" = ${params.eventId || params.EventId}
+    AND
+        m."matchStage" = 'Draw'
+    ORDER BY 
+        m."matchRound", m."matchSequence";`;
 
     const groups = [];
     let currentGroupNumber;
@@ -56,7 +103,7 @@ export async function GET(req, { params }) {
                 playerClub: group.playerClub
             });
         } else {
-            const groupTablesInfo = tablesQuery.rows.filter(table => table.groupId === group.groupId);
+            const groupTablesInfo = groupTablesQuery.rows.filter(table => table.groupId === group.groupId);
             groups.push({
                 tables: groupTablesInfo,
                 tournamentId: group.tournamentId,
@@ -86,5 +133,5 @@ export async function GET(req, { params }) {
             currentGroupNumber = group.groupNumber;
         };
     };
-    return new Response(JSON.stringify(groups));
+    return new Response(JSON.stringify({ groups }));
 };
