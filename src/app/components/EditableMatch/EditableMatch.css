@@ -12,10 +12,10 @@
 }
 
 .check-in-button {
-    padding: 1em;
-    border-radius: 50%;
+    padding: .5em 1em;
     background: transparent;
     border: 1px solid black;
+    border-radius: 5px;
 }
 
 .check-in-input {
@@ -28,4 +28,11 @@
     justify-content: center;
     align-items: center;
     padding-top: 1em;
+}
+
+.winner-icon {
+    border: 1px solid black;
+    padding: .5em;
+    border-radius: 5px;
+    margin: 0 1em;
 }

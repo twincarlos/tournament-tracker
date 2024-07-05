@@ -16,7 +16,9 @@ export default function Group({ params }) {
         <main>
             <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             <Modal>
-                <EditableMatch match={match} />
+                {
+                    match?.matchStatus === "Finished" ? <MatchCard inModal={true} match={match} /> : <EditableMatch match={match} />
+                }
             </Modal>
             <section className="column">
                 {
