@@ -2,10 +2,11 @@ export const fetchCache = 'force-no-store';
 import { sql } from "@vercel/postgres";
 
 export async function GET(req, { params }) {
-    const { rows } = await sql`
+    const groupsQuery = await sql`
     SELECT 
     g."groupId",
     g."groupNumber",
+    g."groupStatus",
     e."tournamentId",
     e."eventId",
     e."eventName",
@@ -27,10 +28,19 @@ export async function GET(req, { params }) {
     WHERE g."eventId" = ${params.eventId || params.EventId}
     ORDER BY g."groupNumber" ASC, p."playerRating" DESC;`;
 
+    const tablesQuery = await sql`
+    SELECT DISTINCT ON (tm."tableId")
+    tm."groupId",
+    t."tableId",
+    t."tableNumber"
+    FROM TableMatches tm
+    JOIN Tables t ON t."tableId" = tm."tableId"
+    WHERE tm."eventId" = ${params.eventId || params.EventId} AND tm."groupId" IS NOT NULL;`;
+
     const groups = [];
     let currentGroupNumber;
 
-    for (const group of rows) {
+    for (const group of groupsQuery.rows) {
         if (currentGroupNumber === group.groupNumber) {
             groups[groups.length - 1].groupPlayers.push({
                 playerId: group.playerId,
@@ -46,7 +56,9 @@ export async function GET(req, { params }) {
                 playerClub: group.playerClub
             });
         } else {
+            const groupTablesInfo = tablesQuery.rows.filter(table => table.groupId === group.groupId);
             groups.push({
+                tables: groupTablesInfo,
                 tournamentId: group.tournamentId,
                 eventId: group.eventId,
                 eventName: group.eventName,

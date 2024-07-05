@@ -11,9 +11,16 @@ export default function GroupCard({ group }) {
                         <i className="fa-regular fa-eye" />
                     </Link>
                     <p>Group {group.groupNumber}</p>
+                    <span className="card-bubble">{group.groupStatus}</span>
                 </div>
                 <div className="card-header-tables">
-                    <p>TBD</p>
+                    <p>
+                        {
+                            group.tables.length > 0 ? (
+                                `Table${group.tables.length > 1 ? "s" : ""} ${group.tables.map(table => table.tableNumber).join(", ")}`
+                            ) : "No table"
+                        }
+                    </p>
                 </div>
             </div>
             <div className="group-card-body">

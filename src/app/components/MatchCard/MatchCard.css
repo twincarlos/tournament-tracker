@@ -57,3 +57,7 @@
 .card-header-info .icon-button i {
     color: white;
 }
+
+.match-card .card-bubble {
+    border-color: white;
+}

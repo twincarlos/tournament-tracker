@@ -2,30 +2,9 @@ export const fetchCache = 'force-no-store';
 import { sql } from "@vercel/postgres";
 
 export async function GET(req, { params }) {
-    const { rows } = await sql`
+    const matchesQuery = await sql`
     SELECT 
-    m."matchId",
-    m."matchBestOf",
-    m."matchDate",
-    m."matchTime",
-    m."matchSequence",
-    m."g1p1",
-    m."g1p2",
-    m."g2p1",
-    m."g2p2",
-    m."g3p1",
-    m."g3p2",
-    m."g4p1",
-    m."g4p2",
-    m."g5p1",
-    m."g5p2",
-    m."g6p1",
-    m."g6p2",
-    m."g7p1",
-    m."g7p2",
-    m."player1GamesWon",
-    m."player2GamesWon",
-    m."matchDefaulted",
+    m.*,
     p1."playerId" AS "player1Id",
     p1."playerName" AS "player1Name",
     p1."playerRating" AS "player1Rating",
@@ -67,5 +46,24 @@ export async function GET(req, { params }) {
         m."groupId" = ${params.groupId || params.GroupId}
     ORDER BY 
         m."matchSequence";`;
-    return new Response(JSON.stringify(rows));
+    
+    const tablesQuery = await sql`
+    SELECT
+    t."tableId",
+    t."tableNumber",
+    tm."matchId"
+    FROM TableMatches tm
+    JOIN Tables t ON t."tableId" = tm."tableId"
+    WHERE tm."groupId" = ${params.groupId || params.GroupId};`;
+
+    const groupMatches = [];
+
+    for (const groupMatch of matchesQuery.rows) {
+        groupMatches.push({
+            ...groupMatch,
+            tables: tablesQuery.rows.filter(table => table.matchId === groupMatch.matchId)
+        });
+    };
+
+    return new Response(JSON.stringify(groupMatches));
 };

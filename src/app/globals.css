@@ -53,18 +53,25 @@ main {
 }
 
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .5em 1em;
-    background: black;
-    color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: black;
+  color: white;
+  padding: .5em 1em;
+  gap: 5px;
 }
 
 .card-header-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header-tables {
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 section {
@@ -91,4 +98,21 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+.card-bubble {
+  border: 1px solid black;
+  padding: 0 7px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.card-details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 5px;
+  gap: 5px;
 }

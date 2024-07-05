@@ -120,188 +120,194 @@ export default function EditableMatch({ match }) {
         } else {
             matchIsFinished = false;
         };
-        if (player1GamesWon !== matchScore.player1GamesWon) {
-            setMatchScore({ ...matchScore, player1GamesWon });
-        };
-        if (player2GamesWon !== matchScore.player2GamesWon) {
-            setMatchScore({ ...matchScore, player2GamesWon });
-        };
+        setMatchScore({ player1GamesWon, player2GamesWon });
         setGameScores(updatedGameScores);
         setValidScores(matchIsFinished);
     };
 
     return (
-        <div className="card match-card">
-            <div className="card-header">
-                <div className="card-header-info">
-                    <p>{match.eventName} • Group {match.groupNumber}</p>
+        <>
+            <div className="card match-card">
+                <div className="card-header">
+                    <div className="card-header-info">
+                        <p>{match.eventName} • Group {match.groupNumber}</p>
+                    </div>
+                    <div className="card-header-tables">
+                    <p>
+                        {
+                            match.tables.length > 0 ? (
+                                `Table${match.tables.length > 1 ? "s" : ""} ${match.tables.map(table => table.tableNumber).join(", ")}`
+                            ) : "No table"
+                        }
+                    </p>
+                    </div>
                 </div>
-                <div className="card-header-tables">
-                    <p>TBD</p>
+                <div className="match-card-body">
+                    <div className="player-section">
+                        <div className="player-buttons">
+                            <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
+                            <input className="check-in-input" type="number" placeholder="YY" value={playersYY.player1YY}
+                                onChange={e => e.target.value.length < 3 && setPlayersYY({ ...playersYY, player1YY: e.target.value })} />
+                        </div>
+                        <PlayerInfo player={{
+                            playerName: match.player1Name,
+                            playerRating: match.player1Rating,
+                            playerClub: match.player1Club,
+                            playerLocation: match.player1Location
+                        }} />
+                    </div>
+                    <div className="match-player-scores">
+                        <div className="match-game-counter match-game-score">
+                            <p>{matchScore.player1GamesWon}</p>
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g1p1 === null ? "" : gameScores.g1p1}
+                                onChange={e => updateGameScore(1, 1, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g2p1 === null ? "" : gameScores.g2p1}
+                                onChange={e => updateGameScore(2, 1, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g3p1 === null ? "" : gameScores.g3p1}
+                                onChange={e => updateGameScore(3, 1, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g4p1 === null ? "" : gameScores.g4p1}
+                                onChange={e => updateGameScore(4, 1, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g5p1 === null ? "" : gameScores.g5p1}
+                                onChange={e => updateGameScore(5, 1, e.target.value)}
+                            />
+                        </div>
+                        {
+                            match.bestof === 7 ? (
+                                <>
+                                    <div className="match-game-score">
+                                        <input
+                                            type="number"
+                                            disabled={false}
+                                            value={gameScores.g6p1 === null ? "" : gameScores.g6p1}
+                                            onChange={e => updateGameScore(6, 1, e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="match-game-score">
+                                        <input
+                                            type="number"
+                                            disabled={false}
+                                            value={gameScores.g7p1 === null ? "" : gameScores.g7p1}
+                                            onChange={e => updateGameScore(7, 1, e.target.value)}
+                                        />
+                                    </div>
+                                </>
+                            ) : null
+                        }
+                    </div>
+                    <div className="match-player-scores">
+                        <div className="match-game-counter match-game-score">
+                            <p>{matchScore.player2GamesWon}</p>
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g1p2 === null ? "" : gameScores.g1p2}
+                                onChange={e => updateGameScore(1, 2, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g2p2 === null ? "" : gameScores.g2p2}
+                                onChange={e => updateGameScore(2, 2, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g3p2 === null ? "" : gameScores.g3p2}
+                                onChange={e => updateGameScore(3, 2, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g4p2 === null ? "" : gameScores.g4p2}
+                                onChange={e => updateGameScore(4, 2, e.target.value)}
+                            />
+                        </div>
+                        <div className="match-game-score">
+                            <input
+                                type="number"
+                                disabled={false}
+                                value={gameScores.g5p2 === null ? "" : gameScores.g5p2}
+                                onChange={e => updateGameScore(5, 2, e.target.value)}
+                            />
+                        </div>
+                        {
+                            match.bestOf === 7 ? (
+                                <>
+                                    <div className="match-game-score">
+                                        <input
+                                            type="number"
+                                            disabled={false}
+                                            value={gameScores.g6p2 === null ? "" : gameScores.g6p2}
+                                            onChange={e => updateGameScore(6, 2, e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="match-game-score">
+                                        <input
+                                            type="number"
+                                            disabled={false}
+                                            value={gameScores.g7p2 === null ? "" : gameScores.g7p2}
+                                            onChange={e => updateGameScore(7, 2, e.target.value)}
+                                        />
+                                    </div>
+                                </>
+                            ) : null
+                        }
+                    </div>
+                    <div className="player-section">
+                        <div className="player-buttons">
+                            <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
+                            <input className="check-in-input" type="number" placeholder="YY" value={playersYY.player2YY}
+                                onChange={e => e.target.value.length < 3 && setPlayersYY({ ...playersYY, player2YY: e.target.value })} />
+                        </div>
+                        <PlayerInfo player={{
+                            playerName: match.player2Name,
+                            playerRating: match.player2Rating,
+                            playerClub: match.player2Club,
+                            playerLocation: match.player2Location
+                        }} />
+                    </div>
                 </div>
             </div>
-            <div className="match-card-body">
-                <div className="player-section">
-                    <div className="player-buttons">
-                        <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
-                        <input className="check-in-input" type="number" placeholder="YY" value={playersYY.player1YY}
-                        onChange={e => e.target.value.length < 3 && setPlayersYY({ ...playersYY, player1YY: e.target.value }) } />
-                    </div>
-                    <PlayerInfo player={{
-                        playerName: match.player1Name,
-                        playerRating: match.player1Rating,
-                        playerClub: match.player1Club,
-                        playerLocation: match.player1Location
-                    }} />
-                </div>
-                <div className="match-player-scores">
-                    <div className="match-game-counter match-game-score">
-                        <p>{matchScore.player1GamesWon}</p>
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g1p1 === null ? "" : gameScores.g1p1}
-                            onChange={e => updateGameScore(1, 1, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g2p1 === null ? "" : gameScores.g2p1}
-                            onChange={e => updateGameScore(2, 1, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g3p1 === null ? "" : gameScores.g3p1}
-                            onChange={e => updateGameScore(3, 1, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g4p1 === null ? "" : gameScores.g4p1}
-                            onChange={e => updateGameScore(4, 1, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g5p1 === null ? "" : gameScores.g5p1}
-                            onChange={e => updateGameScore(5, 1, e.target.value)}
-                        />
-                    </div>
-                    {
-                        match.bestof === 7 ? (
-                            <>
-                                <div className="match-game-score">
-                                    <input
-                                        type="number"
-                                        disabled={false}
-                                        value={gameScores.g6p1 === null ? "" : gameScores.g6p1}
-                                        onChange={e => updateGameScore(6, 1, e.target.value)}
-                                    />
-                                </div>
-                                <div className="match-game-score">
-                                    <input
-                                        type="number"
-                                        disabled={false}
-                                        value={gameScores.g7p1 === null ? "" : gameScores.g7p1}
-                                        onChange={e => updateGameScore(7, 1, e.target.value)}
-                                    />
-                                </div>
-                            </>
-                        ) : null
-                    }
-                </div>
-                <div className="match-player-scores">
-                    <div className="match-game-counter match-game-score">
-                        <p>{matchScore.player2GamesWon}</p>
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g1p2 === null ? "" : gameScores.g1p2}
-                            onChange={e => updateGameScore(1, 2, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g2p2 === null ? "" : gameScores.g2p2}
-                            onChange={e => updateGameScore(2, 2, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g3p2 === null ? "" : gameScores.g3p2}
-                            onChange={e => updateGameScore(3, 2, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g4p2 === null ? "" : gameScores.g4p2}
-                            onChange={e => updateGameScore(4, 2, e.target.value)}
-                        />
-                    </div>
-                    <div className="match-game-score">
-                        <input
-                            type="number"
-                            disabled={false}
-                            value={gameScores.g5p2 === null ? "" : gameScores.g5p2}
-                            onChange={e => updateGameScore(5, 2, e.target.value)}
-                        />
-                    </div>
-                    {
-                        match.bestOf === 7 ? (
-                            <>
-                                <div className="match-game-score">
-                                    <input
-                                        type="number"
-                                        disabled={false}
-                                        value={gameScores.g6p2 === null ? "" : gameScores.g6p2}
-                                        onChange={e => updateGameScore(6, 2, e.target.value)}
-                                    />
-                                </div>
-                                <div className="match-game-score">
-                                    <input
-                                        type="number"
-                                        disabled={false}
-                                        value={gameScores.g7p2 === null ? "" : gameScores.g7p2}
-                                        onChange={e => updateGameScore(7, 2, e.target.value)}
-                                    />
-                                </div>
-                            </>
-                        ) : null
-                    }
-                </div>
-                <div className="player-section">
-                    <div className="player-buttons">
-                        <button className="check-in-button"><i className="fa-solid fa-user-check" /></button>
-                        <input className="check-in-input" type="number" placeholder="YY" value={playersYY.player2YY}
-                        onChange={e => e.target.value.length < 3 && setPlayersYY({ ...playersYY, player2YY: e.target.value })} />
-                    </div>
-                    <PlayerInfo player={{
-                        playerName: match.player2Name,
-                        playerRating: match.player2Rating,
-                        playerClub: match.player2Club,
-                        playerLocation: match.player2Location
-                    }} />
-                </div>
+            <div className="verify-container">
+                <button className="verify-button">Verify</button>
             </div>
-        </div>
+        </>
     );
 };

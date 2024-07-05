@@ -6,6 +6,9 @@
 
 .player-buttons {
     padding: 0 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .check-in-button {
@@ -18,4 +21,11 @@
 .check-in-input {
     padding: 1em;
     width: 50px;
+}
+
+.verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1em;
 }

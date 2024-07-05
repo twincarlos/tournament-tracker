@@ -6,7 +6,6 @@ import { useMatch } from "@/app/context/MatchContext";
 import MatchCard from "@/app/components/MatchCard/MatchCard";
 import EditableMatch from "@/app/components/EditableMatch/EditableMatch";
 import Modal from "@/app/components/Modal/Modal";
-import Match from "@/app/components/Match/Match";
 import Header from "@/app/components/Header/Header";
 
 export default function Group({ params }) {

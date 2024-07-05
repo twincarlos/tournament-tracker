@@ -21,3 +21,7 @@
 .group-card-player:nth-child(even) {
     background: #00000017;
 }
+
+.group-card .card-bubble {
+    border-color: white;
+}

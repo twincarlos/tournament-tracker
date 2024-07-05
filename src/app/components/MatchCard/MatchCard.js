@@ -17,10 +17,17 @@ export default function MatchCard({ match }) {
                     }} className="icon-button">
                         <i className="fa-regular fa-eye" />
                     </button>
-                    <p>{match.eventName} • Group {match.groupNumber}</p>
+                    <p>{match.eventName} • {match.matchStage} {match.groupNumber || match.matchRound}</p>
+                    <span className="card-bubble">{match.matchStatus}</span>
                 </div>
                 <div className="card-header-tables">
-                    <p>TBD</p>
+                <p>
+                        {
+                            match.tables.length > 0 ? (
+                                `Table${match.tables.length > 1 ? "s" : ""} ${match.tables.map(table => table.tableNumber).join(", ")}`
+                            ) : "No table"
+                        }
+                    </p>
                 </div>
             </div>
             <div className="match-card-body">

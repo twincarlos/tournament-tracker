@@ -4,10 +4,7 @@ import { sql } from "@vercel/postgres";
 export async function GET(req, { params }) {
     const { rows } = await sql `
     SELECT
-    e."eventId",
-    e."eventName",
-    e."eventDate",
-    e."eventTime",
+    e.*,
     t."tournamentId",
     t."tournamentName",
     t."tournamentDate"
