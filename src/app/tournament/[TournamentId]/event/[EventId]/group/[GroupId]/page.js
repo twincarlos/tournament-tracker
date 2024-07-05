@@ -11,7 +11,7 @@ import Header from "@/app/components/Header/Header";
 export default function Group({ params }) {
     const [matches, setMatches] = useState([]);
     const { match } = useMatch();
-    useFetch(`/api/get-all-group-matches/${params.groupId}`, setMatches);
+    useFetch(`/api/get-all-group-matches/${params.groupId || params.GroupId}`, setMatches);
     return (
         <main>
             <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
