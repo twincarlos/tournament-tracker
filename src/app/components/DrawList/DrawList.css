@@ -1,10 +1,60 @@
 .draw-list {
     display: flex;
-    height: 100%;
+    justify-content: stretch;
+    align-items: flex-start;
+    overflow-x: scroll;
+    width: 120%;
+}
+
+.draw-of-32 {
+    height: 3000px;
+}
+
+.draw-of-16 {
+    height: 1500px;
+}
+
+.draw-of-8 {
+    height: 750px;
+}
+
+.draw-of-4 {
+    height: 375px;
+}
+
+.draw-of-2 {
+    height: 187.5px;
 }
 
 .draw-round {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     height: 100%;
+    position: relative;
+    width: 300px;
+}
+
+.column-1 {
+    gap: 20px;
+}
+
+.column-2 {
+    top: 100px;
+    gap: 180px;
+}
+
+.column-3 {
+    top: 250px;
+    gap: 485px;
+}
+
+.column-4 {
+    top: 500px;
+    gap: 1200px;
+}
+
+.column-5 {
+    top: 1200px;
 }

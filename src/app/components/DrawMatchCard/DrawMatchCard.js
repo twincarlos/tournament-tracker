@@ -25,6 +25,9 @@ export default function DrawMatchCard({ match, inModal }) {
             </div>
             <div className="draw-card-body">
                 <div className="player-section">
+                    <div className="player-games-won">
+                        {match.player1GamesWon}
+                    </div>
                     <PlayerInfo player={{
                         eventPlayerId: match.eventPlayer1Id,
                         playerName: match.player1Name,
@@ -41,6 +44,9 @@ export default function DrawMatchCard({ match, inModal }) {
                     }
                 </div>
                 <div className="player-section">
+                <div className="player-games-won">
+                        {match.player2GamesWon}
+                    </div>
                     <PlayerInfo player={{
                         eventPlayerId: match.eventPlayer2Id,
                         playerName: match.player2Name,

@@ -7,10 +7,20 @@
 }
 
 .draw-card-body .player-info {
-    padding: 0;
+    padding: 0 0 0 10px;
 }
 
 .draw-card-body .player-section {
     width: 100%;
-    padding: 5px;
+}
+
+.draw-card .player-section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.player-games-won {
+    padding: 10px 15px;
+    border-right: 1px solid black;
 }
