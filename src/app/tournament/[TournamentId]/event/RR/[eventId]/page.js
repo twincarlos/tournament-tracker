@@ -7,17 +7,14 @@ import GroupsList from "@/app/components/GroupsList/GroupsList";
 import DrawList from "@/app/components/DrawList/DrawList";
 
 export default function Event({ params }) {
-    const [groups, setGroups] = useState([]);
-    const [draw, setDraw] = useState([]);
-    useFetch(`/api/get-rr-event/${params.eventId || params.EventId}`, data => {
-        setGroups(data.groups);
-        setDraw(data.draw);
-    });
+    const [event, setEvent] = useState({});
+    useFetch(`/api/get-rr-event/${params.eventId || params.EventId}`, setEvent);
+    if (!event.groups) return null;
     return (
         <main>
-            <Header backLink={`/tournament/${params.tournamentId}`} headerTitle={groups[0]?.eventName} />
-            <DrawList draw={draw} />
-            {/* <GroupsList groups={groups} /> */}
+            <Header backLink={`/tournament/${params.tournamentId}`} headerTitle={event.groups[0].eventName} />
+            <DrawList draw={event.draw} />
+            {/* <GroupsList groups={event.groups} /> */}
         </main>
     );
 };

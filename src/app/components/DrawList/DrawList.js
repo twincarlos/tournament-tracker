@@ -6,7 +6,7 @@ export default function DrawList({ draw }) {
         <section className="draw-list">
             {
                 draw.map(drawRound => (
-                    <div className={`draw-round round-of-${drawRound[0].matchRound}`}>
+                    <div key={drawRound[0].matchId} className={`draw-round round-of-${drawRound[0].matchRound}`}>
                         {
                             drawRound.map(drawMatch => (
                                 <DrawMatchCard key={drawMatch.matchId} match={drawMatch} />

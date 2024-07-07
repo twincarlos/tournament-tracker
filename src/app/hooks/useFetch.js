@@ -16,5 +16,5 @@ export function useFetch(url, setState) {
         fetchData(); // Initial fetch
         const intervalId = setInterval(fetchData, 60000); // Fetch every 60 seconds
         return () => clearInterval(intervalId); // Clean up on component unmount
-    }, [url]);
+    }, [url, setState]);
 };
