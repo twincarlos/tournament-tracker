@@ -17,7 +17,7 @@ export default function Event({ params }) {
         <main>
             <Header backLink={`/tournament/${params.tournamentId}`} headerTitle={groups[0]?.eventName} />
             <DrawList draw={draw} />
-            <GroupsList groups={groups} />
+            {/* <GroupsList groups={groups} /> */}
         </main>
     );
 };

@@ -1,15 +1,10 @@
 .draw-list {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    height: 3000px;
-    overflow-x: scroll;
+    height: 100%;
 }
 
 .draw-round {
-    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    height: 100%;
 }
