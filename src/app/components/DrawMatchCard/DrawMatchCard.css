@@ -1,0 +1,16 @@
+.draw-card {
+    padding: 0;
+}
+
+.draw-card-body .player-section:first-child {
+    border-bottom: 1px solid black;
+}
+
+.draw-card-body .player-info {
+    padding: 0;
+}
+
+.draw-card-body .player-section {
+    width: 100%;
+    padding: 5px;
+}

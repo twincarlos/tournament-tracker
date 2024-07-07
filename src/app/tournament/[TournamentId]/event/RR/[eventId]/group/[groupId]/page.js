@@ -14,7 +14,7 @@ export default function Group({ params }) {
     useFetch(`/api/get-all-group-matches/${params.groupId || params.GroupId}`, setMatches);
     return (
         <main>
-            <Header backLink={`/tournament/${params.tournamentId}/event/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
+            <Header backLink={`/tournament/${params.tournamentId}/event/RR/${params.eventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             <Modal>
                 {
                     match?.matchStatus === "Finished" ? <MatchCard inModal={true} match={match} /> : <EditableMatch match={match} />

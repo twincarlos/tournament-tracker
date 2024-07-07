@@ -154,12 +154,13 @@ export default function EditableMatch({ match }) {
                                         className="check-in-button"
                                         disabled={match.player1Verified}
                                         onClick={() => verifyScores(1)}>
-                                        <i className="fa-solid fa-user-check" /> Verify
+                                        <i className="fa-solid fa-check" /> Verify
                                     </button>
                                 </div>
                             ) : null
                         }
                         <PlayerInfo player={{
+                            eventPlayerId: match.eventPlayer1Id,
                             playerName: match.player1Name,
                             playerRating: match.player1Rating,
                             playerClub: match.player1Club,
@@ -327,12 +328,13 @@ export default function EditableMatch({ match }) {
                                         className="check-in-button"
                                         disabled={match.player2Verified}
                                         onClick={() => verifyScores(2)}>
-                                        <i className="fa-solid fa-user-check" /> Verify
+                                        <i className="fa-solid fa-check" /> Verify
                                     </button>
                                 </div>
                             ) : null
                         }
                         <PlayerInfo player={{
+                            eventPlayerId: match.eventPlayer2Id,
                             playerName: match.player2Name,
                             playerRating: match.player2Rating,
                             playerClub: match.player2Club,

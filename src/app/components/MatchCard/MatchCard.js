@@ -21,7 +21,7 @@ export default function MatchCard({ match, inModal }) {
                             </button>
                         )
                     }
-                    <p>{match.eventName} • {match.matchStage} {match.groupNumber || match.matchRound}</p>
+                    <p>{match.eventName} • {match.matchStage === "Groups" ? "Group" : match.matchStage} {match.groupNumber || match.matchRound}</p>
                     <span className="card-bubble">{match.matchStatus}</span>
                 </div>
                 <div className="card-header-tables">
@@ -37,6 +37,7 @@ export default function MatchCard({ match, inModal }) {
             <div className="match-card-body">
                 <div className="player-section">
                     <PlayerInfo player={{
+                        eventPlayerId: match.eventPlayer1Id,
                         playerName: match.player1Name,
                         playerRating: match.player1Rating,
                         playerClub: match.player1Club,
@@ -116,6 +117,7 @@ export default function MatchCard({ match, inModal }) {
                 </div>
                 <div className="player-section">
                     <PlayerInfo player={{
+                        eventPlayerId: match.eventPlayer2Id,
                         playerName: match.player2Name,
                         playerRating: match.player2Rating,
                         playerClub: match.player2Club,

@@ -1,3 +1,7 @@
 .event-card {
     width: 250px;
 }
+
+.event-card .card-bubble {
+    border-color: black;
+}

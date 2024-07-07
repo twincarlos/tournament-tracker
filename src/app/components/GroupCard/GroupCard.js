@@ -7,7 +7,7 @@ export default function GroupCard({ group }) {
         <div className="card group-card">
             <div className="card-header">
                 <div className="card-header-info">
-                    <Link href={`/tournament/${group.tournamentId}/event/${group.eventId}/group/${group.groupId}`} className="icon-button">
+                    <Link href={`/tournament/${group.tournamentId}/event/${group.eventType}/${group.eventId}/group/${group.groupId}`} className="icon-button">
                         <i className="fa-regular fa-eye" />
                     </Link>
                     <p>Group {group.groupNumber}</p>

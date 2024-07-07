@@ -4,6 +4,12 @@
     width: 500px;
 }
 
+.group-card .card-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .group-card-player {
     display: flex;
     justify-content: space-between;
