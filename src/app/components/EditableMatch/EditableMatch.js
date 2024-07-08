@@ -3,116 +3,23 @@ import './EditableMatch.css';
 import PlayerInfo from '../PlayerInfo/PlayerInfo';
 import { useMatch } from '@/app/context/MatchContext';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
+import { useEmit } from '@/app/hooks/useEmit';
 
 export default function EditableMatch({ match }) {
     const { setMatch } = useMatch();
     useSubscribe(
         `match_${match.matchId}`,
         "update_match",
-        data => setMatch(data)
+        data => setMatch({ ...match, ...data })
     );
     function playerCheckIn(playerNumber) {
-        if (playerNumber === 1) {
-            setMatch({ ...match, player1Ready: true, matchStatus: match.player2Ready ? "In Progress" : match.matchStatus });
-        } else {
-            setMatch({ ...match, player2Ready: true, matchStatus: match.player1Ready ? "In Progress" : match.matchStatus });
-        };
+        useEmit(`/api/match_${match.matchId}/player-check-in/player-${playerNumber}`, "PUT", { matchId: match.matchId });
     };
-    function checkIfGameScoreIsValid(score1, score2) {
-        if (score1 === null || score2 === null) return false;
-        if (score1 === 11 && (score2 >= 0 && score2 <= 9)) return true;
-        if (score2 === 11 && (score1 >= 0 && score1 <= 9)) return true;
-        if ((score1 > 11 || score2 > 11) && (Math.abs(score1 - score2) === 2)) return true;
-        return false;
-    };
-    function updateGameScore(gameNumber, playerNumber, score) {
-        const updatedMatch = { ...match, [`g${gameNumber}p${playerNumber}`]: score === "" ? null : Number(score) };
-        let player1GamesWon = 0;
-        let player2GamesWon = 0;
-        let scoresAreValid = true;
-
-        // GAME 1
-        if (checkIfGameScoreIsValid(updatedMatch.g1p1, updatedMatch.g1p2)) {
-            if (updatedMatch.g1p1 > updatedMatch.g1p2) player1GamesWon++;
-            if (updatedMatch.g1p1 < updatedMatch.g1p2) player2GamesWon++;
-        } else {
-            scoresAreValid = false;
-        };
-        // GAME 2
-        if (checkIfGameScoreIsValid(updatedMatch.g2p1, updatedMatch.g2p2)) {
-            if (updatedMatch.g2p1 > updatedMatch.g2p2) player1GamesWon++;
-            if (updatedMatch.g2p1 < updatedMatch.g2p2) player2GamesWon++;
-        } else {
-            scoresAreValid = false;
-        };
-        // GAME 3
-        if (checkIfGameScoreIsValid(updatedMatch.g3p1, updatedMatch.g3p2)) {
-            if (updatedMatch.g3p1 > updatedMatch.g3p2) player1GamesWon++;
-            if (updatedMatch.g3p1 < updatedMatch.g3p2) player2GamesWon++;
-        } else {
-            scoresAreValid = false;
-        };
-        // GAME 4
-        if (checkIfGameScoreIsValid(updatedMatch.g4p1, updatedMatch.g4p2)) {
-            if ((match.matchBestOf === 5) && (player1GamesWon === 3 || player2GamesWon === 3)) scoresAreValid = false;
-            if (updatedMatch.g4p1 > updatedMatch.g4p2) player1GamesWon++;
-            if (updatedMatch.g4p1 < updatedMatch.g4p2) player2GamesWon++;
-        } else if (updatedMatch.g4p1 === null && updatedMatch.g4p2 === null) {
-            if ((match.matchBestOf === 5) && (player1GamesWon === 2 || player2GamesWon === 2)) scoresAreValid = false;
-        } else {
-            scoresAreValid = false;
-        };
-        // GAME 5
-        if (checkIfGameScoreIsValid(updatedMatch.g5p1, updatedMatch.g5p2)) {
-            if ((match.matchBestOf === 5) && (player1GamesWon === 3 || player2GamesWon === 3)) scoresAreValid = false;
-            if ((match.matchBestOf === 7) && (player1GamesWon === 4 || player2GamesWon === 4)) scoresAreValid = false;
-            if (updatedMatch.g5p1 > updatedMatch.g5p2) player1GamesWon++;
-            if (updatedMatch.g5p1 < updatedMatch.g5p2) player2GamesWon++;
-        } else if (updatedMatch.g5p1 === null && updatedMatch.g5p2 === null) {
-            if ((match.matchBestOf === 5) && (player1GamesWon === 2 || player2GamesWon === 2)) scoresAreValid = false;
-            if ((match.matchBestOf === 7) && (player1GamesWon > 0 && player1GamesWon > 0)) scoresAreValid = false;
-        } else {
-            scoresAreValid = false;
-        };
-        // GAME 6
-        if (checkIfGameScoreIsValid(updatedMatch.g6p1, updatedMatch.g6p2)) {
-            if (match.matchBestOf === 5) return false;
-            if ((match.matchBestOf === 7) && (player1GamesWon === 1 || player2GamesWon === 1)) scoresAreValid = false;
-            if (updatedMatch.g6p1 > updatedMatch.g6p2) player1GamesWon++;
-            if (updatedMatch.g6p1 < updatedMatch.g6p2) player2GamesWon++;
-        } else if (updatedMatch.g6p1 === null && updatedMatch.g6p2 === null) {
-            if ((match.matchBestOf === 7) && (player1GamesWon === 2 || player2GamesWon === 2)) scoresAreValid = false;
-        } else {
-            scoresAreValid = false;
-        };
-        // GAME 7
-        if (checkIfGameScoreIsValid(updatedMatch.g7p1, updatedMatch.g7p2)) {
-            if (match.matchBestOf === 5) return false;
-            if ((match.matchBestOf === 7) && (player1GamesWon === 2 || player2GamesWon === 2)) scoresAreValid = false;
-            if (updatedMatch.g7p1 > updatedMatch.g7p2) player1GamesWon++;
-            if (updatedMatch.g7p1 < updatedMatch.g7p2) player2GamesWon++;
-        } else if (updatedMatch.g7p1 === null && updatedMatch.g7p2 === null) {
-            if ((match.matchBestOf === 7) && (player1GamesWon === 3 || player2GamesWon === 3)) scoresAreValid = false;
-        } else {
-            scoresAreValid = false;
-        };
-        setMatch({
-            ...updatedMatch,
-            player1GamesWon,
-            player2GamesWon,
-            matchStatus: scoresAreValid ? "Pending" : "In Progress",
-            player1Verified: false,
-            player2Verified: false,
-            winnerId: scoresAreValid ? (player1GamesWon === ((match.matchBestOf === 5) ? 3 : 4) ? match.eventPlayer1Id : match.eventPlayer2Id) : null,
-            loserId: scoresAreValid ? (player1GamesWon === ((match.matchBestOf === 5) ? 3 : 4) ? match.eventPlayer2Id : match.eventPlayer1Id) : null
-        });
+    function updateGameScore(gameNumber, score) {
+        useEmit(`/api/match_${match.matchId}/score-update/${gameNumber}`, "PUT", { matchId: match.matchId, score });
     };
     function verifyScores(playerNumber) {
-        if (playerNumber === 1) {
-            setMatch({ ...match, player1Verified: true, matchStatus: match.player2Verified ? "Finished" : match.matchStatus });
-        } else {
-            setMatch({ ...match, player2Verified: true, matchStatus: match.player1Verified ? "Finished" : match.matchStatus });
-        };
+        useEmit(`/api/match_${match.matchId}/verify-scores/player-${playerNumber}`, "PUT", { matchId: match.matchId });
     };
 
     return (
@@ -183,7 +90,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g1p1 === null ? "" : match.g1p1}
-                                onChange={e => updateGameScore(1, 1, e.target.value)}
+                                onChange={e => updateGameScore("g1p1", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -191,7 +98,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g2p1 === null ? "" : match.g2p1}
-                                onChange={e => updateGameScore(2, 1, e.target.value)}
+                                onChange={e => updateGameScore("g2p1", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -199,7 +106,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g3p1 === null ? "" : match.g3p1}
-                                onChange={e => updateGameScore(3, 1, e.target.value)}
+                                onChange={e => updateGameScore("g3p1", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -207,7 +114,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g4p1 === null ? "" : match.g4p1}
-                                onChange={e => updateGameScore(4, 1, e.target.value)}
+                                onChange={e => updateGameScore("g4p1", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -215,7 +122,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g5p1 === null ? "" : match.g5p1}
-                                onChange={e => updateGameScore(5, 1, e.target.value)}
+                                onChange={e => updateGameScore("g5p1", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         {
@@ -226,7 +133,7 @@ export default function EditableMatch({ match }) {
                                             type="number"
                                             disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                             value={match.g6p1 === null ? "" : match.g6p1}
-                                            onChange={e => updateGameScore(6, 1, e.target.value)}
+                                            onChange={e => updateGameScore("g6p1", e.target.value === "" ? null : Number(e.target.value))}
                                         />
                                     </div>
                                     <div className="match-game-score">
@@ -234,7 +141,7 @@ export default function EditableMatch({ match }) {
                                             type="number"
                                             disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                             value={match.g7p1 === null ? "" : match.g7p1}
-                                            onChange={e => updateGameScore(7, 1, e.target.value)}
+                                            onChange={e => updateGameScore("g7p1", e.target.value === "" ? null : Number(e.target.value))}
                                         />
                                     </div>
                                 </>
@@ -250,7 +157,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g1p2 === null ? "" : match.g1p2}
-                                onChange={e => updateGameScore(1, 2, e.target.value)}
+                                onChange={e => updateGameScore("g1p2", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -258,7 +165,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g2p2 === null ? "" : match.g2p2}
-                                onChange={e => updateGameScore(2, 2, e.target.value)}
+                                onChange={e => updateGameScore("g2p2", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -266,7 +173,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g3p2 === null ? "" : match.g3p2}
-                                onChange={e => updateGameScore(3, 2, e.target.value)}
+                                onChange={e => updateGameScore("g3p2", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -274,7 +181,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g4p2 === null ? "" : match.g4p2}
-                                onChange={e => updateGameScore(4, 2, e.target.value)}
+                                onChange={e => updateGameScore("g4p2", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         <div className="match-game-score">
@@ -282,7 +189,7 @@ export default function EditableMatch({ match }) {
                                 type="number"
                                 disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                 value={match.g5p2 === null ? "" : match.g5p2}
-                                onChange={e => updateGameScore(5, 2, e.target.value)}
+                                onChange={e => updateGameScore("g5p2", e.target.value === "" ? null : Number(e.target.value))}
                             />
                         </div>
                         {
@@ -293,7 +200,7 @@ export default function EditableMatch({ match }) {
                                             type="number"
                                             disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                             value={match.g6p2 === null ? "" : match.g6p2}
-                                            onChange={e => updateGameScore(6, 2, e.target.value)}
+                                            onChange={e => updateGameScore("g6p2", e.target.value === "" ? null : Number(e.target.value))}
                                         />
                                     </div>
                                     <div className="match-game-score">
@@ -301,7 +208,7 @@ export default function EditableMatch({ match }) {
                                             type="number"
                                             disabled={match.matchStatus !== "In Progress" && match.matchStatus !== "Pending"}
                                             value={match.g7p2 === null ? "" : match.g7p2}
-                                            onChange={e => updateGameScore(7, 2, e.target.value)}
+                                            onChange={e => updateGameScore("g7p2", e.target.value === "" ? null : Number(e.target.value))}
                                         />
                                     </div>
                                 </>

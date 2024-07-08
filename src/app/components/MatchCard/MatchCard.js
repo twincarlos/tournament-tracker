@@ -6,7 +6,6 @@ import PlayerInfo from "../PlayerInfo/PlayerInfo";
 export default function MatchCard({ match, inModal }) {
     const { setShowModal } = useModal();
     const { setMatch } = useMatch();
-
     return (
         <div className="card match-card">
             <div className="card-header">
