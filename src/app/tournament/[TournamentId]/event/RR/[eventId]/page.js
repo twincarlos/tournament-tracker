@@ -16,7 +16,7 @@ export default function Event({ params }) {
     if (!event.groups.length) return null;
     return (
         <main>
-            <Header backLink={`/tournament/${params.tournamentId}`} headerTitle={event.groups[0].eventName} />
+            <Header backLink={`/tournament/${params.tournamentId || params.TournamentId}`} headerTitle={event.groups[0].eventName} />
             <section className="tabs">
                 <button onClick={() => setCategory("Groups")} className={`${category === "Groups" ? "selected" : ""} tab`}>Groups</button>
                 <button onClick={() => setCategory("Draw")} className={`${category === "Draw" ? "selected" : ""} tab`}>Draw</button>

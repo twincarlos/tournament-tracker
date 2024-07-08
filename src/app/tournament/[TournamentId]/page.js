@@ -15,7 +15,7 @@ export default function Tournament({ params }) {
             <section className="gallery">
                 {
                     events.map(event => (
-                        <Link className="card event-card event-link" href={`/tournament/${params.tournamentId}/event/${event.eventType}/${event.eventId}`} key={event.eventId}>
+                        <Link className="card event-card event-link" href={`/tournament/${params.tournamentId || params.TournamentId}/event/${event.eventType}/${event.eventId}`} key={event.eventId}>
                             <EventCard event={event} />
                         </Link>
                     ))
