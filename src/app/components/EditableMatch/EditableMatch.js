@@ -3,8 +3,6 @@ import './EditableMatch.css';
 import PlayerInfo from '../PlayerInfo/PlayerInfo';
 import { useMatch } from '@/app/context/MatchContext';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
-import { useEmit } from '@/app/hooks/useEmit';
-import { useCallback } from 'react';
 
 export default function EditableMatch({ match }) {
     const { setMatch } = useMatch();
@@ -13,15 +11,45 @@ export default function EditableMatch({ match }) {
         "update_match",
         data => setMatch({ ...match, ...data })
     );
-    const playerCheckIn = useCallback(playerNumber => {
-        useEmit(`/api/match_${match.matchId}/player-check-in/player-${playerNumber}`, "PUT", { matchId: match.matchId });
-    }, []);
-    const updateGameScore = useCallback((gameNumber, score) => {
-        useEmit(`/api/match_${match.matchId}/score-update/${gameNumber}`, "PUT", { matchId: match.matchId, score });
-    }, []);
-    const verifyScores = useCallback(playerNumber => {
-        useEmit(`/api/match_${match.matchId}/verify-scores/player-${playerNumber}`, "PUT", { matchId: match.matchId });
-    }, []);
+    async function playerCheckIn(playerNumber) {
+        setMatch({ ...match, [`player${playerNumber}Ready`]: true });
+        await fetch(`/api/match_${match.matchId}/player-check-in/player-${playerNumber}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({ matchId: match.matchId })
+        });
+    };
+    async function updateGameScore(gameNumber, score) {
+        setMatch({ ...match, [gameNumber]: score, player1Verified: false, player2Verified: false });
+        await fetch(`/api/match_${match.matchId}/score-update/${gameNumber}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({ matchId: match.matchId, score })
+        });
+    };
+    async function verifyScores(playerNumber) {
+        setMatch({ ...match, [`player${playerNumber}Verified`]: true });
+        await fetch(`/api/match_${match.matchId}/verify-scores/player-${playerNumber}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({ matchId: match.matchId })
+        });
+    };
 
     return (
         <>
