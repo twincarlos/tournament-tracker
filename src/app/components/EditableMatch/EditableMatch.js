@@ -4,6 +4,7 @@ import PlayerInfo from '../PlayerInfo/PlayerInfo';
 import { useMatch } from '@/app/context/MatchContext';
 import { useSubscribe } from '@/app/hooks/useSubscribe';
 import { useEmit } from '@/app/hooks/useEmit';
+import { useCallback } from 'react';
 
 export default function EditableMatch({ match }) {
     const { setMatch } = useMatch();
@@ -12,15 +13,15 @@ export default function EditableMatch({ match }) {
         "update_match",
         data => setMatch({ ...match, ...data })
     );
-    function playerCheckIn(playerNumber) {
+    const playerCheckIn = useCallback(playerNumber => {
         useEmit(`/api/match_${match.matchId}/player-check-in/player-${playerNumber}`, "PUT", { matchId: match.matchId });
-    };
-    function updateGameScore(gameNumber, score) {
+    }, []);
+    const updateGameScore = useCallback((gameNumber, score) => {
         useEmit(`/api/match_${match.matchId}/score-update/${gameNumber}`, "PUT", { matchId: match.matchId, score });
-    };
-    function verifyScores(playerNumber) {
+    }, []);
+    const verifyScores = useCallback(playerNumber => {
         useEmit(`/api/match_${match.matchId}/verify-scores/player-${playerNumber}`, "PUT", { matchId: match.matchId });
-    };
+    }, []);
 
     return (
         <>
