@@ -1,5 +1,10 @@
 .draw-card {
     padding: 0;
+    max-width: 100%;
+}
+
+.draw-card .card-header {
+    width: 300px;
 }
 
 .draw-card-body .player-section:first-child {

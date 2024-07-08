@@ -1,9 +1,7 @@
 .draw-list {
     display: flex;
-    justify-content: stretch;
+    justify-content: flex-start;
     align-items: flex-start;
-    overflow-x: scroll;
-    width: 120%;
 }
 
 .draw-of-32 {
@@ -33,28 +31,27 @@
     align-items: center;
     height: 100%;
     position: relative;
-    width: 300px;
 }
 
 .column-1 {
-    gap: 20px;
+    gap: 10px;
 }
 
 .column-2 {
-    top: 100px;
-    gap: 180px;
+    top: 50px;
+    gap: 150px;
 }
 
 .column-3 {
-    top: 250px;
-    gap: 485px;
+    top: 190px;
+    gap: 425px;
 }
 
 .column-4 {
-    top: 500px;
-    gap: 1200px;
+    top: 450px;
+    gap: 1000px;
 }
 
 .column-5 {
-    top: 1200px;
+    top: 1000px;
 }

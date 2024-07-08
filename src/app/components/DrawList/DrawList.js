@@ -2,6 +2,20 @@ import "./DrawList.css";
 import DrawMatchCard from "../DrawMatchCard/DrawMatchCard";
 
 export default function DrawList({ draw }) {
+    function translateRound(round) {
+        if (round === 8) {
+            return "Quarterfinals"
+        }
+        else if (round === 4) {
+            return "Semifinals"
+        }
+        else if (round === 2) {
+            return "Finals"
+        }
+        else {
+            return `Round of ${round}`;
+        };
+    };
     return (
         <section className={`draw-list draw-of-${draw[0][0].matchRound}`}>
             {

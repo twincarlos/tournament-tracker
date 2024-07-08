@@ -2,6 +2,20 @@ import "./DrawMatchCard.css";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
 export default function DrawMatchCard({ match, inModal }) {
+    function translateRound(round) {
+        if (round === 8) {
+            return "Quarterfinals"
+        }
+        else if (round === 4) {
+            return "Semifinals"
+        }
+        else if (round === 2) {
+            return "Finals"
+        }
+        else {
+            return `Round of ${round}`;
+        };
+    };
     return (
         <div className="card draw-card">
             <div className="card-header">
@@ -17,8 +31,8 @@ export default function DrawMatchCard({ match, inModal }) {
                         )
                     }
                     <div>
-                        <p>Round of {match.matchRound}</p>
-                        <p>Table {match.tableNumber}</p>
+                        <p>{translateRound(match.matchRound)}</p>
+                        { match.tableNumber ? <p>Table {match.tableNumber}</p> : null }
                     </div>
                     <span className="card-bubble">{match.matchStatus}</span>
                 </div>
