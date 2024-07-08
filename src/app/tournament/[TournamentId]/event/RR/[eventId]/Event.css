@@ -1,0 +1,18 @@
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.tab {
+    font-size: 20px;
+    padding: 5px 10px;
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.selected.tab {
+    border: 2px solid black;
+}

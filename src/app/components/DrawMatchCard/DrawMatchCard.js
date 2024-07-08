@@ -30,11 +30,16 @@ export default function DrawMatchCard({ match, inModal }) {
                             </button>
                         )
                     }
-                    <div>
-                        <p>{translateRound(match.matchRound)}</p>
-                        { match.tableNumber ? <p>Table {match.tableNumber}</p> : null }
+                    <div className="draw-card-header-info">
+                        <div className="draw-card-detail">
+                            <p>{match.eventName}</p>
+                            <p>{match.tableNumber ? `Table ${match.tableNumber}` : 'No Table'}</p>
+                        </div>
+                        <div className="draw-card-detail">
+                            <span className="card-bubble">{match.matchStatus}</span>
+                            <p>{translateRound(match.matchRound)}</p>
+                        </div>
                     </div>
-                    <span className="card-bubble">{match.matchStatus}</span>
                 </div>
             </div>
             <div className="draw-card-body">

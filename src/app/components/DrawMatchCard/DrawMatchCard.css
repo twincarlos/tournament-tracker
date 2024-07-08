@@ -5,6 +5,8 @@
 
 .draw-card .card-header {
     width: 300px;
+    padding: 3px 5px;
+    font-size: 11px;
 }
 
 .draw-card-body .player-section:first-child {
@@ -28,4 +30,20 @@
 .player-games-won {
     padding: 10px 15px;
     border-right: 1px solid black;
+}
+
+.draw-card-header-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.draw-card-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }

@@ -2,26 +2,8 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-}
-
-.draw-of-32 {
-    height: 3000px;
-}
-
-.draw-of-16 {
-    height: 1500px;
-}
-
-.draw-of-8 {
-    height: 750px;
-}
-
-.draw-of-4 {
-    height: 375px;
-}
-
-.draw-of-2 {
-    height: 187.5px;
+    overflow-x: scroll;
+    gap: 10px;
 }
 
 .draw-round {
@@ -39,17 +21,17 @@
 
 .column-2 {
     top: 50px;
-    gap: 150px;
+    gap: 140px;
 }
 
 .column-3 {
-    top: 190px;
-    gap: 425px;
+    top: 180px;
+    gap: 395px;
 }
 
 .column-4 {
     top: 450px;
-    gap: 1000px;
+    gap: 900px;
 }
 
 .column-5 {

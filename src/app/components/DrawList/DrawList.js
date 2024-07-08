@@ -16,6 +16,7 @@ export default function DrawList({ draw }) {
             return `Round of ${round}`;
         };
     };
+    if (!draw.length) return null;
     return (
         <section className={`draw-list draw-of-${draw[0][0].matchRound}`}>
             {
