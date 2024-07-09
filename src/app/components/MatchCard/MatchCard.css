@@ -1,6 +1,7 @@
 .match-card {
     padding: 0;
     max-width: 500px;
+    width: 100%;
 }
 
 .match-player-info {
@@ -13,7 +14,7 @@
     height: 64px;
 }
 
-.match-game-score input {
+.match-game-score {
     width: 100%;
     height: 100%;
     background: transparent;
@@ -50,7 +51,7 @@
     font-weight: 600;
 }
 
-.game-won input {
+.game-won {
     font-weight: 700;
 }
 

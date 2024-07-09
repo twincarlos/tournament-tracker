@@ -55,28 +55,28 @@ export default function MatchCard({ match, inModal }) {
                         <p>{match.player1GamesWon}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g1p1 || ""} disabled={true} />
+                        <p>{match.g1p1}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g2p1 || ""} disabled={true} />
+                        <p>{match.g2p1}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g3p1 || ""} disabled={true} />
+                        <p>{match.g3p1}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g4p1 || ""} disabled={true} />
+                        <p>{match.g4p1}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g5p1 || ""} disabled={true} />
+                        <p>{match.g5p1}</p>
                     </div>
                     {
                         match.matchBestOf === 7 ? (
                             <>
                                 <div className="match-game-score">
-                                    <input type="number" value={match.g6p1 || ""} disabled={true} />
+                                    <p>{match.g6p1}</p>
                                 </div>
                                 <div className="match-game-score">
-                                    <input type="number" value={match.g7p1 || ""} disabled={true} />
+                                    <p>{match.g7p1}</p>
                                 </div>
                             </>
                         ) : null
@@ -87,28 +87,28 @@ export default function MatchCard({ match, inModal }) {
                         <p>{match.player2GamesWon}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g1p2 || ""} disabled={true} />
+                        <p>{match.g1p2}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g2p2 || ""} disabled={true} />
+                        <p>{match.g2p2}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g3p2 || ""} disabled={true} />
+                        <p>{match.g3p2}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g4p2 || ""} disabled={true} />
+                        <p>{match.g4p2}</p>
                     </div>
                     <div className="match-game-score">
-                        <input type="number" value={match.g5p2 || ""} disabled={true} />
+                        <p>{match.g5p2}</p>
                     </div>
                     {
                         match.matchBestOf === 7 ? (
                             <>
                                 <div className="match-game-score">
-                                    <input type="number" value={match.g6p2 || ""} disabled={true} />
+                                    <p>{match.g6p2}</p>
                                 </div>
                                 <div className="match-game-score">
-                                    <input type="number" value={match.g7p2 || ""} disabled={true} />
+                                    <p>{match.g7p2}</p>
                                 </div>
                             </>
                         ) : null
