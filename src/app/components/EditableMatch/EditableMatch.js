@@ -62,9 +62,9 @@ export default function EditableMatch({ match }) {
                     <div className="card-header-tables">
                         <p>
                             {
-                                match.tables.length > 0 ? (
+                                (match.tables && match.tables.length > 0) ? (
                                     `Table${match.tables.length > 1 ? "s" : ""} ${match.tables.map(table => table.tableNumber).join(", ")}`
-                                ) : "No table"
+                                ) : (match.tableNumber ? match.tableNumber : "No table")
                             }
                         </p>
                     </div>

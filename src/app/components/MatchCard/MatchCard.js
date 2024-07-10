@@ -4,17 +4,19 @@ import { useMatch } from "@/app/context/MatchContext";
 import { useSubscribe } from "@/app/hooks/useSubscribe";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
-export default function MatchCard({ match, inModal }) {
+export default function MatchCard({ match, inModal, checkInModal }) {
     const { setShowModal } = useModal();
     const { setMatch } = useMatch();
 
-    if (inModal) {
-        useSubscribe(
-            `match_${match.matchId}`,
-            "update_match",
-            data => setMatch({ ...match, ...data })
-        );
-    };
+    useSubscribe(
+        `match_${match.matchId}`,
+        "update_match",
+        data => setMatch({ ...match, ...data }),
+        {
+            inModal,
+            checkInModal
+        }
+    );
 
     return (
         <div className="card match-card">
