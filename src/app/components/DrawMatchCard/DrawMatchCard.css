@@ -30,6 +30,7 @@
 .player-games-won {
     padding: 10px 15px;
     border-right: 1px solid black;
+    width: 40px;
 }
 
 .draw-card-header-info {
