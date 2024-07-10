@@ -3,6 +3,7 @@ import DrawMatchCard from "../DrawMatchCard/DrawMatchCard";
 import Modal from "../Modal/Modal";
 import { useMatch } from "@/app/context/MatchContext";
 import EditableMatch from "../EditableMatch/EditableMatch";
+import MatchCard from "../MatchCard/MatchCard";
 
 export default function DrawList({ draw }) {
     const { match } = useMatch();

@@ -4,7 +4,7 @@ import { useMatch } from "@/app/context/MatchContext";
 import { useSubscribe } from "@/app/hooks/useSubscribe";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
-export default function MatchCard({ match, inModal, checkInModal }) {
+export default function MatchCard({ match, inModal }) {
     const { setShowModal } = useModal();
     const { setMatch } = useMatch();
 
@@ -12,10 +12,7 @@ export default function MatchCard({ match, inModal, checkInModal }) {
         `match_${match.matchId}`,
         "update_match",
         data => setMatch({ ...match, ...data }),
-        {
-            inModal,
-            checkInModal
-        }
+        inModal
     );
 
     return (

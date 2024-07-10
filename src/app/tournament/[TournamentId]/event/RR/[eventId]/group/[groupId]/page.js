@@ -17,7 +17,7 @@ export default function Group({ params }) {
             <Header backLink={`/tournament/${params.tournamentId || params.TournamentId}/event/RR/${params.eventId || params.EventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             <Modal>
                 {
-                    match?.matchStatus === "Finished" ? <MatchCard match={match} inModal={true} checkInModal={true} /> : <EditableMatch match={match} />
+                    match?.matchStatus === "Finished" ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
                 }
             </Modal>
             <section className="column">
@@ -26,6 +26,7 @@ export default function Group({ params }) {
                         <MatchCard
                             key={match.matchId}
                             match={match}
+                            inModal={false}
                         />
                     ))
                 }
