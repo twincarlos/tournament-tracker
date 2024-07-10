@@ -1,20 +1,38 @@
 import "./MatchCard.css";
 import { useModal } from "@/app/context/ModalContext";
 import { useMatch } from "@/app/context/MatchContext";
+import { useSubscribe } from "@/app/hooks/useSubscribe";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
 export default function MatchCard({ match, inModal }) {
     const { setShowModal } = useModal();
     const { setMatch } = useMatch();
+
+    if (inModal) {
+        useSubscribe(
+            `match_${match.matchId}`,
+            "update_match",
+            data => setMatch({ ...match, ...data })
+        );
+    };
+
     return (
         <div className="card match-card">
             <div className="card-header">
                 <div className="card-header-info">
                     {
                         inModal ? null : (
-                            <button onClick={() => {
+                            <button onClick={async () => {
+                                const response = await fetch(`/api/get-match/${match.matchId}`, {
+                                    headers: {
+                                        'Cache-Control': 'no-cache',
+                                        'Pragma': 'no-cache',
+                                        'Expires': '0'
+                                    }
+                                });
+                                const updatedMatch = await response.json();
+                                setMatch({ ...match, ...updatedMatch });
                                 setShowModal(true);
-                                setMatch(match);
                             }} className="icon-button">
                                 <i className="fa-regular fa-eye" />
                             </button>
