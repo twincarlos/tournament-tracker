@@ -13,7 +13,7 @@ export default function EditableMatch({ match }) {
     );
     async function playerCheckIn(playerNumber) {
         setMatch({ ...match, [`player${playerNumber}Ready`]: true });
-        await fetch(`/api/match_${match.matchId}/player-check-in/player-${playerNumber}`, {
+        await fetch(`/api/update-match/match_${match.matchId}/player-check-in/player-${playerNumber}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export default function EditableMatch({ match }) {
     };
     async function updateGameScore(gameNumber, score) {
         setMatch({ ...match, [gameNumber]: score, player1Verified: false, player2Verified: false });
-        await fetch(`/api/match_${match.matchId}/score-update/${gameNumber}`, {
+        await fetch(`/api/update-match/match_${match.matchId}/score-update/${gameNumber}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function EditableMatch({ match }) {
     };
     async function verifyScores(playerNumber) {
         setMatch({ ...match, [`player${playerNumber}Verified`]: true });
-        await fetch(`/api/match_${match.matchId}/verify-scores/player-${playerNumber}`, {
+        await fetch(`/api/update-match/match_${match.matchId}/verify-scores/player-${playerNumber}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',

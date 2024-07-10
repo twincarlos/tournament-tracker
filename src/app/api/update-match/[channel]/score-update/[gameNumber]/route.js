@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { PusherServer } from "../../../../../../pusher";
+import { PusherServer } from "../../../../../../../pusher";
 import { updateGameScore } from "./utils";
 
 export async function PUT(req, { params }) {
@@ -22,7 +22,9 @@ export async function PUT(req, { params }) {
     "g6p2",
     "g7p1",
     "g7p2",
-    "matchBestOf"
+    "matchBestOf",
+    "eventPlayer1Id",
+    "eventPlayer2Id"
     FROM Matches
     WHERE "matchId" = ${matchId}`;
 

@@ -21,6 +21,7 @@ export default function DrawMatchCard({ match, inModal }) {
             return `Round of ${round}`;
         };
     };
+    
     return (
         <div className="card draw-card">
             <div className="card-header">
