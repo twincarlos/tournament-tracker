@@ -23,7 +23,7 @@ export async function PUT(req, { params }) {
             UPDATE EventPlayers
             SET "groupLosses" = "groupLosses" + 1
             WHERE "eventPlayerId" = ${updateMatchQuery.rows[0].loserId};`;
-        
+
         if (updateMatchQuery.rows[0].matchStage === "Groups") {
             const getMatchesQuery = await sql`SELECT * FROM Matches WHERE "groupId" = ${updateMatchQuery.rows[0].groupId}`;
             const getPlayersQuery = await sql`SELECT * FROM EventPlayers WHERE "groupId" = ${updateMatchQuery.rows[0].groupId}`;
@@ -35,11 +35,16 @@ export async function PUT(req, { params }) {
                     await sql`UPDATE EventPlayers SET "groupPosition" = ${i + 1} WHERE "eventPlayerId" = ${player.eventPlayerId};`;
                 };
             };
-            console.log(groupPositions);
+            const finishedMatchesCount = await sql`
+                SELECT COUNT("matchId")
+                FROM Matches
+                WHERE "groupId" = ${updateMatchQuery.rows[0].groupId}
+                AND "matchStatus" != 'Finished';`;
+                if (Number(finishedMatchesCount.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${updateMatchQuery.rows[0].groupId};`;
         };
     };
 
-    
+
     PusherServer.trigger(params.channel, "update_match", updateMatchQuery.rows[0]);
     return new Response(JSON.stringify(getMatchQuery.rows));
 };

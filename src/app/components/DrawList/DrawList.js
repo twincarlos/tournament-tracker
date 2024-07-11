@@ -7,8 +7,8 @@ import MatchCard from "../MatchCard/MatchCard";
 
 export default function DrawList({ draw }) {
     const { match } = useMatch();
-
     if (!draw.length) return null;
+    
     return (
         <>
             <Modal>
