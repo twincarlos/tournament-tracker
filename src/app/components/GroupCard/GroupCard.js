@@ -2,12 +2,12 @@ import "./GroupCard.css";
 import Link from "next/link";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
-export default function GroupCard({ group }) {
+export default function GroupCard({ group, tournamentId, eventType }) {
     return (
         <div className="card group-card">
             <div className="card-header">
                 <div className="card-header-info">
-                    <Link href={`/tournament/${group.tournamentId}/event/${group.eventType}/${group.eventId}/group/${group.groupId}`} className="icon-button">
+                    <Link href={`/tournament/${tournamentId}/event/${eventType}/${group.eventId}/group/${group.groupId}`} className="icon-button">
                         <i className="fa-regular fa-eye" />
                     </Link>
                     <p>Group {group.groupNumber}</p>

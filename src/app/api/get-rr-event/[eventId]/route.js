@@ -6,10 +6,12 @@ export async function GET(req, { params }) {
     SELECT
     g.*,
     ep.*,
-    p.*
+    p.*,
+    e.*
     FROM Groups g
     JOIN EventPlayers ep ON g."groupId" = ep."groupId"
     JOIN Players p ON ep."playerId" = p."playerId"
+    JOIN Events e ON e."eventId" = g."eventId"
     WHERE g."eventId" = ${params.eventId || params.EventId}
     ORDER BY g."groupNumber" ASC, p."playerRating" DESC;`;
 

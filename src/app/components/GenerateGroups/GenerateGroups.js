@@ -1,4 +1,3 @@
-"use client";
 import "./GenerateGroups.css";
 
 export default function GenerateGroups({ event, setEvent }) {
@@ -11,7 +10,7 @@ export default function GenerateGroups({ event, setEvent }) {
                 'Pragma': 'no-cache',
                 'Expires': '0'
             },
-            body: JSON.stringify({ eventId: event.eventId })
+            body: JSON.stringify({ eventId: event.eventId, matchesDate: event.eventDate, matchesTime: event.eventTime })
         });
         const groups = await response.json();
         setEvent({

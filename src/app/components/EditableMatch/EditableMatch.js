@@ -21,7 +21,7 @@ export default function EditableMatch({ match }) {
                 'Pragma': 'no-cache',
                 'Expires': '0'
             },
-            body: JSON.stringify({ matchId: match.matchId })
+            body: JSON.stringify({ matchId: match.matchId, groupId: match.groupId })
         });
     };
     async function updateGameScore(gameNumber, score) {

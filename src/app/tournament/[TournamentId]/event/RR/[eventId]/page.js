@@ -21,6 +21,22 @@ export default function Event({ params }) {
     const [category, setCategory] = useState("Groups");
     const [modalType, setModalType] = useState(null);
     useFetch(`/api/get-rr-event/${params.eventId || params.EventId}`, setEvent);
+    async function beginGroups(eventId) {
+        await fetch(`/api/begin-groups`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({ eventId })
+        });
+        setEvent({
+            ...event,
+            groups: event.groups.map(group => ({ ...group, groupStatus: "Ready" }))
+        });
+    };
     return (
         <main>
             <Header
@@ -36,12 +52,17 @@ export default function Event({ params }) {
                         }
                     },
                     {
-                        buttonName: "Generate Group",
+                        buttonName: "Generate Groups",
                         buttonClassName: "Secondary",
                         onClickFunction: () => {
                             setModalType("Generate-Groups")
                             setShowModal(true)
                         }
+                    },
+                    {
+                        buttonName: "Begin Groups",
+                        buttonClassName: "Secondary",
+                        onClickFunction: () => beginGroups(event.eventId)
                     }
                 ]}
             />
@@ -66,7 +87,7 @@ export default function Event({ params }) {
                 <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "selected" : ""} tab`}>Players</button>
             </section>
             {
-                category === "Groups" ? <GroupsList groups={event.groups} /> : (
+                category === "Groups" ? <GroupsList tournamentId={params.tournamentId || params.TournamentId} eventType="RR" groups={event.groups} /> : (
                     category === "Draw" ? <DrawList draw={event.draw} /> : (
                         <section className="player-list">
                             {
