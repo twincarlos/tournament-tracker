@@ -9,6 +9,7 @@ import Modal from "@/app/components/Modal/Modal";
 import { useModal } from "@/app/context/ModalContext";
 import CreateEventPlayer from "@/app/components/CreateEventPlayer/CreateEventPlayer";
 import GenerateGroups from "@/app/components/GenerateGroups/GenerateGroups";
+import GenerateDraw from "@/app/components/GenerateDraw/GenerateDraw";
 
 export default function Event({ params }) {
     const { setShowModal } = useModal();
@@ -63,7 +64,15 @@ export default function Event({ params }) {
                         buttonName: "Begin Groups",
                         buttonClassName: "Secondary",
                         onClickFunction: () => beginGroups(event.eventId)
-                    }
+                    },
+                    {
+                        buttonName: "Generate Draw",
+                        buttonClassName: "Secondary",
+                        onClickFunction: () => {
+                            setModalType("Generate-Draw")
+                            setShowModal(true)
+                        }
+                    },
                 ]}
             />
             <Modal>
@@ -74,14 +83,16 @@ export default function Event({ params }) {
                             setEvent={setEvent}
                         />
                     ) : (
-                        <GenerateGroups
-                            event={event}
-                            setEvent={setEvent}
-                        />
+                        modalType === "Generate-Groups" ?
+                            (<GenerateGroups
+                                event={event}
+                                setEvent={setEvent}
+                            />) : <GenerateDraw event={event}
+                                setEvent={setEvent} />
                     )
                 }
-                </Modal>
-                <section className="tabs">
+            </Modal>
+            <section className="tabs">
                 <button onClick={() => setCategory("Groups")} className={`${category === "Groups" ? "selected" : ""} tab`}>Groups</button>
                 <button onClick={() => setCategory("Draw")} className={`${category === "Draw" ? "selected" : ""} tab`}>Draw</button>
                 <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "selected" : ""} tab`}>Players</button>

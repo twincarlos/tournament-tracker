@@ -3,16 +3,28 @@ import { PusherServer } from "../../../../../../../pusher";
 import { determineGroupPositions } from "../utils";
 
 export async function PUT(req, { params }) {
-    const { matchId } = await req.json();
+    const { matchId, groupId } = await req.json();
     const getMatchQuery = await sql`SELECT "player1Verified", "matchStatus", "groupId" FROM Matches WHERE "matchId" = ${matchId}`;
-    const updateMatchQuery = await sql
+    
+    let updateMatchQuery;
+    if (getMatchQuery.rows[0].player1Verified === true) {
+        const matchesInGroupQuery = await sql`SELECT COUNT("matchStatus") FROM Matches WHERE ("groupId" = ${groupId}) AND ("matchStatus" = 'In Progress' OR "matchStatus" = 'Pending' OR "matchStatus" = 'Ready');`;
+        if (Number(matchesInGroupQuery.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${groupId};`;
+
+        updateMatchQuery = await sql
         `UPDATE Matches
-    SET
+        SET
         "player2Verified" = True,
-        "matchStatus" = ${getMatchQuery.rows[0].player1Verified === true ? "Finished" : getMatchQuery.rows[0].matchStatus}
-    WHERE
-        "matchId" = ${matchId}
-    RETURNING *;`;
+        "matchStatus" = "Finished"
+        WHERE "matchId" = ${matchId}
+        RETURNING *;`;
+    } else {
+        updateMatchQuery = await sql
+        `UPDATE Matches
+        SET "player2Verified" = True
+        WHERE "matchId" = ${matchId}
+        RETURNING *;`;
+    };
 
     if (updateMatchQuery.rows[0].matchStatus === "Finished") {
         await sql`

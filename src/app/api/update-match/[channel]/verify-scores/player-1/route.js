@@ -3,17 +3,29 @@ import { PusherServer } from "../../../../../../../pusher";
 import { determineGroupPositions } from "../utils";
 
 export async function PUT(req, { params }) {
-    const { matchId } = await req.json();
+    const { matchId, groupId } = await req.json();
     const getMatchQuery = await sql`SELECT "player2Verified", "matchStatus", "groupId" FROM Matches WHERE "matchId" = ${matchId}`;
-    const updateMatchQuery = await sql
-        `UPDATE Matches
-    SET
-        "player1Verified" = True,
-        "matchStatus" = ${getMatchQuery.rows[0].player2Verified === true ? "Finished" : getMatchQuery.rows[0].matchStatus}
-    WHERE
-        "matchId" = ${matchId}
-    RETURNING *;`;
+    
+    let updateMatchQuery;
+    if (getMatchQuery.rows[0].player2Verified === true) {
+        const matchesInGroupQuery = await sql`SELECT COUNT("matchStatus") FROM Matches WHERE ("groupId" = ${groupId}) AND ("matchStatus" = 'In Progress' OR "matchStatus" = 'Pending' OR "matchStatus" = 'Ready');`;
+        if (Number(matchesInGroupQuery.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${groupId};`;
 
+        updateMatchQuery = await sql
+        `UPDATE Matches
+        SET
+        "player1Verified" = True,
+        "matchStatus" = "Finished"
+        WHERE "matchId" = ${matchId}
+        RETURNING *;`;
+    } else {
+        updateMatchQuery = await sql
+        `UPDATE Matches
+        SET "player1Verified" = True
+        WHERE "matchId" = ${matchId}
+        RETURNING *;`;
+    };
+    
     if (updateMatchQuery.rows[0].matchStatus === "Finished") {
         await sql`
             UPDATE EventPlayers
@@ -40,7 +52,7 @@ export async function PUT(req, { params }) {
                 FROM Matches
                 WHERE "groupId" = ${updateMatchQuery.rows[0].groupId}
                 AND "matchStatus" != 'Finished';`;
-                if (Number(finishedMatchesCount.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${updateMatchQuery.rows[0].groupId};`;
+            if (Number(finishedMatchesCount.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${updateMatchQuery.rows[0].groupId};`;
         };
     };
 
