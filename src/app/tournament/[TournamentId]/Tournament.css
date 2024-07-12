@@ -1,0 +1,14 @@
+.player-list {
+    max-height: 500px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.player {
+    display: grid;
+    grid-template-columns: .15fr .35fr .10fr .10fr;
+}
+
+.player:nth-child(odd) {
+    background: #e1e1e1;
+}

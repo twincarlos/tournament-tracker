@@ -1,0 +1,48 @@
+.register-player-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    gap: 20px;
+}
+
+.register-player-modal .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+}
+
+.register-player-modal .form label {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.register-player-modal .form input {
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.register-player-modal .form fieldset label {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.register-player-modal .form fieldset {
+    width: 200px;
+    padding: 10px;
+}
+
+.register-player-modal .form .checkbox {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}

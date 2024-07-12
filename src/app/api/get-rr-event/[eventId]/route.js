@@ -3,27 +3,11 @@ import { sql } from "@vercel/postgres";
 
 export async function GET(req, { params }) {
     const groupsQuery = await sql`
-    SELECT 
-    g."groupId",
-    g."groupNumber",
-    g."groupStatus",
-    e."tournamentId",
-    e."eventId",
-    e."eventName",
-    e."eventDate",
-    e."eventTime",
-    e."eventType",
-    p."playerId",
-    p."playerName",
-    p."playerRating",
-    p."playerLocation",
-    p."playerClub",
-    ep."eventPlayerId",
-    ep."groupWins",
-    ep."groupLosses",
-    ep."groupPosition"
+    SELECT
+    g.*,
+    ep.*,
+    p.*
     FROM Groups g
-    JOIN Events e ON g."eventId" = e."eventId"
     JOIN EventPlayers ep ON g."groupId" = ep."groupId"
     JOIN Players p ON ep."playerId" = p."playerId"
     WHERE g."eventId" = ${params.eventId || params.EventId}
@@ -31,9 +15,8 @@ export async function GET(req, { params }) {
 
     const groupTablesQuery = await sql`
     SELECT DISTINCT ON (tm."tableId")
-    tm."groupId",
-    t."tableId",
-    t."tableNumber"
+    tm.*,
+    t.*
     FROM TableMatches tm
     JOIN Tables t ON t."tableId" = tm."tableId"
     WHERE tm."eventId" = ${params.eventId || params.EventId} AND tm."groupId" IS NOT NULL;`;
@@ -54,7 +37,8 @@ export async function GET(req, { params }) {
                 playerIsEstimated: group.playerIsEstimated,
                 playerDOB: group.playerDOB,
                 playerLocation: group.playerLocation,
-                playerClub: group.playerClub
+                playerClub: group.playerClub,
+                playerHandicap: group.playerHandicap
             });
         } else {
             const groupTablesInfo = groupTablesQuery.rows.filter(table => table.groupId === group.groupId);
@@ -66,6 +50,7 @@ export async function GET(req, { params }) {
                 eventDate: group.eventDate,
                 eventTime: group.eventTime,
                 eventType: group.eventType,
+                allowUnratedQualify: group.allowUnratedQualify,
                 groupId: group.groupId,
                 groupNumber: group.groupNumber,
                 groupDate: group.groupDate,
@@ -82,7 +67,8 @@ export async function GET(req, { params }) {
                     playerIsEstimated: group.playerIsEstimated,
                     playerDOB: group.playerDOB,
                     playerLocation: group.playerLocation,
-                    playerClub: group.playerClub
+                    playerClub: group.playerClub,
+                    playerHandicap: group.playerHandicap
                 }]
             });
             currentGroupNumber = group.groupNumber;
@@ -154,5 +140,13 @@ export async function GET(req, { params }) {
         };
     };
 
-    return new Response(JSON.stringify({ groups, draw }));
+    const eventPlayersQuery = await sql`
+    SELECT ep.*, p.*
+    FROM EventPlayers ep
+    JOIN Players p ON p."playerId" = ep."playerId"
+    WHERE "eventId" = ${params.eventId || params.EventId}`;
+    const eventQuery = await sql`SELECT * FROM Events WHERE "eventId" = ${params.eventId || params.EventId};`;
+    const allPlayersQuery = await sql`SELECT * FROM Players WHERE "tournamentId" = ${eventQuery.rows[0].tournamentId} ORDER BY "playerRating" DESC;`;
+
+    return new Response(JSON.stringify({ ...eventQuery.rows[0], eventPlayers: eventPlayersQuery.rows, groups, draw, players: allPlayersQuery.rows }));
 };

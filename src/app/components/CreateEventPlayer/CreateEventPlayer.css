@@ -1,0 +1,56 @@
+.create-event-player-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    gap: 20px;
+}
+
+.create-event-player-modal .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+}
+
+.create-event-player-modal .form label {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.create-event-player-modal .form input {
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.create-event-player-modal .form fieldset label {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.create-event-player-modal .form fieldset {
+    width: 100%;
+    padding: 10px;
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.create-event-player-modal .form .checkbox {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.create-event-player-modal-player-details {
+    display: grid;
+    grid-template-columns: .25fr .75fr;
+    width: 100%;
+}
