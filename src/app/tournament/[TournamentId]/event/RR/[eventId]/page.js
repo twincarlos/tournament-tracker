@@ -38,6 +38,23 @@ export default function Event({ params }) {
             groups: event.groups.map(group => ({ ...group, groupStatus: "Ready" }))
         });
     };
+    async function beginRound(round) {
+        const response = await fetch(`/api/begin-round`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({ matchRound: round, eventId: event.eventId })
+        });
+        const draw = await response.json();
+        setEvent({
+            ...event,
+            draw
+        });
+    };
     return (
         <main>
             <Header
@@ -73,6 +90,11 @@ export default function Event({ params }) {
                             setShowModal(true)
                         }
                     },
+                    {
+                        buttonName: "Begin Quarterfilans",
+                        buttonClassName: "Secondary",
+                        onClickFunction: () => beginRound(8)
+                    }
                 ]}
             />
             <Modal>
@@ -87,8 +109,11 @@ export default function Event({ params }) {
                             (<GenerateGroups
                                 event={event}
                                 setEvent={setEvent}
-                            />) : <GenerateDraw event={event}
-                                setEvent={setEvent} />
+                            />) : (
+                                modalType === "Generate-Draw" ?
+                                    <GenerateDraw event={event}
+                                        setEvent={setEvent} /> : null
+                            )
                     )
                 }
             </Modal>

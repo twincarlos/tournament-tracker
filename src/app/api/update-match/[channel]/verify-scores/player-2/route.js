@@ -15,7 +15,7 @@ export async function PUT(req, { params }) {
         `UPDATE Matches
         SET
         "player2Verified" = True,
-        "matchStatus" = "Finished"
+        "matchStatus" = 'Finished'
         WHERE "matchId" = ${matchId}
         RETURNING *;`;
     } else {

@@ -17,7 +17,10 @@ export default function GenerateDraw({ event, setEvent }) {
             body: JSON.stringify({ eventId: event.eventId, playerIds })
         });
         const draw = await response.json();
-        console.log(draw);
+        setEvent({
+            ...event,
+            draw
+        });
     };
     return (
         <div className="create-event-player-modal">

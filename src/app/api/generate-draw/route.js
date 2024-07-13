@@ -23,6 +23,10 @@ export async function POST(req) {
     else if (allPlayerIds.length <= 32) round = 32;
 
     const sequences = generateDraw(round);
+    const winnerIds = [];
+    let currentRound = round;
+
+    // FIRST CHECK
     for (let i = 0; i < sequences.length; i++) {
         const sequence = sequences[i];
         const eventPlayer1Id = allPlayerIds[sequence[0] - 1];
@@ -30,15 +34,15 @@ export async function POST(req) {
         let matchStatus = "Upcoming";
         let winnerId = null;
 
-        if (!eventPlayer1Id && !eventPlayer2Id) {
-            matchStatus = "Finished";
-        } else if (!eventPlayer1Id) {
+        if (!eventPlayer1Id) {
             winnerId = eventPlayer2Id;
             matchStatus = "Finished";
         } else if (!eventPlayer2Id) {
             winnerId = eventPlayer1Id;
             matchStatus = "Finished";
         };
+
+        winnerIds.push(winnerId);
 
         await sql`
             INSERT INTO Matches (
@@ -56,11 +60,56 @@ export async function POST(req) {
             ${eventPlayer2Id},
             'Draw',
             ${i + 1},
-            ${round},
+            ${currentRound},
             ${data.eventId},
             ${winnerId},
             ${matchStatus}
         );`;
+    };
+
+    // SECOND CHECK
+    currentRound = round / 2;
+    if (currentRound >= 2) {
+        for (let i = 0; i < winnerIds.length; i = i + 2) {
+            const winnerId1 = winnerIds[i];
+            const winnerId2 = winnerIds[i + 1];
+            await sql`
+            INSERT INTO Matches (
+            "eventPlayer1Id",
+            "eventPlayer2Id",
+            "matchStage",
+            "matchSequence",
+            "matchRound",
+            "eventId"
+            )
+            VALUES (
+            ${winnerId1},
+            ${winnerId2},
+            'Draw',
+            ${((i + 1) * 2) / 2},
+            ${currentRound},
+            ${data.eventId}
+        );`;
+        };
+    };
+
+    // THIRD CHECK
+    for (currentRound = currentRound / 2; currentRound >= 2; currentRound = currentRound / 2) {
+        for (let sequence = 1; sequence <= currentRound; sequence++) {
+            await sql`
+                INSERT INTO Matches (
+                "matchStage",
+                "matchSequence",
+                "matchRound",
+                "eventId"
+                )
+                VALUES (
+                'Draw',
+                ${sequence},
+                ${currentRound},
+                ${data.eventId}
+            );`;
+        };
     };
 
     const drawQuery = await sql`
