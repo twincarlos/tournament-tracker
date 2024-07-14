@@ -5,22 +5,24 @@ export async function POST(req) {
     const data = await req.json();
     let round;
 
-    const qualifiedPlayers = await sql`
-    SELECT
-    ep."eventPlayerId"
-    FROM
-    EventPlayers ep
-    JOIN Groups g ON g."groupId" = ep."groupId"
-    WHERE (ep."eventId" = ${data.eventId}) AND (ep."groupPosition" = 1 OR ep."groupPosition" = 2)
-    ORDER BY ep."groupPosition" ASC, g."groupNumber" ASC;`;
+    const groupsQuery = await sql`
+    SELECT "groupId", "groupNumber" FROM Groups WHERE "eventId" = ${data.eventId}  ORDER BY "groupNumber" ASC;`;
 
-    const qualifiedPlayersIds = qualifiedPlayers.rows.map(qualifiedPlayer => qualifiedPlayer.eventPlayerId);
-    const allPlayerIds = [...qualifiedPlayersIds, ...data.playerIds];
+    const firstQualifiedPlayersIds = [];
+    const secondQualifiedPlayersIds = [];
 
-    if (allPlayerIds.length <= 4) round = 4;
-    else if (allPlayerIds.length <= 8) round = 8;
-    else if (allPlayerIds.length <= 16) round = 16;
-    else if (allPlayerIds.length <= 32) round = 32;
+    for (const group of groupsQuery.rows) {
+        const qualifiedPlayers = await sql`SELECT ep."eventPlayerId", p."playerIsEstimated" FROM EventPlayers ep JOIN Players p ON p."playerId" = ep."playerId" WHERE ep."groupId" = ${group.groupId} AND p."playerIsEstimated" = False ORDER BY ep."groupPosition" ASC LIMIT 2;`;
+        firstQualifiedPlayersIds.push(qualifiedPlayers.rows[0].eventPlayerId);
+        secondQualifiedPlayersIds.push(qualifiedPlayers.rows[1].eventPlayerId);
+    };
+
+    const qualifiedPlayersIds = [...firstQualifiedPlayersIds, ...secondQualifiedPlayersIds];
+
+    if (qualifiedPlayersIds.length <= 4) round = 4;
+    else if (qualifiedPlayersIds.length <= 8) round = 8;
+    else if (qualifiedPlayersIds.length <= 16) round = 16;
+    else if (qualifiedPlayersIds.length <= 32) round = 32;
 
     const sequences = generateDraw(round);
     const winnerIds = [];
@@ -29,8 +31,8 @@ export async function POST(req) {
     // FIRST CHECK
     for (let i = 0; i < sequences.length; i++) {
         const sequence = sequences[i];
-        const eventPlayer1Id = allPlayerIds[sequence[0] - 1];
-        const eventPlayer2Id = allPlayerIds[sequence[1] - 1];
+        const eventPlayer1Id = qualifiedPlayersIds[sequence[0] - 1];
+        const eventPlayer2Id = qualifiedPlayersIds[sequence[1] - 1];
         let matchStatus = "Upcoming";
         let winnerId = null;
 

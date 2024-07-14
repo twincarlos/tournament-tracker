@@ -12,12 +12,8 @@ export default function EventCard({ event }) {
                         new Date(event.eventDate).toLocaleDateString('en-US', {
                             weekday: 'long',
                             month: 'long',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric',
-                            hour12: true,
-                            timeZone: 'UTC'
-                        }).split(" at ").join(" • ")
+                            day: 'numeric'
+                        })
                     }
                 </p>
             </div>
