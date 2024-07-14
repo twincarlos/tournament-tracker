@@ -7,8 +7,6 @@ import { useSubscribe } from '@/app/hooks/useSubscribe';
 export default function EditableMatch({ match }) {
     const { setMatch } = useMatch();
 
-    if (!match) return null;
-
     useSubscribe(
         `match_${match.matchId}`,
         "update_match",

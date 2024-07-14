@@ -14,7 +14,7 @@ export default function DrawList({ event }) {
         <>
             <Modal>
                 {
-                    match?.matchStatus === "Finished" ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
+                    match ? (match.matchStatus === "Finished" ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />) : null
                 }
             </Modal>
             <section className={`draw-list draw-of-${event.draw[0][0].matchRound}`}>
