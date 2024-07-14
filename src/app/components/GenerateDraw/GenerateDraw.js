@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function GenerateDraw({ event, setEvent }) {
     const [keyword, setKeyword] = useState("");
-    const [playerIds, setPlayerIds] = useState([]);
+    const [generateThirdPlace, setGenerateThirdPlace] = useState(false);
     async function onSubmit() {
         const response = await fetch(`/api/generate-draw`, {
             method: "POST",
@@ -14,7 +14,7 @@ export default function GenerateDraw({ event, setEvent }) {
                 'Pragma': 'no-cache',
                 'Expires': '0'
             },
-            body: JSON.stringify({ eventId: event.eventId, playerIds })
+            body: JSON.stringify({ eventId: event.eventId, generateThirdPlace })
         });
         const draw = await response.json();
         setEvent({
@@ -25,24 +25,7 @@ export default function GenerateDraw({ event, setEvent }) {
     return (
         <div className="create-event-player-modal">
             <div className="form">
-                <fieldset onChange={e => playerIds.includes(e.target.value) ? setPlayerIds(playerIds.filter(playerId => playerId !== e.target.value)) : setPlayerIds([...playerIds, e.target.value])}>
-                    <legend>Select Players:</legend>
-                    {
-                        event.players.map(player => (
-                            <label key={player.playerId}>
-                                <input type="checkbox" value={player.playerId}  />
-                                <div className="create-event-player-modal-player-details">
-                                    <p>
-                                        {player.playerRating}
-                                    </p>
-                                    <p>
-                                        {player.playerName}
-                                    </p>
-                                </div>
-                            </label>
-                        ))
-                    }
-                </fieldset>
+                <input type="checkbox" value={generateThirdPlace} onChange={e => setGenerateThirdPlace(!generateThirdPlace)} />
                 <button type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>
