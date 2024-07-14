@@ -51,7 +51,7 @@ export default function DrawMatchCard({ match, inModal }) {
                         </div>
                         <div className="draw-card-detail">
                             <span className="card-bubble">{match.matchStatus}</span>
-                            <p>{translateRound(match.matchRound)}</p>
+                            <p>{(translateRound(match.matchRound) === "Finals" && match.matchSequence === 2) ? "Third Place" :  translateRound(match.matchRound)}</p>
                         </div>
                     </div>
                 </div>

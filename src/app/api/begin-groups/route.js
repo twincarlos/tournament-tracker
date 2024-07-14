@@ -1,3 +1,4 @@
+export const fetchCache = 'force-no-store';
 import { sql } from "@vercel/postgres";
 
 export async function PUT(req) {

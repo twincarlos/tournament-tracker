@@ -6,11 +6,15 @@ import { useSubscribe } from '@/app/hooks/useSubscribe';
 
 export default function EditableMatch({ match }) {
     const { setMatch } = useMatch();
+
+    if (!match) return null;
+
     useSubscribe(
         `match_${match.matchId}`,
         "update_match",
         data => setMatch({ ...match, ...data })
     );
+    
     async function playerCheckIn(playerNumber) {
         setMatch({ ...match, [`player${playerNumber}Ready`]: true });
         await fetch(`/api/update-match/match_${match.matchId}/player-check-in/player-${playerNumber}`, {

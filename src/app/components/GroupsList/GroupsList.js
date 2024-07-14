@@ -1,11 +1,11 @@
 import "./GroupsList.css";
 import GroupCard from "../GroupCard/GroupCard";
 
-export default function GroupsList({ groups, tournamentId, eventType }) {
+export default function GroupsList({ event }) {
     return (
         <section className="gallery groups-list">
             {
-                groups.map(group =>  <GroupCard key={group.groupId} tournamentId={tournamentId} eventType={eventType} group={group} />)
+                event.groups.map(group =>  <GroupCard key={group.groupId} tournamentId={event.tournamentId} eventType={event.eventType} group={group} />)
             }
         </section>
     );

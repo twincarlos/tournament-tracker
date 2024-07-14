@@ -1,3 +1,4 @@
+export const fetchCache = 'force-no-store';
 import { sql } from "@vercel/postgres";
 import { generateGroups, orderOfPlay } from "./utils";
 

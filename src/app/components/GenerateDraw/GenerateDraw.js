@@ -2,8 +2,7 @@
 import "./GenerateDraw.css";
 import { useState } from "react";
 
-export default function GenerateDraw({ event, setEvent }) {
-    const [keyword, setKeyword] = useState("");
+export default function GenerateDraw({ event, setEvent, setShowModal }) {
     const [generateThirdPlace, setGenerateThirdPlace] = useState(false);
     async function onSubmit() {
         const response = await fetch(`/api/generate-draw`, {
@@ -21,11 +20,15 @@ export default function GenerateDraw({ event, setEvent }) {
             ...event,
             draw
         });
+        setShowModal(false);
     };
     return (
         <div className="create-event-player-modal">
             <div className="form">
-                <input type="checkbox" value={generateThirdPlace} onChange={e => setGenerateThirdPlace(!generateThirdPlace)} />
+                <label>
+                    <input type="checkbox" onChange={() => setGenerateThirdPlace(!generateThirdPlace)} />
+                    Generate third place match
+                </label>
                 <button type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>

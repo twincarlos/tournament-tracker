@@ -1,10 +1,11 @@
+export const fetchCache = 'force-no-store';
 import { sql } from "@vercel/postgres";
 import { PusherServer } from "../../../../../../../pusher";
 import { determineGroupPositions } from "../utils";
 
 export async function PUT(req, { params }) {
     const { matchId, groupId } = await req.json();
-    const getMatchQuery = await sql`SELECT "player2Verified", "matchStatus", "groupId" FROM Matches WHERE "matchId" = ${matchId}`;
+    const getMatchQuery = await sql`SELECT "player2Verified", "matchStatus", "groupId", "matchStage", "matchRound", "matchSequence", "winnerId", "loserId", "eventId" FROM Matches WHERE "matchId" = ${matchId}`;
     let updateMatchQuery;
 
     if (getMatchQuery.rows[0].matchStage === "Groups") {
@@ -67,25 +68,25 @@ export async function PUT(req, { params }) {
             RETURNING *;`;
 
             let nextMatchSequence;
-            if (getMatchQuery.rows[0].matchRound % 2 === 0) {
-                nextMatchSequence = getMatchQuery.rows[0].matchRound / 2;
+            if (getMatchQuery.rows[0].matchSequence % 2 === 0) {
+                nextMatchSequence = getMatchQuery.rows[0].matchSequence / 2;
             } else {
-                nextMatchSequence = (getMatchQuery.rows[0].matchRound + 1) / 2;
+                nextMatchSequence = (getMatchQuery.rows[0].matchSequence + 1) / 2;
             };
 
             if (getMatchQuery.rows[0].matchRound > 2) {
                 if (getMatchQuery.rows[0].matchSequence % 2 === 0) {
-                    await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`; 
-                } else {
                     await sql`UPDATE Matches SET "eventPlayer2Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`; 
+                } else {
+                    await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`; 
                 };
             };
 
             if (getMatchQuery.rows[0].matchRound === 4) {
                 if (getMatchQuery.rows[0].matchSequence % 2 === 0) {
-                    await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].loserId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = 2`;
-                } else {
                     await sql`UPDATE Matches SET "eventPlayer2Id" = ${getMatchQuery.rows[0].loserId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = 2`;
+                } else {
+                    await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].loserId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = 2`;
                 };
             };
             

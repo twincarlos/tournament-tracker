@@ -1,3 +1,4 @@
+export const fetchCache = 'force-no-store';
 import { sql } from "@vercel/postgres";
 import { generateDraw } from "./utils";
 
@@ -71,7 +72,8 @@ export async function POST(req) {
 
     // SECOND CHECK
     currentRound = round / 2;
-    if (currentRound >= 2) {
+    if (currentRound > 2) {
+        let counter = 1;
         for (let i = 0; i < winnerIds.length; i = i + 2) {
             const winnerId1 = winnerIds[i];
             const winnerId2 = winnerIds[i + 1];
@@ -88,16 +90,18 @@ export async function POST(req) {
             ${winnerId1},
             ${winnerId2},
             'Draw',
-            ${((i + 1) * 2) / 2},
+            ${counter},
             ${currentRound},
             ${data.eventId}
         );`;
+        counter++;
         };
     };
 
     // THIRD CHECK
     for (currentRound = currentRound / 2; currentRound >= 2; currentRound = currentRound / 2) {
-        for (let sequence = 1; sequence <= currentRound; sequence++) {
+        console.log(currentRound)
+        for (let sequence = 1; sequence <= currentRound / 2; sequence++) {
             await sql`
                 INSERT INTO Matches (
                 "matchStage",
@@ -114,7 +118,6 @@ export async function POST(req) {
         };
     };
 
-    // GENERATE THRID PLACE IF REQUESTED
     if (data.generateThirdPlace) {
         await sql`
                 INSERT INTO Matches (

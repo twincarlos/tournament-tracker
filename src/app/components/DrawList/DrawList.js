@@ -5,9 +5,10 @@ import { useMatch } from "@/app/context/MatchContext";
 import EditableMatch from "../EditableMatch/EditableMatch";
 import MatchCard from "../MatchCard/MatchCard";
 
-export default function DrawList({ draw }) {
+export default function DrawList({ event }) {
     const { match } = useMatch();
-    if (!draw.length) return null;
+
+    if (!event.draw.length) return null;
     
     return (
         <>
@@ -16,9 +17,9 @@ export default function DrawList({ draw }) {
                     match?.matchStatus === "Finished" ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
                 }
             </Modal>
-            <section className={`draw-list draw-of-${draw[0][0].matchRound}`}>
+            <section className={`draw-list draw-of-${event.draw[0][0].matchRound}`}>
                 {
-                    draw.map((drawRound, index) => (
+                    event.draw.map((drawRound, index) => (
                         <div key={drawRound[0].matchId} className={`draw-round round-of-${drawRound[0].matchRound} column-${index + 1}`}>
                             {
                                 drawRound.map(drawMatch => (

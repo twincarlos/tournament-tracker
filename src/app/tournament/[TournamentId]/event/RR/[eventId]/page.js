@@ -89,11 +89,6 @@ export default function Event({ params }) {
                             setModalType("Generate-Draw")
                             setShowModal(true)
                         }
-                    },
-                    {
-                        buttonName: "Begin Quarterfilans",
-                        buttonClassName: "Secondary",
-                        onClickFunction: () => beginRound(8)
                     }
                 ]}
             />
@@ -112,7 +107,7 @@ export default function Event({ params }) {
                             />) : (
                                 modalType === "Generate-Draw" ?
                                     <GenerateDraw event={event}
-                                        setEvent={setEvent} /> : null
+                                        setEvent={setEvent} setShowModal={setShowModal} /> : null
                             )
                     )
                 }
@@ -123,8 +118,8 @@ export default function Event({ params }) {
                 <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "selected" : ""} tab`}>Players</button>
             </section>
             {
-                category === "Groups" ? <GroupsList tournamentId={params.tournamentId || params.TournamentId} eventType="RR" groups={event.groups} /> : (
-                    category === "Draw" ? <DrawList draw={event.draw} /> : (
+                category === "Groups" ? <GroupsList event={event} /> : (
+                    category === "Draw" ? <DrawList event={event} /> : (
                         <section className="player-list">
                             {
                                 event.eventPlayers.map(eventPlayer => (
