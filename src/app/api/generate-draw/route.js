@@ -114,6 +114,23 @@ export async function POST(req) {
         };
     };
 
+    // GENERATE THRID PLACE IF REQUESTED
+    if (data.generateThirdPlace) {
+        await sql`
+                INSERT INTO Matches (
+                "matchStage",
+                "matchSequence",
+                "matchRound",
+                "eventId"
+                )
+                VALUES (
+                'Draw',
+                2,
+                2,
+                ${data.eventId}
+            );`;
+    };
+
     const drawQuery = await sql`
     SELECT
     m.*,
