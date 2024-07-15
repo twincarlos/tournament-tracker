@@ -48,14 +48,14 @@ export async function POST(req) {
             "matchTime",
             "matchStage",
             "matchSequence",
-            "eventId"
+            "eventId",
             )
             VALUES (
             ${group.groupId},
             ${group.groupPlayers[matchSequence[0] - 1].eventPlayerId},
             ${group.groupPlayers[matchSequence[1] - 1].eventPlayerId},
-            ${data.matchesDate},
-            ${data.matchesTime},
+            ${data.groupsDate},
+            ${data.groupsTime},
             'Groups',
             ${i + 1},
             ${eventId}

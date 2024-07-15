@@ -128,3 +128,7 @@ input[type=number]::-webkit-outer-spin-button {
 .card-header .icon-button {
   color: white;
 }
+
+.admin-edit-button {
+  padding: 10px;
+}

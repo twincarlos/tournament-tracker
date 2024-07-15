@@ -50,24 +50,27 @@ export async function GET(req, { params }) {
         m."groupId" = ${params.groupId || params.GroupId}
     ORDER BY 
         m."matchSequence";`;
-    
-    const tablesQuery = await sql`
-    SELECT
-    t."tableId",
-    t."tableNumber",
-    tm."matchId"
-    FROM TableMatches tm
-    JOIN Tables t ON t."tableId" = tm."tableId"
-    WHERE tm."groupId" = ${params.groupId || params.GroupId};`;
 
-    const groupMatches = [];
+    const matchesTablesQuery = await sql`
+        SELECT t.*, tm.*
+        FROM Groups g
+        JOIN Matches m ON m."groupId" = g."groupId"
+        JOIN TableMatches tm ON tm."matchId" = m."matchId"
+        JOIN Tables t ON t."tableId" = tm."tableId"
+        WHERE m."groupId" = ${params.groupId || params.GroupId}
+        ORDER BY m."matchSequence" ASC, t."tableNumber" ASC`;
 
-    for (const groupMatch of matchesQuery.rows) {
-        groupMatches.push({
-            ...groupMatch,
-            tables: tablesQuery.rows.filter(table => table.matchId === groupMatch.matchId)
-        });
+    for (const match of matchesQuery.rows) {
+        for (const table of matchesTablesQuery.rows) {
+            if (table.matchId === match.matchId) {
+                if (match.tables) {
+                    match.tables.push(table);
+                } else {
+                    match.tables = [table];
+                };
+            };
+        };
     };
 
-    return new Response(JSON.stringify(groupMatches));
+    return new Response(JSON.stringify(matchesQuery.rows));
 };

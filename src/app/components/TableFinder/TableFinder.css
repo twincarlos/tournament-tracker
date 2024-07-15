@@ -1,0 +1,32 @@
+.table-finder {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-button {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.table-button.selected {
+    border: 2px solid blue !important;
+}
+
+.table-button.occupied {
+    border: 2px solid red;
+}
+
+.table-finder-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

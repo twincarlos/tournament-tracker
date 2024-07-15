@@ -15,18 +15,32 @@ export async function GET(req, { params }) {
     WHERE g."eventId" = ${params.eventId || params.EventId}
     ORDER BY g."groupNumber" ASC, p."playerRating" DESC;`;
 
-    const groupTablesQuery = await sql`
-    SELECT DISTINCT ON (tm."tableId")
-    tm.*,
-    t.*
-    FROM TableMatches tm
-    JOIN Tables t ON t."tableId" = tm."tableId"
-    WHERE tm."eventId" = ${params.eventId || params.EventId} AND tm."groupId" IS NOT NULL;`;
+    const groupTables = [];
+    for (let i = 0; i < groupsQuery.rows.length; i++) {
+        const group = groupsQuery.rows[i];
+        const groupTablesQuery = await sql`
+        SELECT t.*, tm.*
+        FROM Groups g
+        JOIN Matches m ON m."groupId" = g."groupId"
+        JOIN TableMatches tm ON tm."matchId" = m."matchId"
+        JOIN Tables t ON t."tableId" = tm."tableId"
+        WHERE m."groupId" = ${group.groupId}
+        ORDER BY t."tableNumber" ASC`;
+        for (const table of groupTablesQuery.rows) {
+            if (groupTables[i]) {
+                if (groupTables[i][groupTables[i].length - 1].tableId !== table.tableId) {
+                    groupTables[i].push(table);
+                };
+            } else {
+                groupTables.push([table]);
+            };
+        };
+    };
 
     const groups = [];
     let currentGroupNumber;
-
-    for (const group of groupsQuery.rows) {
+    for (let i = 0; i < groupsQuery.rows.length; i++) {
+        const group = groupsQuery.rows[i];
         if (currentGroupNumber === group.groupNumber) {
             groups[groups.length - 1].groupPlayers.push({
                 playerId: group.playerId,
@@ -43,9 +57,8 @@ export async function GET(req, { params }) {
                 playerHandicap: group.playerHandicap
             });
         } else {
-            const groupTablesInfo = groupTablesQuery.rows.filter(table => table.groupId === group.groupId);
             groups.push({
-                tables: groupTablesInfo,
+                tables: groupTables[i] || [],
                 tournamentId: group.tournamentId,
                 eventId: group.eventId,
                 eventName: group.eventName,
@@ -104,9 +117,7 @@ export async function GET(req, { params }) {
     ep2."groupPosition" AS "player2GroupPosition",
     e."tournamentId",
     e."eventId",
-    e."eventName",
-    t."tableId",
-    t."tableNumber"
+    e."eventName"
     FROM
         Matches m
     FULL OUTER JOIN 
@@ -119,10 +130,6 @@ export async function GET(req, { params }) {
         Players p2 ON ep2."playerId" = p2."playerId"
     JOIN
         Events e ON  e."eventId" = m."eventId"
-    FULL OUTER JOIN
-        TableMatches tm ON tm."matchId" = m."matchId"
-    FULL OUTER JOIN
-        Tables t ON t."tableId" = tm."tableId"
     WHERE 
         e."eventId" = ${params.eventId || params.EventId}
     AND
@@ -130,15 +137,29 @@ export async function GET(req, { params }) {
     ORDER BY 
         m."matchRound" DESC, m."matchSequence" ASC;`;
     
+    const drawTablesQuery = await sql`
+    SELECT t.*, tm.*
+    FROM TableMatches tm
+    JOIN Tables t ON t."tableId" = tm."tableId"
+    JOIN Matches m ON m."matchId" = tm."matchId"
+    WHERE m."eventId" = ${params.eventId || params.EventId} AND m."matchStage" = 'Draw'
+    ORDER BY m."matchRound" DESC, m."matchSequence" ASC;`;
+    
     const draw = [];
-    for (const drawMatch of drawQuery.rows) {
-        if (draw.length === 0) {
-            draw.push([drawMatch]);
-        }
-        else if (draw[draw.length - 1][0].matchRound === drawMatch.matchRound) {
-            draw[draw.length - 1].push(drawMatch);
+    for (let i = 0; i < drawQuery.rows.length; i++) {
+        draw.push({...drawQuery.rows[i], tables: drawTablesQuery.rows[i] ? [drawTablesQuery.rows[i]] : []});
+    };
+
+    const orderedDraw = [];
+    for (const match of draw) {
+        if (orderedDraw.length === 0) {
+            orderedDraw.push([match]);
         } else {
-            draw.push([drawMatch]);
+            if (orderedDraw[orderedDraw.length - 1][0].matchRound === match.matchRound) {
+                orderedDraw[orderedDraw.length - 1].push(match);
+            } else {
+                orderedDraw.push([match]);
+            };
         };
     };
 
@@ -150,5 +171,5 @@ export async function GET(req, { params }) {
     const eventQuery = await sql`SELECT * FROM Events WHERE "eventId" = ${params.eventId || params.EventId};`;
     const allPlayersQuery = await sql`SELECT * FROM Players WHERE "tournamentId" = ${eventQuery.rows[0].tournamentId} ORDER BY "playerRating" DESC;`;
 
-    return new Response(JSON.stringify({ ...eventQuery.rows[0], eventPlayers: eventPlayersQuery.rows, groups, draw, players: allPlayersQuery.rows }));
+    return new Response(JSON.stringify({ ...eventQuery.rows[0], eventPlayers: eventPlayersQuery.rows, groups, draw: orderedDraw, players: allPlayersQuery.rows }));
 };

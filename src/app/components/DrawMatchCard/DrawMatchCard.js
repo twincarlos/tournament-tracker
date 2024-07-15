@@ -21,7 +21,7 @@ export default function DrawMatchCard({ match, inModal }) {
             return `Round of ${round}`;
         };
     };
-    
+
     return (
         <div className="card draw-card">
             <div className="card-header">
@@ -47,11 +47,17 @@ export default function DrawMatchCard({ match, inModal }) {
                     <div className="draw-card-header-info">
                         <div className="draw-card-detail">
                             <p>{match.eventName}</p>
-                            <p>{match.tableNumber ? `Table ${match.tableNumber}` : 'No Table'}</p>
+                            <span className="card-bubble">{match.matchStatus}</span>
                         </div>
                         <div className="draw-card-detail">
-                            <span className="card-bubble">{match.matchStatus}</span>
-                            <p>{(translateRound(match.matchRound) === "Finals" && match.matchSequence === 2) ? "Third Place" :  translateRound(match.matchRound)}</p>
+                            <p>{(translateRound(match.matchRound) === "Finals" && match.matchSequence === 2) ? "Third Place" : translateRound(match.matchRound)}</p>
+                            <p>
+                                {
+                                    match.tables && match.tables.length > 0 ? (
+                                        `Table${match.tables.length > 1 ? "s" : ""} ${match.tables.map(table => table.tableNumber).join(", ")}`
+                                    ) : "No table"
+                                }
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -77,7 +83,7 @@ export default function DrawMatchCard({ match, inModal }) {
                     }
                 </div>
                 <div className="player-section">
-                <div className="player-games-won">
+                    <div className="player-games-won">
                         {match.player2GamesWon}
                     </div>
                     <PlayerInfo player={{

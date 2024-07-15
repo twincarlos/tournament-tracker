@@ -7,18 +7,27 @@ import MatchCard from "@/app/components/MatchCard/MatchCard";
 import EditableMatch from "@/app/components/EditableMatch/EditableMatch";
 import Modal from "@/app/components/Modal/Modal";
 import Header from "@/app/components/Header/Header";
+import TableFinder from "@/app/components/TableFinder/TableFinder";
+import MatchSettings from "@/app/components/MatchSettings/MatchSettings";
 
 export default function Group({ params }) {
     const [matches, setMatches] = useState([]);
     const { match } = useMatch();
     useFetch(`/api/get-all-group-matches/${params.groupId || params.GroupId}`, setMatches);
+
     return (
         <main>
             <Header backLink={`/tournament/${params.tournamentId || params.TournamentId}/event/RR/${params.eventId || params.EventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             <Modal>
-                {
-                    match?.matchStatus === "Finished" ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
-                }
+                <div className="admin-modal">
+                    {
+                        (match?.matchStatus === "Finished" || match?.matchStatus === "Upcoming") ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
+                    }
+                    <div className="match-settings">
+                        <TableFinder tournamentId={params.tournamentId || params.TournamentId} matchId={match?.matchId} />
+                        <MatchSettings matchId={match?.matchId} />
+                    </div>
+                </div>
             </Modal>
             <section className="column">
                 {

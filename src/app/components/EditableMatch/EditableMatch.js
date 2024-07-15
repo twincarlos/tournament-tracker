@@ -62,14 +62,14 @@ export default function EditableMatch({ match }) {
                         <span className="card-bubble">{match.matchStatus}</span>
                     </div>
                     <div className="card-header-tables">
-                        <p>
-                            {
-                                (match.tables && match.tables.length > 0) ? (
-                                    `Table${match.tables.length > 1 ? "s" : ""} ${match.tables.map(table => table.tableNumber).join(", ")}`
-                                ) : (match.tableNumber ? match.tableNumber : "No table")
-                            }
-                        </p>
-                    </div>
+                    <p>
+                        {
+                            match.tables && match.tables.length > 0 ? (
+                                `Table${match.tables.length > 1 ? "s" : ""} ${match.tables.map(table => table.tableNumber).join(", ")}`
+                            ) : "No table"
+                        }
+                    </p>
+                </div>
                 </div>
                 <div className="match-card-body">
                     <div className="player-section">

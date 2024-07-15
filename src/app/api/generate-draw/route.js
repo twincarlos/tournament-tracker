@@ -100,7 +100,6 @@ export async function POST(req) {
 
     // THIRD CHECK
     for (currentRound = currentRound / 2; currentRound >= 2; currentRound = currentRound / 2) {
-        console.log(currentRound)
         for (let sequence = 1; sequence <= currentRound / 2; sequence++) {
             await sql`
                 INSERT INTO Matches (
