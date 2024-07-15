@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { MatchProvider } from "./context/MatchContext";
 import { ModalProvider } from "./context/ModalContext";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         <ModalProvider>
           <MatchProvider>
             {children}
+            <SpeedInsights />
           </MatchProvider>
         </ModalProvider>
       </body>
