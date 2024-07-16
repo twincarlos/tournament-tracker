@@ -12,9 +12,9 @@ export async function PUT(req, { params }) {
         if (getMatchQuery.rows[0].player2Verified === true) {
             const matchesInGroupQuery = await sql`SELECT COUNT("matchStatus") FROM Matches WHERE ("groupId" = ${groupId}) AND ("matchStatus" = 'In Progress' OR "matchStatus" = 'Pending' OR "matchStatus" = 'Ready');`;
             if (Number(matchesInGroupQuery.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${groupId};`;
-    
+
             updateMatchQuery = await sql
-            `UPDATE Matches
+                `UPDATE Matches
             SET
             "player1Verified" = True,
             "matchStatus" = 'Finished'
@@ -22,12 +22,12 @@ export async function PUT(req, { params }) {
             RETURNING *;`;
         } else {
             updateMatchQuery = await sql
-            `UPDATE Matches
+                `UPDATE Matches
             SET "player1Verified" = True
             WHERE "matchId" = ${matchId}
             RETURNING *;`;
         };
-    
+
         if (updateMatchQuery.rows[0].matchStatus === "Finished") {
             await sql`
                     UPDATE EventPlayers
@@ -52,15 +52,24 @@ export async function PUT(req, { params }) {
                     FROM Matches
                     WHERE "groupId" = ${groupId}
                     AND "matchStatus" != 'Finished';`;
-            if (Number(finishedMatchesCount.rows[0].count) === 0) await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${groupId};`;
+            if (Number(finishedMatchesCount.rows[0].count) === 0) {
+                await sql`UPDATE Groups SET "groupStatus" = 'Finished' WHERE "groupId" = ${groupId};`;
+
+                const finishedGroupsCount = await sql`
+                SELECT COUNT("groupId")
+                FROM Groups
+                WHERE "eventId" = ${getMatchQuery.rows[0].eventId}
+                AND "matchStatus" != 'Finished';`;
+                if (Number(finishedGroupsCount.rows[0].count) === 0) await sql `UPDATE Event SET "eventStatus" = 'Pending' WHERE "eventId" = ${getMatchQuery.rows[0].eventId};`;
+            };
         };
-        
+
     }
 
     else {
         if (getMatchQuery.rows[0].player2Verified === true) {
             updateMatchQuery = await sql
-            `UPDATE Matches
+                `UPDATE Matches
             SET
             "player1Verified" = True,
             "matchStatus" = 'Finished'
@@ -76,9 +85,9 @@ export async function PUT(req, { params }) {
 
             if (getMatchQuery.rows[0].matchRound > 2) {
                 if (getMatchQuery.rows[0].matchSequence % 2 === 0) {
-                    await sql`UPDATE Matches SET "eventPlayer2Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`; 
+                    await sql`UPDATE Matches SET "eventPlayer2Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`;
                 } else {
-                    await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`; 
+                    await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].winnerId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = ${nextMatchSequence}`;
                 };
             };
 
@@ -89,10 +98,10 @@ export async function PUT(req, { params }) {
                     await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].loserId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = 2`;
                 };
             };
-            
+
         } else {
             updateMatchQuery = await sql
-            `UPDATE Matches
+                `UPDATE Matches
             SET "player1Verified" = True
             WHERE "matchId" = ${matchId}
             RETURNING *;`;

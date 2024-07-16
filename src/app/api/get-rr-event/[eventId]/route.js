@@ -146,8 +146,14 @@ export async function GET(req, { params }) {
     ORDER BY m."matchRound" DESC, m."matchSequence" ASC;`;
     
     const draw = [];
-    for (let i = 0; i < drawQuery.rows.length; i++) {
-        draw.push({...drawQuery.rows[i], tables: drawTablesQuery.rows[i] ? [drawTablesQuery.rows[i]] : []});
+    for (const drawMatch of drawQuery.rows) {
+        const drawTables = [];
+        for (const drawTable of drawTablesQuery.rows) {
+            if (drawMatch.matchId === drawTable.matchId) {
+                drawTables.push(drawTable);
+            }
+        };
+        draw.push({ ...drawMatch, tables: drawTables });
     };
 
     const orderedDraw = [];

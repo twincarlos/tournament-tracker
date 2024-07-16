@@ -198,5 +198,7 @@ export async function POST(req) {
         };
     };
 
+    await sql`UPDATE Events SET "eventStage" = 'Draw' WHERE "eventId" = ${data.eventId};`;
+
     return new Response(JSON.stringify(draw));
 };

@@ -79,7 +79,7 @@ export default function RegisterPlayer({ tournament, setTournament, tournamentId
                     <input type="checkbox" value={data.playerIsEstimated} onChange={e => setData({ ...data, playerIsEstimated: e.target.value })} />
                     Player rating is estimated
                 </label>
-                <button type="submit" onClick={onSubmit}>Submit</button>
+                <button className="Primary" type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>
     );

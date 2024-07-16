@@ -15,10 +15,9 @@ export default function Tournament({ params }) {
         events: [],
         players: []
     });
-    const [modalType, setModalType] = useState(null);
     const [category, setCategory] = useState("Players");
     useFetch(`/api/get-tournament/${params.tournamentId || params.TournamentId}`, setTournament);
-    const { setShowModal } = useModal();
+    const { showModal, setShowModal } = useModal();
     return (
         <main>
             <Header
@@ -28,35 +27,24 @@ export default function Tournament({ params }) {
                     {
                         buttonName: "+ Create Event",
                         buttonClassName: "Primary",
-                        onClickFunction: () => {
-                            setModalType("Create-Event")
-                            setShowModal(true)
-                        }
+                        onClickFunction: () => setShowModal("Create Event")
                     },
                     {
                         buttonName: "Register Player",
                         buttonClassName: "Secondary",
-                        onClickFunction: () => {
-                            setModalType("Register-Player")
-                            setShowModal(true)
-                        }
+                        onClickFunction: () => setShowModal("Register Player")
                     }
                 ]}
             />
-            <Modal>
-                {
-                    modalType === "Create-Event" ? (
-                        <CreateEvent tournament={tournament} setTournament={setTournament} tournamentId={tournament.tournamentId} />
-                    ) : (
-                        modalType === "Register-Player" ? (
-                            <RegisterPlayer tournament={tournament} setTournament={setTournament} tournamentId={tournament.tournamentId} />
-                        ) : null
-                    )
-                }
-            </Modal>
+            {showModal === "Create Event" && <Modal>
+                <CreateEvent tournament={tournament} setTournament={setTournament} tournamentId={tournament.tournamentId} />
+            </Modal>}
+            {showModal === "Register Player" && <Modal>
+            <RegisterPlayer tournament={tournament} setTournament={setTournament} tournamentId={tournament.tournamentId} />
+            </Modal>}
             <section className="tabs">
-                <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "selected" : ""} tab`}>Players</button>
-                <button onClick={() => setCategory("Events")} className={`${category === "Events" ? "selected" : ""} tab`}>Events</button>
+                <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "Primary" : "Secondary"}`}>Players</button>
+                <button onClick={() => setCategory("Events")} className={`${category === "Events" ? "Primary" : "Secondary"}`}>Events</button>
             </section>
             {
                 category === "Players" ? (
@@ -73,7 +61,7 @@ export default function Tournament({ params }) {
                         }
                     </section>
                 ) : (
-                    <section className="gallery">
+                    <section>
                         {
                             tournament.events.map(event => (
                                 <Link className="card event-card event-link" href={`/tournament/${tournament.tournamentId}/event/${event.eventType}/${event.eventId}`} key={event.eventId}>

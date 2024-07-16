@@ -37,3 +37,7 @@
 .column-5 {
     top: 1000px;
 }
+
+.draw-round.round-of-2 {
+    gap: 150px;
+}

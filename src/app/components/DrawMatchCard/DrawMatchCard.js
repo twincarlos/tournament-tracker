@@ -38,7 +38,7 @@ export default function DrawMatchCard({ match, inModal }) {
                                 });
                                 const updatedMatch = await response.json();
                                 setMatch({ ...match, ...updatedMatch });
-                                setShowModal(true);
+                                setShowModal("Draw Match");
                             }} className="icon-button">
                                 <i className="fa-regular fa-eye" />
                             </button>
@@ -47,7 +47,7 @@ export default function DrawMatchCard({ match, inModal }) {
                     <div className="draw-card-header-info">
                         <div className="draw-card-detail">
                             <p>{match.eventName}</p>
-                            <span className="card-bubble">{match.matchStatus}</span>
+                            <span className={`card-bubble ${match.matchStatus}`}>{match.matchStatus}</span>
                         </div>
                         <div className="draw-card-detail">
                             <p>{(translateRound(match.matchRound) === "Finals" && match.matchSequence === 2) ? "Third Place" : translateRound(match.matchRound)}</p>

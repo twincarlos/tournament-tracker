@@ -21,7 +21,7 @@ export default function Header({ backLink, headerTitle, headerButtons }) {
                     <div className="header-subsection">
                         {
                             headerButtons.map((button, index) => (
-                                <button key={index} className={button.buttonClassName} onClick={button.onClickFunction}>
+                                button && <button key={index} className={button.buttonClassName} onClick={button.onClickFunction}>
                                     {button.buttonName}
                                 </button>
                             ))

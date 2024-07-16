@@ -11,7 +11,7 @@ export default function GroupCard({ group, tournamentId, eventType }) {
                         <i className="fa-regular fa-eye" />
                     </Link>
                     <p>Group {group.groupNumber}</p>
-                    <span className="card-bubble">{group.groupStatus}</span>
+                    <span className={`card-bubble ${group.groupStatus}`}>{group.groupStatus}</span>
                 </div>
                 <div className="card-header-tables">
                     <p>

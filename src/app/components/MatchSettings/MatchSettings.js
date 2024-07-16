@@ -26,13 +26,13 @@ export default function MatchSettings({ matchId }) {
         });
     };
     return (
-        <div>
+        <div className="match-best-of-settings">
             <fieldset>
                 <legend>Best of:</legend>
-                <button onClick={() => updateMatchBestOf(5)}>5 games</button>
-                <button onClick={() => updateMatchBestOf(7)}>7 games</button>
+                <button className="Secondary" onClick={() => updateMatchBestOf(5)}>5 games</button>
+                <button className="Secondary" onClick={() => updateMatchBestOf(7)}>7 games</button>
             </fieldset>
-            <button onClick={startMatch}>Start match</button>
+            <button className="Primary" onClick={startMatch}>Start match</button>
         </div>
     );
 };

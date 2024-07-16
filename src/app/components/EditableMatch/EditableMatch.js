@@ -59,7 +59,7 @@ export default function EditableMatch({ match }) {
                 <div className="card-header">
                     <div className="card-header-info">
                         <p>{match.eventName} • Group {match.groupNumber}</p>
-                        <span className="card-bubble">{match.matchStatus}</span>
+                        <span className={`card-bubble ${match.matchStatus}`}>{match.matchStatus}</span>
                     </div>
                     <div className="card-header-tables">
                     <p>
@@ -105,7 +105,7 @@ export default function EditableMatch({ match }) {
                             playerLocation: match.player1Location
                         }} />
                         {
-                            match.winnerId === match.eventPlayer1Id ? (
+                            (match.winnerId && match.winnerId === match.eventPlayer1Id) ? (
                                 <div className="winner-icon">
                                     <i className="fa-solid fa-trophy" />
                                 </div>
@@ -157,7 +157,7 @@ export default function EditableMatch({ match }) {
                             />
                         </div>
                         {
-                            match.bestof === 7 ? (
+                            match.matchBestOf === 7 ? (
                                 <>
                                     <div className="match-game-score">
                                         <input
@@ -224,7 +224,7 @@ export default function EditableMatch({ match }) {
                             />
                         </div>
                         {
-                            match.bestOf === 7 ? (
+                            match.matchBestOf === 7 ? (
                                 <>
                                     <div className="match-game-score">
                                         <input
@@ -279,7 +279,7 @@ export default function EditableMatch({ match }) {
                             playerLocation: match.player2Location
                         }} />
                         {
-                            match.winnerId === match.eventPlayer2Id ? (
+                            (match.winnerId && match.winnerId === match.eventPlayer2Id) ? (
                                 <div className="winner-icon">
                                     <i className="fa-solid fa-trophy" />
                                 </div>

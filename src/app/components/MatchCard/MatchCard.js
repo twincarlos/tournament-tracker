@@ -31,14 +31,14 @@ export default function MatchCard({ match, inModal }) {
                                 });
                                 const updatedMatch = await response.json();
                                 setMatch({ ...match, ...updatedMatch });
-                                setShowModal(true);
+                                setShowModal("Group Match");
                             }} className="icon-button">
                                 <i className="fa-regular fa-eye" />
                             </button>
                         )
                     }
                     <p>{match.eventName} • {match.matchStage === "Groups" ? "Group" : match.matchStage} {match.groupNumber || match.matchRound}</p>
-                    <span className="card-bubble">{match.matchStatus}</span>
+                    <span className={`card-bubble ${match.matchStatus}`}>{match.matchStatus}</span>
                 </div>
                 <div className="card-header-tables">
                     <p>
@@ -60,7 +60,7 @@ export default function MatchCard({ match, inModal }) {
                         playerLocation: match.player1Location
                     }} />
                     {
-                        match.winnerId === match.eventPlayer1Id ? (
+                        (match.winnerId && match.winnerId === match.eventPlayer1Id) ? (
                             <div className="winner-icon">
                                 <i className="fa-solid fa-trophy" />
                             </div>
@@ -140,7 +140,7 @@ export default function MatchCard({ match, inModal }) {
                         playerLocation: match.player2Location
                     }} />
                     {
-                        match.winnerId === match.eventPlayer2Id ? (
+                        (match.winnerId && match.winnerId === match.eventPlayer2Id) ? (
                             <div className="winner-icon">
                                 <i className="fa-solid fa-trophy" />
                             </div>

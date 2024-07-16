@@ -10,7 +10,7 @@ import CreateTournament from "./components/CreateTournament/CreateTournament";
 
 export default function Home() {
   const [tournaments, setTournaments] = useState([]);
-  const { setShowModal } = useModal();
+  const { showModal, setShowModal } = useModal();
   useFetch("/api/get-all-tournaments", setTournaments);
   return (
     <main>
@@ -20,13 +20,13 @@ export default function Home() {
           {
               buttonName: "+ Create Tournament",
               buttonClassName: "Primary",
-              onClickFunction: () => setShowModal(true)
+              onClickFunction: () => setShowModal("Create Tournament")
           }
       ]}
       />
-      <Modal>
+      {showModal === "Create Tournament" && <Modal>
         <CreateTournament tournaments={tournaments} setTournaments={setTournaments} setShowModal={setShowModal} />
-      </Modal>
+      </Modal>}
       <section>
         {tournaments.map(tournament => (
           <Link className="card tournament-card"

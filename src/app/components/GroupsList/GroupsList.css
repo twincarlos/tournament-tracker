@@ -1,4 +1,11 @@
 .group-container {
     display: flex;
     align-items: flex-start;
+    width: 400px;
+}
+
+.groups-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }

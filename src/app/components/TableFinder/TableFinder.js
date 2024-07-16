@@ -42,7 +42,7 @@ export default function TableFinder({ groupId, tournamentId, matchId }) {
                 }
             </div>
             <div className="save-button-container">
-                <button onClick={onSubmit}>Update tables</button>
+                <button className="Primary" onClick={onSubmit}>Update tables</button>
             </div>
         </div>
     );

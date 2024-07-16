@@ -43,7 +43,7 @@ export async function POST(req) {
             WHERE m."matchId" = ${data.matchId}`;
         
         for (const tableMatch of tableMatchesQuery.rows) {
-            await sql`DELETE FROM TableMatches WHERE "tableMatchId" = ${tableMatch.tableMatchId}`;
+            await sql`DELETE FROM TableMatches WHERE "matchId" = ${tableMatch.matchId};`;
         };
 
         for (const tableId of data.tables) {

@@ -36,7 +36,7 @@ export default function CreateTournament({ tournaments, setTournaments, setShowM
                     Tournament Date:
                     <input type="date" value={data.tournamentDate} onChange={e => setData({ ...data, tournamentDate: e.target.value })} />
                 </label>
-                <button type="submit" onClick={onSubmit}>Submit</button>
+                <button className="Primary" type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>
     );

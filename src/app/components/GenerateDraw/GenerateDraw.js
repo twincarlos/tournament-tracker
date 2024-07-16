@@ -23,13 +23,13 @@ export default function GenerateDraw({ event, setEvent, setShowModal }) {
         setShowModal(false);
     };
     return (
-        <div className="create-event-player-modal">
+        <div className="generate-draw-modal">
             <div className="form">
                 <label>
                     <input type="checkbox" onChange={() => setGenerateThirdPlace(!generateThirdPlace)} />
                     Generate third place match
                 </label>
-                <button type="submit" onClick={onSubmit}>Submit</button>
+                <button className="Primary" type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>
     );

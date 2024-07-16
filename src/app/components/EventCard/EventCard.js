@@ -18,9 +18,9 @@ export default function EventCard({ event }) {
                 </p>
             </div>
             <div className="card-details">
-                <span className="card-bubble type">{event.eventType}</span>
-                <span className="card-bubble type">{event.eventStatus}</span>
-                <span className="card-bubble type">{event.eventStage}</span>
+                <span className="card-bubble">{event.eventType}</span>
+                <span className={`card-bubble ${event.eventStatus}`}>{event.eventStatus}</span>
+                <span className="card-bubble">{event.eventStage}</span>
             </div>
         </div>
     );

@@ -48,7 +48,7 @@ export default function CreateEventPlayer({ event, setEvent }) {
                         ))
                     }
                 </fieldset>
-                <button type="submit" onClick={onSubmit}>Submit</button>
+                <button className="Primary" type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>
     );

@@ -12,7 +12,7 @@ import GenerateGroups from "@/app/components/GenerateGroups/GenerateGroups";
 import GenerateDraw from "@/app/components/GenerateDraw/GenerateDraw";
 
 export default function Event({ params }) {
-    const { setShowModal } = useModal();
+    const { showModal, setShowModal } = useModal();
     const [event, setEvent] = useState({
         players: [],
         eventPlayers: [],
@@ -20,7 +20,6 @@ export default function Event({ params }) {
         draw: []
     });
     const [category, setCategory] = useState("Groups");
-    const [modalType, setModalType] = useState(null);
     useFetch(`/api/get-rr-event/${params.eventId || params.EventId}`, setEvent);
     async function beginGroups(eventId) {
         await fetch(`/api/begin-groups`, {
@@ -61,61 +60,48 @@ export default function Event({ params }) {
                 backLink={`/tournament/${params.tournamentId || params.TournamentId}`}
                 headerTitle={event.eventName}
                 headerButtons={[
-                    {
+                    event.eventStatus === "Upcoming" && event.eventStage === null && {
                         buttonName: "+ Add Players",
                         buttonClassName: "Primary",
-                        onClickFunction: () => {
-                            setModalType("Add-Players")
-                            setShowModal(true)
-                        }
+                        onClickFunction: () => setShowModal("Add Player")
                     },
-                    {
+                    event.eventStatus === "Upcoming" && event.eventStage === null && {
                         buttonName: "Generate Groups",
                         buttonClassName: "Secondary",
-                        onClickFunction: () => {
-                            setModalType("Generate-Groups")
-                            setShowModal(true)
-                        }
+                        onClickFunction: () => setShowModal("Generate Groups")
                     },
-                    {
+                    event.eventStage === "Groups" && event.eventStatus === "Upcoming" && {
                         buttonName: "Begin Groups",
-                        buttonClassName: "Secondary",
+                        buttonClassName: "Primary",
                         onClickFunction: () => beginGroups(event.eventId)
                     },
-                    {
+                    event.eventStage === "Groups" && event.eventStatus === "Pending" && {
                         buttonName: "Generate Draw",
-                        buttonClassName: "Secondary",
-                        onClickFunction: () => {
-                            setModalType("Generate-Draw")
-                            setShowModal(true)
-                        }
+                        buttonClassName: "Primary",
+                        onClickFunction: () => setShowModal("Generate Draw")
                     }
                 ]}
             />
-            <Modal>
-                {
-                    modalType === "Add-Players" ? (
-                        <CreateEventPlayer
-                            event={event}
-                            setEvent={setEvent}
-                        />
-                    ) : (
-                        modalType === "Generate-Groups" ?
-                            (<GenerateGroups
-                                event={event}
-                                setEvent={setEvent}
-                            />) : (
-                                modalType === "Generate-Draw" ?
-                                    <GenerateDraw event={event}
-                                        setEvent={setEvent} setShowModal={setShowModal} /> : null
-                            )
-                    )
-                }
-            </Modal>
+            {showModal === "Add Player" && <Modal>
+                <CreateEventPlayer
+                    event={event}
+                    setEvent={setEvent}
+                />
+            </Modal>}
+            {showModal === "Generate Groups" && <Modal>
+                <GenerateGroups
+                    event={event}
+                    setEvent={setEvent}
+                />
+            </Modal>}
+            {showModal === "Generate Draw" && <Modal>
+                <GenerateDraw event={event}
+                    setEvent={setEvent} setShowModal={setShowModal} />
+            </Modal>}
             <section className="tabs">
-                <button onClick={() => setCategory("Groups")} className={`${category === "Groups" ? "selected" : ""} tab`}>Groups</button>
-                <button onClick={() => setCategory("Draw")} className={`${category === "Draw" ? "selected" : ""} tab`}>Draw</button>
-                <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "selected" : ""} tab`}>Players</button>
+                <button onClick={() => setCategory("Groups")} className={`${category === "Groups" ? "Primary" : "Secondary"}`}>Groups</button>
+                <button onClick={() => setCategory("Draw")} className={`${category === "Draw" ? "Primary" : "Secondary"}`}>Draw</button>
+                <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "Primary" : "Secondary"}`}>Players</button>
             </section>
             {
                 category === "Groups" ? <GroupsList event={event} /> : (

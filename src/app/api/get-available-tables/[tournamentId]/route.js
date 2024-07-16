@@ -12,6 +12,7 @@ export async function GET(req, { params }) {
     (t."tournamentId" = ${params.tournamentId || params.TournamentId})
     AND
     (m."matchStatus" = 'Ready' OR m."matchStatus" = 'In Progress' OR m."matchStatus" = 'Pending');`;
+
     const occupiedTables = [];
     for (const table of tableQueries.rows) {
         if (occupiedTables.length === 0) {

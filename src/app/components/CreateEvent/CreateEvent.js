@@ -80,7 +80,7 @@ export default function CreateEvent({ tournament, setTournament, tournamentId })
                     <input type="checkbox" value={data.allowUnratedQualify} onChange={e => setData({ ...data, allowUnratedQualify: e.target.value })} />
                     Allow unrated players to qualify
                 </label>
-                <button type="submit" onClick={onSubmit}>Submit</button>
+                <button className="Primary" type="submit" onClick={onSubmit}>Submit</button>
             </div>
         </div>
     );

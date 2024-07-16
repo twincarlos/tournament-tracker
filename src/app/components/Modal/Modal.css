@@ -19,7 +19,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 500px;
+    max-width: 400px;
+    width: 100%;
 }
 
 .modal-close-button {
@@ -30,4 +31,32 @@
     font-size: 2em;
     width: 40px;
     border-radius: 10px;
+}
+
+.modal .form label {
+    width: 100%;
+}
+
+.modal .form label input {
+    width: 100%;
+    max-width: 300px;
+}
+
+.admin-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.admin-modal fieldset {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.modal .admin-modal .group-card {
+    width: 100%;
 }

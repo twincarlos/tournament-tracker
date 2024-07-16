@@ -44,24 +44,22 @@ export async function POST(req) {
             "groupId",
             "eventPlayer1Id",
             "eventPlayer2Id",
-            "matchDate",
-            "matchTime",
             "matchStage",
             "matchSequence",
-            "eventId",
+            "eventId"
             )
             VALUES (
             ${group.groupId},
             ${group.groupPlayers[matchSequence[0] - 1].eventPlayerId},
             ${group.groupPlayers[matchSequence[1] - 1].eventPlayerId},
-            ${data.groupsDate},
-            ${data.groupsTime},
             'Groups',
             ${i + 1},
             ${eventId}
             );`;
         };
     };
+
+    await sql `UPDATE Events SET "eventStage" = 'Groups' WHERE "eventId" = ${eventId}`;
 
     return new Response(JSON.stringify(groupsData));
 };
