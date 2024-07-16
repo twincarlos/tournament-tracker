@@ -8,9 +8,12 @@ import { useFetch } from "@/app/hooks/useFetch";
 import { useModal } from "@/app/context/ModalContext";
 import CreateEvent from "@/app/components/CreateEvent/CreateEvent";
 import RegisterPlayer from "@/app/components/RegisterPlayer/RegisterPlayer";
+import ReportAs from "@/app/components/ReportAs/ReportAs";
 import Modal from "@/app/components/Modal/Modal";
+import { usePlayer } from "@/app/context/PlayerContext";
 
 export default function Tournament({ params }) {
+    const {player} = usePlayer();
     const [tournament, setTournament] = useState({
         events: [],
         players: []
@@ -25,17 +28,25 @@ export default function Tournament({ params }) {
                 headerTitle={tournament.tournamentName}
                 headerButtons={[
                     {
+                        buttonName: "Report As",
+                        buttonClassName: "Primary",
+                        onClickFunction: () => setShowModal("Report As")
+                    },
+                    player && player.isAdmin && {
                         buttonName: "+ Create Event",
                         buttonClassName: "Primary",
                         onClickFunction: () => setShowModal("Create Event")
                     },
-                    {
+                    player && player.isAdmin && {
                         buttonName: "Register Player",
                         buttonClassName: "Secondary",
                         onClickFunction: () => setShowModal("Register Player")
                     }
                 ]}
             />
+            {showModal === "Report As" && <Modal>
+                <ReportAs tournament={tournament} />
+                </Modal>}
             {showModal === "Create Event" && <Modal>
                 <CreateEvent tournament={tournament} setTournament={setTournament} tournamentId={tournament.tournamentId} />
             </Modal>}

@@ -29,6 +29,7 @@ export async function PUT(req, { params }) {
         WHERE
             "matchId" = ${matchId}
         RETURNING *;`;
+
         PusherServer.trigger(params.channel, "update_match", updateMatchQuery.rows[0]);
         return new Response(JSON.stringify(getMatchQuery.rows));
     };

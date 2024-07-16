@@ -99,6 +99,9 @@ export async function PUT(req, { params }) {
                 };
             };
 
+            if (getMatchQuery.rows[0].matchRound === 2) {
+                await sql`UPDATE Events SET "matchStatus" = 'Finished' WHERE "eventId" = ${getMatchQuery.rows[0].eventId};`;
+            };
         } else {
             updateMatchQuery = await sql
                 `UPDATE Matches

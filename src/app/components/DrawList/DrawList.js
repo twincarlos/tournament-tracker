@@ -8,7 +8,7 @@ import MatchCard from "../MatchCard/MatchCard";
 import TableFinder from "../TableFinder/TableFinder";
 import MatchSettings from "../MatchSettings/MatchSettings";
 
-export default function DrawList({ event }) {
+export default function DrawList({ event, player }) {
     const { match } = useMatch();
     const {showModal} = useModal();
 
@@ -21,10 +21,10 @@ export default function DrawList({ event }) {
                     {
                         match ? ((match.matchStatus === "Finished" || match.matchStatus === "Upcoming") ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />) : null
                     }
-                    <div className="match-settings">
+                    {(player && player.isAdmin) && <div className="match-settings">
                         <TableFinder tournamentId={event.tournamentId} matchId={match?.matchId} />
                         <MatchSettings matchId={match?.matchId} />
-                    </div>
+                    </div>}
                 </div>
             </Modal>}
             <section className={`draw-list draw-of-${event.draw[0][0].matchRound}`}>

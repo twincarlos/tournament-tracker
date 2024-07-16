@@ -10,8 +10,10 @@ import { useModal } from "@/app/context/ModalContext";
 import CreateEventPlayer from "@/app/components/CreateEventPlayer/CreateEventPlayer";
 import GenerateGroups from "@/app/components/GenerateGroups/GenerateGroups";
 import GenerateDraw from "@/app/components/GenerateDraw/GenerateDraw";
+import { usePlayer } from "@/app/context/PlayerContext";
 
 export default function Event({ params }) {
+    const {player} = usePlayer()
     const { showModal, setShowModal } = useModal();
     const [event, setEvent] = useState({
         players: [],
@@ -37,45 +39,28 @@ export default function Event({ params }) {
             groups: event.groups.map(group => ({ ...group, groupStatus: "Ready" }))
         });
     };
-    async function beginRound(round) {
-        const response = await fetch(`/api/begin-round`, {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            },
-            body: JSON.stringify({ matchRound: round, eventId: event.eventId })
-        });
-        const draw = await response.json();
-        setEvent({
-            ...event,
-            draw
-        });
-    };
     return (
         <main>
             <Header
                 backLink={`/tournament/${params.tournamentId || params.TournamentId}`}
                 headerTitle={event.eventName}
                 headerButtons={[
-                    event.eventStatus === "Upcoming" && event.eventStage === null && {
+                    (player && player.isAdmin) && (event.eventStatus === "Upcoming" && event.eventStage === null) && {
                         buttonName: "+ Add Players",
                         buttonClassName: "Primary",
                         onClickFunction: () => setShowModal("Add Player")
                     },
-                    event.eventStatus === "Upcoming" && event.eventStage === null && {
+                    (player && player.isAdmin) && (event.eventStatus === "Upcoming" && event.eventStage === null) && {
                         buttonName: "Generate Groups",
                         buttonClassName: "Secondary",
                         onClickFunction: () => setShowModal("Generate Groups")
                     },
-                    event.eventStage === "Groups" && event.eventStatus === "Upcoming" && {
+                    (player && player.isAdmin) && (event.eventStage === "Groups" && event.eventStatus === "Upcoming") && {
                         buttonName: "Begin Groups",
                         buttonClassName: "Primary",
                         onClickFunction: () => beginGroups(event.eventId)
                     },
-                    event.eventStage === "Groups" && event.eventStatus === "Pending" && {
+                    (player && player.isAdmin) && (event.eventStage === "Groups" && event.eventStatus === "Pending") && {
                         buttonName: "Generate Draw",
                         buttonClassName: "Primary",
                         onClickFunction: () => setShowModal("Generate Draw")
@@ -104,8 +89,8 @@ export default function Event({ params }) {
                 <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "Primary" : "Secondary"}`}>Players</button>
             </section>
             {
-                category === "Groups" ? <GroupsList event={event} /> : (
-                    category === "Draw" ? <DrawList event={event} /> : (
+                category === "Groups" ? <GroupsList player={player} event={event} /> : (
+                    category === "Draw" ? <DrawList player={player} event={event} /> : (
                         <section className="player-list">
                             {
                                 event.eventPlayers.map(eventPlayer => (

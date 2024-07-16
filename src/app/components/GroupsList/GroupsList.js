@@ -6,7 +6,7 @@ import Modal from "../Modal/Modal";
 import AdminEditGroup from "../AdminEditGroup/AdminEditGroup";
 import { useState } from "react";
 
-export default function GroupsList({ event }) {
+export default function GroupsList({ event, player }) {
     const { showModal, setShowModal } = useModal();
     const [editGroup, setEditGroup] = useState(null);
 
@@ -18,7 +18,7 @@ export default function GroupsList({ event }) {
             {
                 event.groups.map(group => (
                     <div key={group.groupId} className="group-container">
-                        {event.eventStage !== "Draw" && group.groupStatus !== "Finished" && <button onClick={() => {
+                        {(player && player.isAdmin) && (event.eventStage !== "Draw" && group.groupStatus !== "Finished") && <button onClick={() => {
                             setEditGroup(group);
                             setShowModal("Edit Group");
                         }} className="admin-edit-button"><i className="fa-regular fa-pen-to-square"/></button>}

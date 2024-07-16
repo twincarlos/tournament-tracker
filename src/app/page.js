@@ -7,8 +7,10 @@ import { useFetch } from "./hooks/useFetch";
 import { useModal } from "./context/ModalContext";
 import Modal from "./components/Modal/Modal";
 import CreateTournament from "./components/CreateTournament/CreateTournament";
+import { usePlayer } from "./context/PlayerContext";
 
 export default function Home() {
+  const {player} = usePlayer();
   const [tournaments, setTournaments] = useState([]);
   const { showModal, setShowModal } = useModal();
   useFetch("/api/get-all-tournaments", setTournaments);
@@ -17,7 +19,7 @@ export default function Home() {
       <Header
         headerTitle={"Tournaments"}
         headerButtons={[
-          {
+          player && player.isAdmin === true && {
               buttonName: "+ Create Tournament",
               buttonClassName: "Primary",
               onClickFunction: () => setShowModal("Create Tournament")

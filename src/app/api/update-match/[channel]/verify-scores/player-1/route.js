@@ -60,7 +60,7 @@ export async function PUT(req, { params }) {
                 FROM Groups
                 WHERE "eventId" = ${getMatchQuery.rows[0].eventId}
                 AND "matchStatus" != 'Finished';`;
-                if (Number(finishedGroupsCount.rows[0].count) === 0) await sql `UPDATE Event SET "eventStatus" = 'Pending' WHERE "eventId" = ${getMatchQuery.rows[0].eventId};`;
+                if (Number(finishedGroupsCount.rows[0].count) === 0) await sql `UPDATE Events SET "eventStatus" = 'Pending' WHERE "eventId" = ${getMatchQuery.rows[0].eventId};`;
             };
         };
 
@@ -97,6 +97,10 @@ export async function PUT(req, { params }) {
                 } else {
                     await sql`UPDATE Matches SET "eventPlayer1Id" = ${getMatchQuery.rows[0].loserId} WHERE "eventId" = ${getMatchQuery.rows[0].eventId} AND "matchStage" = 'Draw' AND "matchRound" = ${getMatchQuery.rows[0].matchRound / 2} AND "matchSequence" = 2`;
                 };
+            };
+
+            if (getMatchQuery.rows[0].matchRound === 2) {
+                await sql`UPDATE Events SET "matchStatus" = 'Finished' WHERE "eventId" = ${getMatchQuery.rows[0].eventId};`;
             };
 
         } else {

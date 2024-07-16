@@ -10,8 +10,10 @@ import Modal from "@/app/components/Modal/Modal";
 import Header from "@/app/components/Header/Header";
 import TableFinder from "@/app/components/TableFinder/TableFinder";
 import MatchSettings from "@/app/components/MatchSettings/MatchSettings";
+import { usePlayer } from "@/app/context/PlayerContext";
 
 export default function Group({ params }) {
+    const {player} = usePlayer();
     const [matches, setMatches] = useState([]);
     const { match } = useMatch();
     const {showModal} = useModal();
@@ -25,10 +27,10 @@ export default function Group({ params }) {
                     {
                         (match?.matchStatus === "Finished" || match?.matchStatus === "Upcoming") ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
                     }
-                    <div className="match-settings">
+                    {(player && player.isAdmin) && <div className="match-settings">
                         <TableFinder tournamentId={params.tournamentId || params.TournamentId} matchId={match?.matchId} />
                         {match?.matchStatus === "Upcoming" && <MatchSettings matchId={match?.matchId} />}
-                    </div>
+                    </div>}
                 </div>
             </Modal>}
             <section className="column">
