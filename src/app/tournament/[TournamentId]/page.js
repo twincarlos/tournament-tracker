@@ -18,7 +18,7 @@ export default function Tournament({ params }) {
         events: [],
         players: []
     });
-    const [category, setCategory] = useState("Players");
+    const [category, setCategory] = useState("Events");
     useFetch(`/api/get-tournament/${params.tournamentId || params.TournamentId}`, setTournament);
     const { showModal, setShowModal } = useModal();
     return (
