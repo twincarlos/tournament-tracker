@@ -7,7 +7,7 @@ export default function TournamentCard({ tournament }) {
                 <p>{tournament.tournamentName}</p>
             </div>
             <div>
-                <p>{new Date(tournament.tournamentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <p>{new Date(tournament.tournamentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/New_York' })}</p>
             </div>
         </div>
     );

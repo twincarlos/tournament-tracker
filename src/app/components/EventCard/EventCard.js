@@ -12,7 +12,8 @@ export default function EventCard({ event }) {
                         new Date(event.eventDate).toLocaleDateString('en-US', {
                             weekday: 'long',
                             month: 'long',
-                            day: 'numeric'
+                            day: 'numeric',
+                            timeZone: 'America/New_York'
                         })
                     }
                 </p>
