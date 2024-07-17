@@ -5,6 +5,7 @@ import { generateGroups, orderOfPlay } from "./utils";
 export async function POST(req) {
     const data = await req.json();
     const eventId = data.eventId;
+    const eventType = data.eventType;
 
     const eventPlayersQuery = await sql`
     SELECT ep.*, p.*
@@ -13,7 +14,7 @@ export async function POST(req) {
     WHERE ep."eventId" = ${eventId}
     ORDER BY p."playerRating" DESC;`;
 
-    const groups = generateGroups(eventPlayersQuery.rows);
+    const groups = generateGroups(eventPlayersQuery.rows, eventType);
     const groupsData = [];
 
     for (let i = 0; i < groups.length; i++) {

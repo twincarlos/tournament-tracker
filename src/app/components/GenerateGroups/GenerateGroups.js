@@ -10,7 +10,7 @@ export default function GenerateGroups({ event, setEvent }) {
                 'Pragma': 'no-cache',
                 'Expires': '0'
             },
-            body: JSON.stringify({ eventId: event.eventId })
+            body: JSON.stringify({ eventId: event.eventId, eventType: event.eventType })
         });
         const groups = await response.json();
         setEvent({

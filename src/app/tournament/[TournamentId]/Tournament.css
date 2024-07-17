@@ -16,3 +16,9 @@
     display: flex;
     gap: 10px;
 }
+
+.event-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
