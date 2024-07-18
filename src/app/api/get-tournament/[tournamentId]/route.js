@@ -5,7 +5,7 @@ export async function GET(req, { params }) {
     const eventsQuery = await sql `
     SELECT *
     FROM Events
-    WHERE "tournamentId" = ${params.tournamentId || params.TournamentId};`;
+    WHERE "tournamentId" = ${params.tournamentId || params.TournamentId} ORDER BY "eventId" ASC;`;
     const tournamentQuery = await sql `
     SELECT *
     FROM Tournaments
