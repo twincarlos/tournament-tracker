@@ -59,7 +59,7 @@ export async function PUT(req, { params }) {
                         SELECT COUNT("groupId")
                         FROM Groups
                         WHERE "eventId" = ${getMatchQuery.rows[0].eventId}
-                        AND "matchStatus" != 'Finished';`;
+                        AND "groupStatus" != 'Finished';`;
                 if (Number(finishedGroupsCount.rows[0].count) === 0) await sql`UPDATE Event SET "eventStatus" = 'Pending' WHERE "eventId" = ${getMatchQuery.rows[0].eventId};`;
             };
         };
