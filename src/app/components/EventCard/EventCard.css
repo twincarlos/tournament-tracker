@@ -5,3 +5,10 @@
 .event-card .card-bubble {
     border-color: black;
 }
+
+@media screen and (max-width: 600px) {
+    .event-card {
+        width: 100%;
+        max-width: 100%;
+    }
+}

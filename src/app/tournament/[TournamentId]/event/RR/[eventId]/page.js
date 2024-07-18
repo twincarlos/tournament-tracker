@@ -42,6 +42,8 @@ export default function Event({ params }) {
     return (
         <main>
             <Header
+                headerDate={event.eventDate}
+                headerTime={event.eventTime}
                 backLink={`/tournament/${params.tournamentId || params.TournamentId}`}
                 headerTitle={event.eventName}
                 headerButtons={[

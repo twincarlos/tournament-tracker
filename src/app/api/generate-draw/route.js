@@ -13,9 +13,15 @@ export async function POST(req) {
     const secondQualifiedPlayersIds = [];
 
     for (const group of groupsQuery.rows) {
-        const qualifiedPlayers = await sql`SELECT ep."eventPlayerId", p."playerIsEstimated" FROM EventPlayers ep JOIN Players p ON p."playerId" = ep."playerId" WHERE ep."groupId" = ${group.groupId} AND p."playerIsEstimated" = False ORDER BY ep."groupPosition" ASC LIMIT 2;`;
-        firstQualifiedPlayersIds.push(qualifiedPlayers.rows[0].eventPlayerId);
-        secondQualifiedPlayersIds.push(qualifiedPlayers.rows[1].eventPlayerId);
+        if (data.unratedPlayersMayAdance === true) {
+            const qualifiedPlayers = await sql`SELECT ep."eventPlayerId", p."playerIsEstimated" FROM EventPlayers ep JOIN Players p ON p."playerId" = ep."playerId" WHERE ep."groupId" = ${group.groupId} ORDER BY ep."groupPosition" ASC LIMIT 2;`;
+            firstQualifiedPlayersIds.push(qualifiedPlayers.rows[0].eventPlayerId);
+            secondQualifiedPlayersIds.push(qualifiedPlayers.rows[1].eventPlayerId);
+        } else {
+            const qualifiedPlayers = await sql`SELECT ep."eventPlayerId", p."playerIsEstimated" FROM EventPlayers ep JOIN Players p ON p."playerId" = ep."playerId" WHERE ep."groupId" = ${group.groupId} AND p."playerIsEstimated" = False ORDER BY ep."groupPosition" ASC LIMIT 2;`;
+            firstQualifiedPlayersIds.push(qualifiedPlayers.rows[0].eventPlayerId);
+            secondQualifiedPlayersIds.push(qualifiedPlayers.rows[1].eventPlayerId);
+        };
     };
 
     const qualifiedPlayersIds = [...firstQualifiedPlayersIds, ...secondQualifiedPlayersIds];

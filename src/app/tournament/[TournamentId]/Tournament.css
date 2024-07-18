@@ -22,3 +22,9 @@
     flex-wrap: wrap;
     gap: 20px;
 }
+
+@media screen and (max-width: 600px) {
+    .event-list {
+        gap: 10px;
+    }
+}

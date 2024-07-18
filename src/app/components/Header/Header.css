@@ -1,12 +1,17 @@
 .header {
+    color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--primary-header-background);
+    padding: 50px 20px;
+    border-radius: 0px 0px 20% 0px;
 }
 
 .header-subsection {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
 }

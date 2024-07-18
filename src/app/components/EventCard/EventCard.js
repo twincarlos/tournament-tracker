@@ -15,7 +15,7 @@ export default function EventCard({ event }) {
                             day: 'numeric',
                             timeZone: 'America/New_York'
                         })
-                    }
+                    }  • {event.eventTime.slice(0, 5)}
                 </p>
             </div>
             <div className="card-details">

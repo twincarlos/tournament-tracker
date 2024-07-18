@@ -13,7 +13,7 @@ export default function GenerateDraw({ event, setEvent, setShowModal }) {
                 'Pragma': 'no-cache',
                 'Expires': '0'
             },
-            body: JSON.stringify({ eventId: event.eventId, generateThirdPlace })
+            body: JSON.stringify({ eventId: event.eventId, generateThirdPlace, estimatedPlayersMayAdvance: event.allowUnratedQualify })
         });
         const draw = await response.json();
         setEvent({
