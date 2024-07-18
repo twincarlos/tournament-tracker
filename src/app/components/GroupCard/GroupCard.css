@@ -31,3 +31,18 @@
 .group-card .card-bubble {
     border-color: white;
 }
+
+@media print {
+    .group-card .player-info {
+        width: 100%;
+        padding: 2px;
+    }
+
+    .group-card .card-bubble {
+        display: none;
+    }
+
+    .group-card-player-stats {
+        display: none;
+    }
+}

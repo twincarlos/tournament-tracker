@@ -9,3 +9,28 @@
     flex-wrap: wrap;
     gap: 20px;
 }
+
+.print-event-name {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px 0;
+}
+
+@media print {
+    .admin-edit-button {
+        display: none;
+    }
+    
+    .group-container {
+        width: 240px;
+    }
+
+    .print-event-name {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+}

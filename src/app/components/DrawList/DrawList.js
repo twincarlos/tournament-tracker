@@ -8,14 +8,14 @@ import MatchCard from "../MatchCard/MatchCard";
 import TableFinder from "../TableFinder/TableFinder";
 import MatchSettings from "../MatchSettings/MatchSettings";
 
-export default function DrawList({ event, player }) {
+export default function DrawList({ drawPrintRef, event, player }) {
     const { match } = useMatch();
     const {showModal} = useModal();
 
     if (!event.draw.length) return null;
 
     return (
-        <>
+        <div ref={drawPrintRef}>
             {showModal === "Draw Match" && <Modal>
                 <div className="admin-modal">
                     {
@@ -27,6 +27,10 @@ export default function DrawList({ event, player }) {
                     </div>}
                 </div>
             </Modal>}
+            <div style={{ display: 'none' }} className="print-event-name">
+                <h1>{event.eventName}</h1>
+                <p>{new Date(event.eventDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/New_York' })} • {event.eventTime?.slice(0, 5)}</p>
+            </div>
             <section className={`draw-list draw-of-${event.draw[0][0].matchRound}`}>
                 {
                     event.draw.map((drawRound, index) => (
@@ -40,6 +44,6 @@ export default function DrawList({ event, player }) {
                     ))
                 }
             </section>
-        </>
+        </div>
     );
 };

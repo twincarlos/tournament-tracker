@@ -1,6 +1,6 @@
 "use client";
 import "./Event.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "@/app/components/Header/Header";
 import { useFetch } from "@/app/hooks/useFetch";
 import GroupsList from "@/app/components/GroupsList/GroupsList";
@@ -11,8 +11,17 @@ import CreateEventPlayer from "@/app/components/CreateEventPlayer/CreateEventPla
 import GenerateGroups from "@/app/components/GenerateGroups/GenerateGroups";
 import GenerateDraw from "@/app/components/GenerateDraw/GenerateDraw";
 import { usePlayer } from "@/app/context/PlayerContext";
+import { useReactToPrint } from "react-to-print";
 
 export default function Event({ params }) {
+    const groupsPrintRef = useRef();
+    const handleGroupsPrint = useReactToPrint({
+        content: () => groupsPrintRef.current
+    });
+    const drawPrintRef = useRef();
+    const handleDrawPrint = useReactToPrint({
+        content: () => drawPrintRef.current
+    });
     const {player} = usePlayer()
     const { showModal, setShowModal } = useModal();
     const [event, setEvent] = useState({
@@ -66,7 +75,17 @@ export default function Event({ params }) {
                         buttonName: "Generate Draw",
                         buttonClassName: "Primary",
                         onClickFunction: () => setShowModal("Generate Draw")
-                    }
+                    },
+                    (player && player.isAdmin) && (category === "Groups") && {
+                        buttonName: "Print Groups",
+                        buttonClassName: "Secondary",
+                        onClickFunction: handleGroupsPrint
+                    },
+                    (player && player.isAdmin) && (category === "Draw") && {
+                        buttonName: "Print Draw",
+                        buttonClassName: "Secondary",
+                        onClickFunction: handleDrawPrint
+                    },
                 ]}
             />
             {showModal === "Add Player" && <Modal>
@@ -91,8 +110,8 @@ export default function Event({ params }) {
                 <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "Primary" : "Secondary"}`}>Players</button>
             </section>
             {
-                category === "Groups" ? <GroupsList player={player} event={event} /> : (
-                    category === "Draw" ? <DrawList player={player} event={event} /> : (
+                category === "Groups" ? <GroupsList groupsPrintRef={groupsPrintRef} player={player} event={event} /> : (
+                    category === "Draw" ? <DrawList drawPrintRef={drawPrintRef} player={player} event={event} /> : (
                         <section className="player-list">
                             {
                                 event.eventPlayers.map(eventPlayer => (

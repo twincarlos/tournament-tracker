@@ -21,23 +21,84 @@
 
 .column-2 {
     top: 50px;
-    gap: 140px;
+    gap: 127px;
 }
 
 .column-3 {
-    top: 180px;
-    gap: 395px;
+    top: 170px;
+    gap: 360px;
 }
 
 .column-4 {
-    top: 450px;
-    gap: 900px;
+    top: 400px;
+    gap: 800px;
 }
 
 .column-5 {
-    top: 1000px;
+    top: 800px;
 }
 
 .draw-round.round-of-2 {
-    gap: 150px;
+    gap: 200px;
+}
+
+/*  */
+
+@media print {
+    .draw-round {
+        width: 200px;
+        align-items: flex-start;
+    }
+
+    .draw-list .card-header {
+        display: none;
+    }
+
+    .player-games-won {
+        display: none;
+    }
+
+    .winner-icon {
+        display: none;
+    }
+
+    .draw-card {
+        width: 100%;
+    }
+
+    .player-section {
+        height: 40px;
+    }
+
+    .column-2 {
+        top: 50px;
+        gap: 100px;
+    }
+
+    .column-3 {
+        top: 140px;
+        gap: 280px;
+    }
+
+    .column-4 {
+        top: 300px;
+        gap: 650px;
+    }
+
+    .column-5 {
+        top: 650px;
+    }
+
+    .draw-list .player-info {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .print-event-name {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 30px;
+    }
 }
