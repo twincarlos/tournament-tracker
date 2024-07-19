@@ -18,6 +18,14 @@
     padding: 10px 0;
 }
 
+.groups-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
 @media print {
     .admin-edit-button {
         display: none;

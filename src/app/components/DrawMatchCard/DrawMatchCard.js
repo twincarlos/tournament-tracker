@@ -3,7 +3,7 @@ import PlayerInfo from "../PlayerInfo/PlayerInfo";
 import { useMatch } from "@/app/context/MatchContext";
 import { useModal } from "@/app/context/ModalContext";
 
-export default function DrawMatchCard({ match, inModal }) {
+export default function DrawMatchCard({ swap, eventPlayerSwap, setEventPlayerSwap, match, inModal }) {
     const { setShowModal } = useModal();
     const { setMatch } = useMatch();
 
@@ -63,7 +63,27 @@ export default function DrawMatchCard({ match, inModal }) {
                 </div>
             </div>
             <div className="draw-card-body">
-                <div className="player-section">
+                <div onClick={() => {
+                    if (swap === true) {
+                        if (eventPlayerSwap[0]?.eventPlayerId === match.eventPlayer1Id || eventPlayerSwap[1]?.eventPlayerId === match.eventPlayer1Id) {
+                            setEventPlayerSwap(eventPlayerSwap.filter(eventPlayer => eventPlayer.eventPlayerId !== match.eventPlayer1Id));
+                        } else {
+                            if (eventPlayerSwap.length === 2) {
+                                setEventPlayerSwap([eventPlayerSwap[0], {
+                                    eventPlayerId: match.eventPlayer1Id,
+                                    position: 1,
+                                    matchId: match.matchId
+                                }]);
+                            } else {
+                                setEventPlayerSwap([...eventPlayerSwap, {
+                                    eventPlayerId: match.eventPlayer1Id,
+                                    position: 1,
+                                    matchId: match.matchId
+                                }])
+                            };
+                        };
+                    };
+                }} className={`player-section ${swap === true ? "pointer" : ""} ${(((eventPlayerSwap[0]?.eventPlayerId === match.eventPlayer1Id) && (eventPlayerSwap[0]?.matchId === match.matchId)) || ((eventPlayerSwap[1]?.eventPlayerId === match.eventPlayer1Id) && (eventPlayerSwap[1]?.matchId === match.matchId))) ? "swap" : ""}`}>
                     <div className="player-games-won">
                         {match.player1GamesWon}
                     </div>
@@ -82,7 +102,27 @@ export default function DrawMatchCard({ match, inModal }) {
                         ) : null
                     }
                 </div>
-                <div className="player-section">
+                <div onClick={() => {
+                    if (swap === true) {
+                        if (((eventPlayerSwap[0]?.eventPlayerId === match.eventPlayer2Id) && (eventPlayerSwap[0]?.matchId === match.matchId)) || ((eventPlayerSwap[1]?.eventPlayerId === match.eventPlayer2Id) && (eventPlayerSwap[1]?.matchId === match.matchId))) {
+                            setEventPlayerSwap(eventPlayerSwap.filter(eventPlayer => eventPlayer.eventPlayerId !== match.eventPlayer2Id));
+                        } else {
+                            if (eventPlayerSwap.length === 2) {
+                                setEventPlayerSwap([eventPlayerSwap[0], {
+                                    eventPlayerId: match.eventPlayer2Id,
+                                    position: 2,
+                                    matchId: match.matchId
+                                }]);
+                            } else {
+                                setEventPlayerSwap([...eventPlayerSwap, {
+                                    eventPlayerId: match.eventPlayer2Id,
+                                    position: 2,
+                                    matchId: match.matchId
+                                }])
+                            };
+                        };
+                    };
+                }} className={`player-section ${swap === true ? "pointer" : ""} ${(((eventPlayerSwap[0]?.eventPlayerId === match.eventPlayer2Id) && (eventPlayerSwap[0]?.matchId === match.matchId)) || ((eventPlayerSwap[1]?.eventPlayerId === match.eventPlayer2Id) && (eventPlayerSwap[1]?.matchId === match.matchId))) ? "swap" : ""}`}>
                     <div className="player-games-won">
                         {match.player2GamesWon}
                     </div>

@@ -169,14 +169,17 @@ input[type="checkbox"] {
 
 .card-bubble.Ready {
   background: deeppink;
+  color: white;
 }
 
 .card-bubble.Finished {
   background: green;
+  color: white;
 }
 
 .card-bubble.In.Progress, .card-bubble.Pending {
   background: chocolate;
+  color: white;
 }
 
 .form {

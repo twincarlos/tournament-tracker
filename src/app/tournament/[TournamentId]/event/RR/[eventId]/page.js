@@ -76,16 +76,16 @@ export default function Event({ params }) {
                         buttonClassName: "Primary",
                         onClickFunction: () => setShowModal("Generate Draw")
                     },
-                    (player && player.isAdmin) && (category === "Groups") && {
-                        buttonName: "Print Groups",
-                        buttonClassName: "Secondary",
-                        onClickFunction: handleGroupsPrint
-                    },
-                    (player && player.isAdmin) && (category === "Draw") && {
-                        buttonName: "Print Draw",
-                        buttonClassName: "Secondary",
-                        onClickFunction: handleDrawPrint
-                    },
+                    // (player && player.isAdmin) && (category === "Groups") && {
+                    //     buttonName: "Print Groups",
+                    //     buttonClassName: "Secondary",
+                    //     onClickFunction: handleGroupsPrint
+                    // },
+                    // (player && player.isAdmin) && (category === "Draw") && {
+                    //     buttonName: "Print Draw",
+                    //     buttonClassName: "Secondary",
+                    //     onClickFunction: handleDrawPrint
+                    // },
                 ]}
             />
             {showModal === "Add Player" && <Modal>
@@ -110,8 +110,8 @@ export default function Event({ params }) {
                 <button onClick={() => setCategory("Players")} className={`${category === "Players" ? "Primary" : "Secondary"}`}>Players</button>
             </section>
             {
-                category === "Groups" ? <GroupsList groupsPrintRef={groupsPrintRef} player={player} event={event} /> : (
-                    category === "Draw" ? <DrawList drawPrintRef={drawPrintRef} player={player} event={event} /> : (
+                category === "Groups" ? <GroupsList setEvent={setEvent} groupsPrintRef={groupsPrintRef} player={player} event={event} /> : (
+                    category === "Draw" ? <DrawList drawPrintRef={drawPrintRef} player={player} event={event} setEvent={setEvent} /> : (
                         <section className="player-list">
                             {
                                 event.eventPlayers.map(eventPlayer => (

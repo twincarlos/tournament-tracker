@@ -32,6 +32,18 @@
     border-color: white;
 }
 
+.swap {
+    border: 2px solid orangered;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.pointer:hover {
+    border: 2px solid blue;
+}
+
 @media print {
     .group-card .player-info {
         width: 100%;

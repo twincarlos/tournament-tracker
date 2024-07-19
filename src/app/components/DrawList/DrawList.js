@@ -7,15 +7,54 @@ import EditableMatch from "../EditableMatch/EditableMatch";
 import MatchCard from "../MatchCard/MatchCard";
 import TableFinder from "../TableFinder/TableFinder";
 import MatchSettings from "../MatchSettings/MatchSettings";
+import { useState } from "react";
 
-export default function DrawList({ drawPrintRef, event, player }) {
+export default function DrawList({ setEvent, drawPrintRef, event, player }) {
     const { match } = useMatch();
-    const {showModal} = useModal();
+    const { showModal } = useModal();
+    const [swap, setSwap] = useState(false);
+    const [eventPlayerSwap, setEventPlayerSwap] = useState([]);
+
+    async function swapEventPlayers() {
+        console.log(event.draw);
+        const response = await fetch(`/api/swap-players/draw`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({
+                eventPlayer1: eventPlayerSwap[0],
+                eventPlayer2: eventPlayerSwap[1],
+                eventId: event.eventId
+            })
+        });
+        const draw = await response.json();
+        setEventPlayerSwap([]);
+        setEvent({ ...event, draw });
+    };
 
     if (!event.draw.length) return null;
 
     return (
         <div ref={drawPrintRef}>
+            {(player && player.isAdmin && event.eventStage === 'Draw' && event.eventStatus === 'In Progress') && <div className="swap-buttons">
+                {
+                    swap === false ? (
+                        <button className="Secondary" onClick={() => setSwap(true)}><i className="fa-regular fa-pen-to-square" /> Edit Seeds</button>
+                    ) : (
+                        <>
+                            <button className="Primary" onClick={swapEventPlayers}><i className="fa-solid fa-shuffle" /> SWAP</button>
+                            <button className="Secondary" onClick={() => {
+                                setSwap(false);
+                                setEventPlayerSwap([]);
+                            }}>Cancel</button>
+                        </>
+                    )
+                }
+            </div>}
             {showModal === "Draw Match" && <Modal>
                 <div className="admin-modal">
                     {
@@ -37,7 +76,7 @@ export default function DrawList({ drawPrintRef, event, player }) {
                         <div key={drawRound[0].matchId} className={`draw-round round-of-${drawRound[0].matchRound} column-${index + 1}`}>
                             {
                                 drawRound.map(drawMatch => (
-                                    <DrawMatchCard key={drawMatch.matchId} match={drawMatch} />
+                                    <DrawMatchCard swap={swap} eventPlayerSwap={eventPlayerSwap} setEventPlayerSwap={setEventPlayerSwap} key={drawMatch.matchId} match={drawMatch} />
                                 ))
                             }
                         </div>

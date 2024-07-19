@@ -2,7 +2,7 @@ import "./GroupCard.css";
 import Link from "next/link";
 import PlayerInfo from "../PlayerInfo/PlayerInfo";
 
-export default function GroupCard({ group, tournamentId, eventType }) {
+export default function GroupCard({ swap, group, tournamentId, eventType, eventPlayerSwap, setEventPlayerSwap }) {
     return (
         <div className="card group-card">
             <div className="card-header">
@@ -26,7 +26,19 @@ export default function GroupCard({ group, tournamentId, eventType }) {
             <div className="group-card-body">
                 {
                     group.groupPlayers.map(groupPlayer => (
-                        <div className="group-card-player" key={groupPlayer.playerId}>
+                        <div onClick={() => {
+                            if (swap === true) {
+                                if (eventPlayerSwap[0]?.eventPlayerId === groupPlayer.eventPlayerId || eventPlayerSwap[1]?.eventPlayerId === groupPlayer.eventPlayerId) {
+                                    setEventPlayerSwap(eventPlayerSwap.filter(eventPlayer => eventPlayer.eventPlayerId !== groupPlayer.eventPlayerId));
+                                } else {
+                                    if (eventPlayerSwap.length === 2) {
+                                        setEventPlayerSwap([eventPlayerSwap[0], groupPlayer]);
+                                    } else {
+                                        setEventPlayerSwap([...eventPlayerSwap, groupPlayer])
+                                    };
+                                };
+                            };
+                        }} className={`group-card-player ${swap === true ? "pointer" : ""} ${(eventPlayerSwap[0]?.eventPlayerId === groupPlayer.eventPlayerId || eventPlayerSwap[1]?.eventPlayerId === groupPlayer.eventPlayerId) ? "swap" : ""}`} key={groupPlayer.playerId}>
                             <PlayerInfo player={groupPlayer} />
                             <div className="group-card-player-stats">
                                 <p>{groupPlayer.groupPosition}</p>
