@@ -38,7 +38,7 @@ export default function GroupCard({ swap, group, tournamentId, eventType, eventP
                                     };
                                 };
                             };
-                        }} className={`group-card-player ${swap === true ? "pointer" : ""} ${(eventPlayerSwap[0]?.eventPlayerId === groupPlayer.eventPlayerId || eventPlayerSwap[1]?.eventPlayerId === groupPlayer.eventPlayerId) ? "swap" : ""}`} key={groupPlayer.playerId}>
+                        }} className={`group-card-player ${swap === true ? "pointer" : ""} ${((eventPlayerSwap && eventPlayerSwap[0]?.eventPlayerId === groupPlayer.eventPlayerId) || (eventPlayerSwap && eventPlayerSwap[1]?.eventPlayerId === groupPlayer.eventPlayerId)) ? "swap" : ""}`} key={groupPlayer.playerId}>
                             <PlayerInfo player={groupPlayer} />
                             <div className="group-card-player-stats">
                                 <p>{groupPlayer.groupPosition}</p>
