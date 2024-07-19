@@ -25,7 +25,7 @@ export default function Group({ params }) {
             {showModal === "Group Match" && <Modal>
                 <div className="admin-modal">
                     {
-                        ((match.matchStatus === "Finished" || match.matchStatus === "Upcoming") && (player && player.isAdmin === true)) ? <MatchCard match={match} inModal={true} /> : <EditableMatch match={match} />
+                        ((match.matchStatus === "Finished" || match.matchStatus === "Upcoming")) ? <MatchCard match={match} inModal={true} /> : ((player && player.isAdmin) ? <EditableMatch match={match} /> : <MatchCard match={match} inModal={true} />)
                     }
                     {(player && player.isAdmin) && <div className="match-settings">
                         <TableFinder tournamentId={params.tournamentId || params.TournamentId} matchId={match?.matchId} />
