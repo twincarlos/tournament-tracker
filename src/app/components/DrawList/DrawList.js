@@ -79,7 +79,7 @@ export default function DrawList({ setEvent, drawPrintRef, event, player }) {
             {showModal === "Draw Match" && <Modal>
                 <div className="admin-modal">
                     {
-                        match ? ((match.matchStatus === "Finished" || match.matchStatus === "Upcoming") ? <MatchCard match={match} inModal={true} /> : ((player && player.isAdmin) ? <EditableMatch match={match} /> : <MatchCard match={match} inModal={true} />)) : null
+                        match ? ((match.matchStatus === "Finished" || match.matchStatus === "Upcoming") ? <MatchCard match={match} inModal={true} /> :  <EditableMatch match={match} />) : null
                     }
                     {(player && player.isAdmin) && <div className="match-settings">
                         <TableFinder tournamentId={event.tournamentId} matchId={match?.matchId} />
