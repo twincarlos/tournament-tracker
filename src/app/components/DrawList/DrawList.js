@@ -35,6 +35,26 @@ export default function DrawList({ setEvent, drawPrintRef, event, player }) {
         setEventPlayerSwap([]);
         setEvent({ ...event, draw });
     };
+    async function moveEventPlayers() {
+        console.log(event.draw);
+        const response = await fetch(`/api/move-players`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            body: JSON.stringify({
+                eventPlayer1: eventPlayerSwap[0],
+                eventPlayer2: eventPlayerSwap[1],
+                eventId: event.eventId
+            })
+        });
+        const draw = await response.json();
+        setEventPlayerSwap([]);
+        setEvent({ ...event, draw });
+    };
 
     if (!event.draw.length) return null;
 
@@ -47,6 +67,7 @@ export default function DrawList({ setEvent, drawPrintRef, event, player }) {
                     ) : (
                         <>
                             <button className="Primary" onClick={swapEventPlayers}><i className="fa-solid fa-shuffle" /> SWAP</button>
+                            <button className="Primary" onClick={moveEventPlayers}><i className="fa-solid fa-square-arrow-up-right" /> Move</button>
                             <button className="Secondary" onClick={() => {
                                 setSwap(false);
                                 setEventPlayerSwap([]);
