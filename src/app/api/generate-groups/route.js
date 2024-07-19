@@ -53,7 +53,7 @@ export async function POST(req) {
             for (let i = 1; i <= 44; i++) {
                 const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
                 groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
-                if (i % 11 === 0) counter++; 
+                if (i === 11 || i === 22 || i === 33 || i === 44) counter++; 
             };
         }
         else if (eventPlayersQuery.rows.length === 43) {
@@ -61,31 +61,31 @@ export async function POST(req) {
             for (let i = 1; i <= 43; i++) {
                 const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
                 groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
-                if (((counter === 1) && (i % 10 === 0)) || (((counter > 1) && (i % 11 === 0)))) counter++;
+                if (((counter === 1) && (i === 10)) || (((counter > 1) && (i === 21 || i === 32 || i === 43)))) counter++;
             };
         }
         else if (eventPlayersQuery.rows.length === 42) {
             let counter = 1;
-            for (let i = 1; i <= 43; i++) {
+            for (let i = 1; i <= 42; i++) {
                 const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
                 groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
-                if (((counter <= 2) && (i % 10 === 0)) || (((counter > 2) && (i % 11 === 0)))) counter++;
+                if (((counter <= 2) && (i === 10 || i === 20)) || (((counter > 2) && (i === 31 || i === 42)))) counter++;
             };
         }
         else if (eventPlayersQuery.rows.length === 41) {
             let counter = 1;
-            for (let i = 1; i <= 43; i++) {
+            for (let i = 1; i <= 41; i++) {
                 const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupQuery.rows[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
                 groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
-                if (((counter <= 3) && (i % 10 === 0)) || (((counter > 3) && (i % 11 === 0)))) counter++;
+                if (((counter <= 3) && (i === 10 || i === 20 || i === 30)) || (((counter > 3) && (i === 41)))) counter++;
             };
         }
         else if (eventPlayersQuery.rows.length === 40) {
             let counter = 1;
-            for (let i = 1; i <= 44; i++) {
+            for (let i = 1; i <= 40; i++) {
                 const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
                 groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
-                if (i % 10 === 0) counter++; 
+                if (i === 10 || i === 20 || i === 30 || i === 40) counter++; 
             };
         };
     };
