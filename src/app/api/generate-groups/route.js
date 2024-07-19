@@ -14,25 +14,79 @@ export async function POST(req) {
     WHERE ep."eventId" = ${eventId}
     ORDER BY p."playerRating" DESC;`;
 
-    const groups = generateGroups(eventPlayersQuery.rows, eventType);
     const groupsData = [];
 
-    for (let i = 0; i < groups.length; i++) {
-        const group = groups[i];
-        const groupQuery = await sql`
-        INSERT INTO Groups (
-            "eventId",
-            "groupNumber"
-        )
-        VALUES (
-            ${eventId},
-            ${Number(i + 1)}
-        )
-        RETURNING *;`;
-        groupsData.push({ ...groupQuery.rows[0], groupPlayers: [], tables: [] });
-        for (const eventPlayer of group) {
-            const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupQuery.rows[0].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayer.eventPlayerId} RETURNING ep.*, p.*`;
-            groupsData[groupsData.length - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+    if (eventType === "RR") {
+        const groups = generateGroups(eventPlayersQuery.rows, eventType);
+        for (let i = 0; i < groups.length; i++) {
+            const group = groups[i];
+            const groupQuery = await sql`
+            INSERT INTO Groups (
+                "eventId",
+                "groupNumber"
+            )
+            VALUES (
+                ${eventId},
+                ${Number(i + 1)}
+            )
+            RETURNING *;`;
+            groupsData.push({ ...groupQuery.rows[0], groupPlayers: [], tables: [] });
+            for (const eventPlayer of group) {
+                const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupQuery.rows[0].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayer.eventPlayerId} RETURNING ep.*, p.*;`;
+                groupsData[groupsData.length - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+            };
+        };
+    };
+
+    if (eventType === "GRR") {
+        const group1 = await sql`INSERT INTO Groups ("eventId", "groupNumber") VALUES(${eventId}, ${Number(1)}) RETURNING *;`;
+        const group2 = await sql`INSERT INTO Groups ("eventId", "groupNumber") VALUES(${eventId}, ${Number(2)}) RETURNING *;`;
+        const group3 = await sql`INSERT INTO Groups ("eventId", "groupNumber") VALUES(${eventId}, ${Number(3)}) RETURNING *;`;
+        const group4 = await sql`INSERT INTO Groups ("eventId", "groupNumber") VALUES(${eventId}, ${Number(4)}) RETURNING *;`;
+        groupsData.push({...group1.rows[0], groupPlayers: [], tables: []});
+        groupsData.push({...group2.rows[0], groupPlayers: [], tables: []});
+        groupsData.push({...group3.rows[0], groupPlayers: [], tables: []});
+        groupsData.push({...group4.rows[0], groupPlayers: [], tables: []});
+
+        if (eventPlayersQuery.rows.length === 44) {
+            let counter = 1;
+            for (let i = 1; i <= 44; i++) {
+                const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
+                groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+                if (i % 11 === 0) counter++; 
+            };
+        }
+        else if (eventPlayersQuery.rows.length === 43) {
+            let counter = 1;
+            for (let i = 1; i <= 43; i++) {
+                const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
+                groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+                if (((counter === 1) && (i % 10 === 0)) || (((counter > 1) && (i % 11 === 0)))) counter++;
+            };
+        }
+        else if (eventPlayersQuery.rows.length === 42) {
+            let counter = 1;
+            for (let i = 1; i <= 43; i++) {
+                const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
+                groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+                if (((counter <= 2) && (i % 10 === 0)) || (((counter > 2) && (i % 11 === 0)))) counter++;
+            };
+        }
+        else if (eventPlayersQuery.rows.length === 41) {
+            let counter = 1;
+            for (let i = 1; i <= 43; i++) {
+                const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupQuery.rows[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
+                groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+                if (((counter <= 3) && (i % 10 === 0)) || (((counter > 3) && (i % 11 === 0)))) counter++;
+            };
+        }
+        else if (eventPlayersQuery.rows.length === 40) {
+            let counter = 1;
+            for (let i = 1; i <= 44; i++) {
+                const eventPlayerQuery = await sql`UPDATE EventPlayers ep SET "groupId" = ${groupsData[counter - 1].groupId} FROM Players p WHERE ep."playerId" = p."playerId" AND "eventPlayerId" = ${eventPlayersQuery.rows[i - 1].eventPlayerId} RETURNING ep.*, p.*;`;
+                groupsData[counter - 1].groupPlayers.push(eventPlayerQuery.rows[0]);
+                if (i % 10 === 0) counter++; 
+            };
         };
     };
 

@@ -21,7 +21,7 @@ export default function Group({ params }) {
 
     return (
         <main>
-            <Header backLink={`/tournament/${params.tournamentId || params.TournamentId}/event/RR/${params.eventId || params.EventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
+            <Header backLink={`/tournament/${params.tournamentId || params.TournamentId}/event/${params.eventId || params.EventId}`} headerTitle={matches[0] ? `${matches[0]?.eventName} • Group ${matches[0]?.groupNumber}` : null} />
             {showModal === "Group Match" && <Modal>
                 <div className="admin-modal">
                     {

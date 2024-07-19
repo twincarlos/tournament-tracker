@@ -1,7 +1,7 @@
 .group-container {
     display: flex;
     align-items: flex-start;
-    width: 400px;
+    width: 350px;
 }
 
 .groups-list {
