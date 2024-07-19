@@ -75,17 +75,7 @@ export default function Event({ params }) {
                         buttonName: "Generate Draw",
                         buttonClassName: "Primary",
                         onClickFunction: () => setShowModal("Generate Draw")
-                    },
-                    // (player && player.isAdmin) && (category === "Groups") && {
-                    //     buttonName: "Print Groups",
-                    //     buttonClassName: "Secondary",
-                    //     onClickFunction: handleGroupsPrint
-                    // },
-                    // (player && player.isAdmin) && (category === "Draw") && {
-                    //     buttonName: "Print Draw",
-                    //     buttonClassName: "Secondary",
-                    //     onClickFunction: handleDrawPrint
-                    // },
+                    }
                 ]}
             />
             {showModal === "Add Player" && <Modal>

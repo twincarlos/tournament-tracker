@@ -173,7 +173,8 @@ export async function GET(req, { params }) {
     SELECT ep.*, p.*
     FROM EventPlayers ep
     JOIN Players p ON p."playerId" = ep."playerId"
-    WHERE "eventId" = ${params.eventId || params.EventId}`;
+    WHERE "eventId" = ${params.eventId || params.EventId}
+    ORDER BY p."playerRating" DESC;`;
     const eventQuery = await sql`SELECT * FROM Events WHERE "eventId" = ${params.eventId || params.EventId};`;
     const allPlayersQuery = await sql`SELECT * FROM Players WHERE "tournamentId" = ${eventQuery.rows[0].tournamentId} ORDER BY "playerRating" DESC;`;
 
